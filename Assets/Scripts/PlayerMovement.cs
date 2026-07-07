@@ -1,0 +1,49 @@
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+[RequireComponent(typeof(Rigidbody2D))]
+public class PlayerMovement : MonoBehaviour
+{
+    [SerializeField] private InputActionAsset inputActions;
+
+    [Header("Movement")]
+    [SerializeField] private float moveSpeed = 6f;
+    [SerializeField] private float acceleration = 50f;
+    [SerializeField] private float deceleration = 60f;
+
+    private Rigidbody2D rb;
+    private InputAction moveAction;
+    private Vector2 moveInput;
+
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        moveAction = inputActions.FindAction("Player/Move", throwIfNotFound: true);
+    }
+
+    private void OnEnable()
+    {
+        moveAction.Enable();
+    }
+
+    private void OnDisable()
+    {
+        moveAction.Disable();
+    }
+
+    private void Update()
+    {
+        moveInput = moveAction.ReadValue<Vector2>();
+        if (moveInput.sqrMagnitude > 1f)
+        {
+            moveInput.Normalize();
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        Vector2 targetVelocity = moveInput * moveSpeed;
+        float rate = moveInput.sqrMagnitude > 0f ? acceleration : deceleration;
+        rb.linearVelocity = Vector2.MoveTowards(rb.linearVelocity, targetVelocity, rate * Time.fixedDeltaTime);
+    }
+}
