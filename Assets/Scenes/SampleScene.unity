@@ -760,6 +760,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputActions: {fileID: -944628639613478452, guid: 8f40f70ae925c48578eb1ad7520b5771, type: 3}
+  animator: {fileID: 1092648757}
   moveSpeed: 6
   acceleration: 50
   deceleration: 60

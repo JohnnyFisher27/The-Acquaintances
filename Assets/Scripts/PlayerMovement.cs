@@ -6,6 +6,8 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private InputActionAsset inputActions;
 
+    [SerializeField] private Animator animator;
+
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 6f;
     [SerializeField] private float acceleration = 50f;
@@ -14,6 +16,7 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rb;
     private InputAction moveAction;
     private Vector2 moveInput;
+    private int lastDirection = 2;
 
     private void Awake()
     {
@@ -38,6 +41,27 @@ public class PlayerMovement : MonoBehaviour
         {
             moveInput.Normalize();
         }
+
+        if (moveInput.sqrMagnitude > 0f)
+        {
+            animator.SetBool("IsWalking", true);
+
+            if (Mathf.Abs(moveInput.x) > Mathf.Abs(moveInput.y))
+            {
+                lastDirection = moveInput.x > 0 ? 1 : 3;
+            }
+            else
+            {
+                lastDirection = moveInput.y > 0 ? 0 : 2;
+            }
+        }
+        else
+        {
+            animator.SetBool("IsWalking", false);
+        }
+
+        animator.SetInteger("Direction", lastDirection);
+
     }
 
     private void FixedUpdate()
