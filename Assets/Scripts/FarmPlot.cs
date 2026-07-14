@@ -1,8 +1,8 @@
 using UnityEngine;
-
+using UnityEngine.InputSystem;
 public class FarmPlot : MonoBehaviour
 {
-    private enum CropState
+    public enum CropState
     {
         Empty,
         Planted,
@@ -21,8 +21,8 @@ public class FarmPlot : MonoBehaviour
     [SerializeField] private Sprite readySprite;
 
     private SpriteRenderer spriteRenderer;
-    private CropState state = CropState.Empty;
-    private float growthTimer;
+    public CropState state = CropState.Empty;
+    public float growthTimer;
     private bool watered;
 
     public string InteractionText
