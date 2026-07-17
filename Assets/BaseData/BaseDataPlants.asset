@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c2cebf46be7e2d41a07ac559142af04, type: 3}
+  m_Name: BaseDataPlants
+  m_EditorClassIdentifier: Assembly-CSharp::DataPlants
+  plants:
+  - namePlant: 11
+    id: 1
+    spr: {fileID: -7385789195546760866, guid: 047d761fa6bfa44e088fc3eaf84ddd2f, type: 3}
+    multMorning: 2
+    multAfternoon: 1
+    multNight: 0.5
+    plantedSpr: {fileID: -941893896, guid: 047d761fa6bfa44e088fc3eaf84ddd2f, type: 3}
+    grownedSpr: {fileID: 3234629978573100161, guid: 047d761fa6bfa44e088fc3eaf84ddd2f, type: 3}
+    readySpr: {fileID: -5137238980920108842, guid: b0910302e467f4be6a639de122a67894, type: 3}
+  - namePlant: 21
+    id: 2
+    spr: {fileID: 4723107735738678597, guid: 047d761fa6bfa44e088fc3eaf84ddd2f, type: 3}
+    multMorning: 2
+    multAfternoon: 2
+    multNight: 0.2
+    plantedSpr: {fileID: 0}
+    grownedSpr: {fileID: 0}
+    readySpr: {fileID: 0}
+  - namePlant: 31
+    id: 3
+    spr: {fileID: 3234629978573100161, guid: 047d761fa6bfa44e088fc3eaf84ddd2f, type: 3}
+    multMorning: 0.5
+    multAfternoon: 2
+    multNight: 2.5
+    plantedSpr: {fileID: 0}
+    grownedSpr: {fileID: 0}
+    readySpr: {fileID: 0}
