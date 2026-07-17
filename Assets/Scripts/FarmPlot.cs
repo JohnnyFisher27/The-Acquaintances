@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Linq;
 public class FarmPlot : MonoBehaviour
 {
     public enum CropState
@@ -11,20 +12,20 @@ public class FarmPlot : MonoBehaviour
     }
 
     [Header("Crop Settings")]
+    [SerializeField] private DataPlants baseData;
     [SerializeField] private float growTime = 15f;
     [SerializeField] private int foodYield = 1;
 
     [Header("Crop Sprites")]
     [SerializeField] private Sprite emptySoilSprite;
-    [SerializeField] private Sprite plantedSprite;
-    [SerializeField] private Sprite growingSprite;
-    [SerializeField] private Sprite readySprite;
+    
 
     private SpriteRenderer spriteRenderer;
     public CropState state = CropState.Empty;
     public float growthTimer;
     private bool watered;
-
+    private Plant currentPlant;
+    private DaySystem daySystem;
     public string InteractionText
     {
         get
@@ -43,6 +44,7 @@ public class FarmPlot : MonoBehaviour
 
     private void Awake()
     {
+        daySystem = FindAnyObjectByType<DaySystem>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         UpdateSprite();
     }
@@ -54,7 +56,15 @@ public class FarmPlot : MonoBehaviour
             return;
         }
 
-        growthTimer += Time.deltaTime;
+        growthTimer += Time.deltaTime * daySystem.currentPeriod switch
+        {
+            DayPeriod.Morning => currentPlant.multMorning,
+            DayPeriod.Afternoon => currentPlant.multAfternoon,
+            DayPeriod.Night => currentPlant.multNight,
+            _ => 1
+
+
+        };
 
         if (growthTimer >= growTime)
         {
@@ -65,15 +75,15 @@ public class FarmPlot : MonoBehaviour
 
     public void Interact(PlayerPlanting inventory)
     {
-        if (inventory == null)
+        /*if (inventory == null)
         {
             return;
-        }
+        }*/
 
         switch (state)
         {
             case CropState.Empty:
-                Plant(inventory);
+                Plant(inventory.id);
                 break;
 
             case CropState.Planted:
@@ -90,13 +100,15 @@ public class FarmPlot : MonoBehaviour
         }
     }
 
-    private void Plant(PlayerPlanting inventory)
+    private void Plant(int id)
     {
-        if (!inventory.UseSeed())
-        {
-            Debug.Log("You do not have any seeds.");
-            return;
-        }
+        /* if (!inventory.UseSeed())
+         {
+             Debug.Log("You do not have any seeds.");
+             return;
+         }*/
+
+        currentPlant = baseData.plants.FirstOrDefault(x => x.id == id);
 
         state = CropState.Planted;
         watered = false;
@@ -136,6 +148,7 @@ public class FarmPlot : MonoBehaviour
 
     private void UpdateSprite()
     {
+        
         if (spriteRenderer == null)
         {
             return;
@@ -144,9 +157,9 @@ public class FarmPlot : MonoBehaviour
         spriteRenderer.sprite = state switch
         {
             CropState.Empty => emptySoilSprite,
-            CropState.Planted => plantedSprite,
-            CropState.Growing => growingSprite,
-            CropState.Ready => readySprite,
+            CropState.Planted => currentPlant.plantedSpr,
+            CropState.Growing => currentPlant.grownedSpr,
+            CropState.Ready => currentPlant.readySpr,
             _ => emptySoilSprite
         };
     }

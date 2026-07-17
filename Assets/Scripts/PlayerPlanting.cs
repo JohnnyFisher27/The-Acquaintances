@@ -4,6 +4,8 @@ public class PlayerPlanting: MonoBehaviour
 {
     [SerializeField] private InputActionAsset inputActions;
 
+    public int id;
+
     [Header("Starting Inventory")]
     [SerializeField] private int seeds = 5;
     [SerializeField] private int food = 0;
