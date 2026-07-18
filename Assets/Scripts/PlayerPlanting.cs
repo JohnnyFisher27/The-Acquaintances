@@ -22,30 +22,36 @@ public class PlayerPlanting: MonoBehaviour
         playerHunger = GetComponent<PlayerHunger>();
     }
 
+    // Tool use (E) lives in PlayerTools now. Eating stays here.
     public void Update()
     {
-        /* if (interAction.WasPerformedThisFrame())
-         {
-             if (interAction != null) 
-             {
-                 Debug.Log("call interact");
-                 farmplot.Interact(this);
-             }
-             else Debug.Log("interaction empty");
-         }*/
-        if (Keyboard.current.eKey.wasPressedThisFrame) 
-        {
-            Debug.Log("call interact");
-            farmplot.Interact(this);
-        }
-
-        if (Keyboard.current.qKey.wasPressedThisFrame) 
+        if (Keyboard.current.qKey.wasPressedThisFrame)
         {
             EatFood(playerHunger);
         }
     }
 
     public FarmPlot farmplot;
+
+    // Inventory snapshot for the midnight checkpoint in DayManager.
+    public struct Snapshot
+    {
+        public int seeds;
+        public int food;
+        public int id;
+    }
+
+    public Snapshot Capture()
+    {
+        return new Snapshot { seeds = seeds, food = food, id = id };
+    }
+
+    public void Restore(Snapshot snapshot)
+    {
+        seeds = snapshot.seeds;
+        food = snapshot.food;
+        id = snapshot.id;
+    }
 
     public bool UseSeed()
     {

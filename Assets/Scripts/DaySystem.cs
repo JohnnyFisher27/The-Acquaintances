@@ -6,7 +6,6 @@ public class DaySystem : MonoBehaviour
 {
     [Header("Settings")]
     public float startHour = 9;
-    public float endHour = 23;
     public float secondsPerMinute = 1f;
 
     [Header("Day Periods")]
@@ -20,9 +19,9 @@ public class DaySystem : MonoBehaviour
 
 
     public DayPeriod currentPeriod { get; private set;}
+    public int day { get; private set; } = 1;
 
     private float currentMintues;
-    private bool isRunnging = true;
     private DayPeriod lastPeriod;
 
     private void Start()
@@ -34,22 +33,30 @@ public class DaySystem : MonoBehaviour
 
     private void Update()
     {
-        if (!isRunnging) return;
-
         currentMintues += (Time.deltaTime / secondsPerMinute);
 
-        if (currentMintues >= endHour * 60f)
+        // The game is continuous: the clock rolls into the next day at midnight.
+        if (currentMintues >= 24f * 60f)
         {
-            currentMintues = endHour * 60f;
-            isRunnging = false;
-            Debug.Log("End of the day");
+            currentMintues -= 24f * 60f;
+            day++;
+            Debug.Log($"Day {day} begins");
         }
+
+        CheckPeriod();
+        UpdateDisplay();
+    }
+
+    // Death penalty: rewind the clock to 12 AM of the current day.
+    public void ResetToMidnight()
+    {
+        currentMintues = 0f;
         CheckPeriod();
         UpdateDisplay();
     }
 
     private void UpdateDisplay()
-    { 
+    {
         if (clockText == null) return;
 
         int tM = Mathf.FloorToInt(currentMintues);
@@ -63,20 +70,21 @@ public class DaySystem : MonoBehaviour
         clockText.text = $"{dH}:{m:D2} {p}";
     }
 
-    private DayPeriod GetPeriod() 
+    private DayPeriod GetPeriod()
     {
         float hour = currentMintues / 60f;
 
-        if (hour >= nightStart) return DayPeriod.Night;
+        // Midnight to morningStart counts as night now that the clock wraps.
+        if (hour < morningStart || hour >= nightStart) return DayPeriod.Night;
         if (hour >= afternoonStart) return DayPeriod.Afternoon;
         return DayPeriod.Morning;
     }
 
-    private void CheckPeriod() 
+    private void CheckPeriod()
     {
         currentPeriod = GetPeriod();
 
-        if (currentPeriod != lastPeriod) 
+        if (currentPeriod != lastPeriod)
         {
             lastPeriod = currentPeriod;
         }
