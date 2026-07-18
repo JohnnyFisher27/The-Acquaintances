@@ -22,24 +22,10 @@ public class PlayerPlanting: MonoBehaviour
         playerHunger = GetComponent<PlayerHunger>();
     }
 
+    // Tool use (E) lives in PlayerTools now. Eating stays here.
     public void Update()
     {
-        /* if (interAction.WasPerformedThisFrame())
-         {
-             if (interAction != null) 
-             {
-                 Debug.Log("call interact");
-                 farmplot.Interact(this);
-             }
-             else Debug.Log("interaction empty");
-         }*/
-        if (Keyboard.current.eKey.wasPressedThisFrame) 
-        {
-            Debug.Log("call interact");
-            farmplot.Interact(this);
-        }
-
-        if (Keyboard.current.qKey.wasPressedThisFrame) 
+        if (Keyboard.current.qKey.wasPressedThisFrame)
         {
             EatFood(playerHunger);
         }
