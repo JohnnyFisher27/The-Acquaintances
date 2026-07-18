@@ -16,7 +16,6 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rb;
     private InputAction moveAction;
     private Vector2 moveInput;
-    private int lastDirection = 2;
 
     private void Awake()
     {
@@ -42,25 +41,25 @@ public class PlayerMovement : MonoBehaviour
             moveInput.Normalize();
         }
 
+        // If player is moving, update walking animation
+
         if (moveInput.sqrMagnitude > 0f)
         {
             animator.SetBool("IsWalking", true);
 
             if (Mathf.Abs(moveInput.x) > Mathf.Abs(moveInput.y))
             {
-                lastDirection = moveInput.x > 0 ? 1 : 3;
+                animator.SetInteger("Direction", moveInput.x > 0 ? 1 : 3);
             }
-            else
+            if (Mathf.Abs(moveInput.y) > Mathf.Abs(moveInput.x))
             {
-                lastDirection = moveInput.y > 0 ? 0 : 2;
+                animator.SetInteger("Direction", moveInput.y > 0 ? 0 : 2);
             }
         }
         else
         {
             animator.SetBool("IsWalking", false);
         }
-
-        animator.SetInteger("Direction", lastDirection);
 
     }
 

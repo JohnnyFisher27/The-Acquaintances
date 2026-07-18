@@ -1,0 +1,689 @@
+fileFormatVersion: 2
+guid: 7585ebecfe4ef4127bf1ed3dcd9cc16d
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -7639202294550026373
+    second: StarPlant-Sheet_0
+  - first:
+      213: -2899549654164991781
+    second: StarPlant-Sheet_1
+  - first:
+      213: 2877533471220786784
+    second: StarPlant-Sheet_2
+  - first:
+      213: 6681343011729150393
+    second: StarPlant-Sheet_3
+  - first:
+      213: -1379262869699935240
+    second: StarPlant-Sheet_4
+  - first:
+      213: 5522885204456064707
+    second: StarPlant-Sheet_5
+  - first:
+      213: -2384626275406966677
+    second: StarPlant-Sheet_6
+  - first:
+      213: 5886237921096171233
+    second: StarPlant-Sheet_7
+  - first:
+      213: -173090825246544778
+    second: StarPlant-Sheet_8
+  - first:
+      213: 5518681378226396951
+    second: StarPlant-Sheet_9
+  - first:
+      213: -3215872197971114426
+    second: StarPlant-Sheet_10
+  - first:
+      213: -7873873319898064038
+    second: StarPlant-Sheet_11
+  - first:
+      213: -2105939416287440577
+    second: StarPlant-Sheet_12
+  - first:
+      213: 4043469186768097425
+    second: StarPlant-Sheet_13
+  - first:
+      213: -7388026514747033334
+    second: StarPlant-Sheet_14
+  - first:
+      213: -4465034403699869833
+    second: StarPlant-Sheet_15
+  - first:
+      213: 4697035015930924125
+    second: StarPlant-Sheet_16
+  - first:
+      213: 6270113850869682167
+    second: StarPlant-Sheet_17
+  - first:
+      213: 1734548623078567310
+    second: StarPlant-Sheet_18
+  - first:
+      213: 4574660884647919510
+    second: StarPlant-Sheet_19
+  - first:
+      213: -4949121938252985505
+    second: StarPlant-Sheet_20
+  - first:
+      213: -8978410056028038932
+    second: StarPlant-Sheet_21
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: StarPlant-Sheet_0
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 127
+        width: 16
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b772ff1ccf91cf590800000000000000
+      internalID: -7639202294550026373
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: StarPlant-Sheet_1
+      rect:
+        serializedVersion: 2
+        x: 38
+        y: 127
+        width: 17
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bd093e6b3fab2c7d0800000000000000
+      internalID: -2899549654164991781
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: StarPlant-Sheet_2
+      rect:
+        serializedVersion: 2
+        x: 70
+        y: 127
+        width: 17
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 066696d327d0fe720800000000000000
+      internalID: 2877533471220786784
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: StarPlant-Sheet_3
+      rect:
+        serializedVersion: 2
+        x: 101
+        y: 127
+        width: 18
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9b197a4e116e8bc50800000000000000
+      internalID: 6681343011729150393
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: StarPlant-Sheet_4
+      rect:
+        serializedVersion: 2
+        x: 133
+        y: 127
+        width: 18
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8f346a74abfdbdce0800000000000000
+      internalID: -1379262869699935240
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: StarPlant-Sheet_5
+      rect:
+        serializedVersion: 2
+        x: 6
+        y: 95
+        width: 17
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3c64ddaf4da35ac40800000000000000
+      internalID: 5522885204456064707
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: StarPlant-Sheet_6
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 95
+        width: 16
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b601e4c690b18eed0800000000000000
+      internalID: -2384626275406966677
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: StarPlant-Sheet_7
+      rect:
+        serializedVersion: 2
+        x: 71
+        y: 95
+        width: 16
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1eefe5ed33e10b150800000000000000
+      internalID: 5886237921096171233
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: StarPlant-Sheet_8
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 95
+        width: 16
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 67cec4fbfce099df0800000000000000
+      internalID: -173090825246544778
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: StarPlant-Sheet_9
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 95
+        width: 16
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 71f5fb9697b469c40800000000000000
+      internalID: 5518681378226396951
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: StarPlant-Sheet_10
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 63
+        width: 17
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 64680ec364dee53d0800000000000000
+      internalID: -3215872197971114426
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: StarPlant-Sheet_11
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 63
+        width: 18
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a5bdc01eee16ab290800000000000000
+      internalID: -7873873319898064038
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: StarPlant-Sheet_12
+      rect:
+        serializedVersion: 2
+        x: 71
+        y: 63
+        width: 18
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f3191b5324336c2e0800000000000000
+      internalID: -2105939416287440577
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: StarPlant-Sheet_13
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 63
+        width: 18
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 190dc895dc94d1830800000000000000
+      internalID: 4043469186768097425
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: StarPlant-Sheet_14
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 63
+        width: 18
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a09f55d3705787990800000000000000
+      internalID: -7388026514747033334
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: StarPlant-Sheet_15
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 31
+        width: 17
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7773299ddd20902c0800000000000000
+      internalID: -4465034403699869833
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: StarPlant-Sheet_16
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 31
+        width: 16
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d5c422606783f2140800000000000000
+      internalID: 4697035015930924125
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: StarPlant-Sheet_17
+      rect:
+        serializedVersion: 2
+        x: 71
+        y: 31
+        width: 17
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7ff085ea35be30750800000000000000
+      internalID: 6270113850869682167
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: StarPlant-Sheet_18
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 31
+        width: 17
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e8dad3c58ca521810800000000000000
+      internalID: 1734548623078567310
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: StarPlant-Sheet_19
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 31
+        width: 16
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 69f305546d57c7f30800000000000000
+      internalID: 4574660884647919510
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: StarPlant-Sheet_20
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 0
+        width: 16
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f5b865891df215bb0800000000000000
+      internalID: -4949121938252985505
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: StarPlant-Sheet_21
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 0
+        width: 16
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ce857aaaf97466380800000000000000
+      internalID: -8978410056028038932
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      StarPlant-Sheet_0: -7639202294550026373
+      StarPlant-Sheet_1: -2899549654164991781
+      StarPlant-Sheet_10: -3215872197971114426
+      StarPlant-Sheet_11: -7873873319898064038
+      StarPlant-Sheet_12: -2105939416287440577
+      StarPlant-Sheet_13: 4043469186768097425
+      StarPlant-Sheet_14: -7388026514747033334
+      StarPlant-Sheet_15: -4465034403699869833
+      StarPlant-Sheet_16: 4697035015930924125
+      StarPlant-Sheet_17: 6270113850869682167
+      StarPlant-Sheet_18: 1734548623078567310
+      StarPlant-Sheet_19: 4574660884647919510
+      StarPlant-Sheet_2: 2877533471220786784
+      StarPlant-Sheet_20: -4949121938252985505
+      StarPlant-Sheet_21: -8978410056028038932
+      StarPlant-Sheet_3: 6681343011729150393
+      StarPlant-Sheet_4: -1379262869699935240
+      StarPlant-Sheet_5: 5522885204456064707
+      StarPlant-Sheet_6: -2384626275406966677
+      StarPlant-Sheet_7: 5886237921096171233
+      StarPlant-Sheet_8: -173090825246544778
+      StarPlant-Sheet_9: 5518681378226396951
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
