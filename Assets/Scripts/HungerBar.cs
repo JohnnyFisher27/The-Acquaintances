@@ -15,7 +15,7 @@ public class HungerBar : MonoBehaviour
 
     private void Start()
     {
-        hunger = FindFirstObjectByType<PlayerHunger>();
+        hunger = FindAnyObjectByType<PlayerHunger>();
     }
 
     // Shrink the green fill so red shows on the right, and display the current number.
