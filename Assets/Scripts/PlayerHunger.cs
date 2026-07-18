@@ -38,6 +38,13 @@ public class PlayerHunger : MonoBehaviour
         }
     }
 
+    // Death penalty respawn: set hunger to a fraction of max and allow depletion again.
+    public void ResetHunger(float fraction)
+    {
+        depleted = false;
+        Current = maxHunger * Mathf.Clamp01(fraction);
+    }
+
     // Restore hunger from food, capped at the max.
     public void Eat(float amount)
     {

@@ -248,6 +248,42 @@ public class FarmPlot : MonoBehaviour
         }
     }
 
+    // Snapshot of everything needed to rewind this plot to an earlier state
+    // (used by the midnight checkpoint in DayManager).
+    public struct Snapshot
+    {
+        public CropState state;
+        public Plant plant;
+        public float growthTimer;
+        public float waterLevel;
+        public float dryTimer;
+        public float weatherStress;
+    }
+
+    public Snapshot Capture()
+    {
+        return new Snapshot
+        {
+            state = state,
+            plant = currentPlant,
+            growthTimer = growthTimer,
+            waterLevel = waterLevel,
+            dryTimer = dryTimer,
+            weatherStress = weatherStress
+        };
+    }
+
+    public void Restore(Snapshot snapshot)
+    {
+        state = snapshot.state;
+        currentPlant = snapshot.plant;
+        growthTimer = snapshot.growthTimer;
+        waterLevel = snapshot.waterLevel;
+        dryTimer = snapshot.dryTimer;
+        weatherStress = snapshot.weatherStress;
+        UpdateSprite();
+    }
+
     private void Wither()
     {
         state = CropState.Withered;

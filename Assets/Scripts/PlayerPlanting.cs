@@ -33,6 +33,26 @@ public class PlayerPlanting: MonoBehaviour
 
     public FarmPlot farmplot;
 
+    // Inventory snapshot for the midnight checkpoint in DayManager.
+    public struct Snapshot
+    {
+        public int seeds;
+        public int food;
+        public int id;
+    }
+
+    public Snapshot Capture()
+    {
+        return new Snapshot { seeds = seeds, food = food, id = id };
+    }
+
+    public void Restore(Snapshot snapshot)
+    {
+        seeds = snapshot.seeds;
+        food = snapshot.food;
+        id = snapshot.id;
+    }
+
     public bool UseSeed()
     {
         if (seeds <= 0)
