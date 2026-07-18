@@ -49,10 +49,12 @@ public class PlayerMovement : MonoBehaviour
 
             if (Mathf.Abs(moveInput.x) > Mathf.Abs(moveInput.y))
             {
+                // moving left or right
                 animator.SetInteger("Direction", moveInput.x > 0 ? 1 : 3);
             }
             if (Mathf.Abs(moveInput.y) > Mathf.Abs(moveInput.x))
             {
+                // moving up or down
                 animator.SetInteger("Direction", moveInput.y > 0 ? 0 : 2);
             }
         }
