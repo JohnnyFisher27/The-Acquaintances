@@ -15,28 +15,43 @@ MonoBehaviour:
   plants:
   - namePlant: 11
     id: 1
-    spr: {fileID: -7385789195546760866, guid: 047d761fa6bfa44e088fc3eaf84ddd2f, type: 3}
+    spr: {fileID: 3620058418051504474, guid: 866dd813e11bf42dbbef1d1ac4dae926, type: 3}
     multMorning: 2
     multAfternoon: 1
     multNight: 0.5
-    plantedSpr: {fileID: -941893896, guid: 047d761fa6bfa44e088fc3eaf84ddd2f, type: 3}
-    grownedSpr: {fileID: 3234629978573100161, guid: 047d761fa6bfa44e088fc3eaf84ddd2f, type: 3}
-    readySpr: {fileID: -5137238980920108842, guid: b0910302e467f4be6a639de122a67894, type: 3}
+    waterDepletionRate: 0.05
+    heatResist: 0
+    rainResist: 0
+    windResist: 0
+    plantedSpr: {fileID: 8735322932182825036, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
+    grownedSpr: {fileID: -8406855179093674905, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
+    readySpr: {fileID: -7639202294550026373, guid: 7585ebecfe4ef4127bf1ed3dcd9cc16d, type: 3}
+    witheredSpr: {fileID: 0}
   - namePlant: 21
     id: 2
-    spr: {fileID: 4723107735738678597, guid: 047d761fa6bfa44e088fc3eaf84ddd2f, type: 3}
+    spr: {fileID: 3620058418051504474, guid: 866dd813e11bf42dbbef1d1ac4dae926, type: 3}
     multMorning: 2
     multAfternoon: 2
     multNight: 0.2
-    plantedSpr: {fileID: 0}
-    grownedSpr: {fileID: 0}
-    readySpr: {fileID: 0}
+    waterDepletionRate: 0.05
+    heatResist: 0
+    rainResist: 0
+    windResist: 0
+    plantedSpr: {fileID: 8735322932182825036, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
+    grownedSpr: {fileID: -8406855179093674905, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
+    readySpr: {fileID: 8133688423319878165, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
+    witheredSpr: {fileID: 0}
   - namePlant: 31
     id: 3
-    spr: {fileID: 3234629978573100161, guid: 047d761fa6bfa44e088fc3eaf84ddd2f, type: 3}
+    spr: {fileID: 3620058418051504474, guid: 866dd813e11bf42dbbef1d1ac4dae926, type: 3}
     multMorning: 0.5
     multAfternoon: 2
     multNight: 2.5
-    plantedSpr: {fileID: 0}
-    grownedSpr: {fileID: 0}
-    readySpr: {fileID: 0}
+    waterDepletionRate: 0.05
+    heatResist: 0
+    rainResist: 0
+    windResist: 0
+    plantedSpr: {fileID: 8735322932182825036, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
+    grownedSpr: {fileID: -8406855179093674905, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
+    readySpr: {fileID: 8133688423319878165, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
+    witheredSpr: {fileID: 0}
