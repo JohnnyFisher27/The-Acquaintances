@@ -784,6 +784,7 @@ GameObject:
   - component: {fileID: 1037569755}
   - component: {fileID: 1037569754}
   - component: {fileID: 1037569753}
+  - component: {fileID: 1037569757}
   m_Layer: 0
   m_Name: Slot (1)
   m_TagString: FarmPlot
@@ -912,10 +913,10 @@ MonoBehaviour:
   baseData: {fileID: 11400000, guid: 5506ffa8ea568be47ac5fefe28ba46d2, type: 2}
   growTime: 15
   foodYield: 1
+  waterPerUse: 0.5
+  witherGracePeriod: 10
+  untilledSprite: {fileID: 0}
   emptySoilSprite: {fileID: -7385789195546760866, guid: 047d761fa6bfa44e088fc3eaf84ddd2f, type: 3}
-  plantedSprite: {fileID: 3234629978573100161, guid: 047d761fa6bfa44e088fc3eaf84ddd2f, type: 3}
-  growingSprite: {fileID: -941893896, guid: 047d761fa6bfa44e088fc3eaf84ddd2f, type: 3}
-  readySprite: {fileID: 4723107735738678597, guid: 047d761fa6bfa44e088fc3eaf84ddd2f, type: 3}
   state: 0
   growthTimer: 0
 --- !u!4 &1037569756
@@ -933,6 +934,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1037569757
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1037569752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 772997a5328b36697a0147f127a08de1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlotWaterBar
+  offset: {x: 0, y: 0.7}
+  width: 0.8
+  height: 0.12
+  backColor: {r: 0.1, g: 0.1, b: 0.1, a: 0.8}
+  fillColor: {r: 0.3, g: 0.6, b: 1, a: 1}
 --- !u!1 &1092648750
 GameObject:
   m_ObjectHideFlags: 0
@@ -949,6 +967,7 @@ GameObject:
   - component: {fileID: 1092648756}
   - component: {fileID: 1092648757}
   - component: {fileID: 1092648759}
+  - component: {fileID: 1092648760}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1166,6 +1185,20 @@ MonoBehaviour:
   food: 0
   hungerRestoredPerFood: 250
   farmplot: {fileID: 0}
+--- !u!114 &1092648760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1092648750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b1199d39351edda553535f8b3281b7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerTools
+  currentTool: 0
+  maxSeedId: 3
 --- !u!1 &1238191213
 GameObject:
   m_ObjectHideFlags: 0
@@ -1421,8 +1454,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DaySystem
   startHour: 9
-  endHour: 23
   secondsPerMinute: 1
+  morningStart: 6
+  afternoonStart: 12
+  nightStart: 19
   clockText: {fileID: 1700883953}
 --- !u!4 &1588425666
 Transform:
@@ -1684,6 +1719,7 @@ GameObject:
   - component: {fileID: 1644059289}
   - component: {fileID: 1644059288}
   - component: {fileID: 1644059287}
+  - component: {fileID: 1644059291}
   m_Layer: 0
   m_Name: Slot (2)
   m_TagString: FarmPlot
@@ -1812,10 +1848,10 @@ MonoBehaviour:
   baseData: {fileID: 11400000, guid: 5506ffa8ea568be47ac5fefe28ba46d2, type: 2}
   growTime: 15
   foodYield: 1
+  waterPerUse: 0.5
+  witherGracePeriod: 10
+  untilledSprite: {fileID: 0}
   emptySoilSprite: {fileID: -7385789195546760866, guid: 047d761fa6bfa44e088fc3eaf84ddd2f, type: 3}
-  plantedSprite: {fileID: 3234629978573100161, guid: 047d761fa6bfa44e088fc3eaf84ddd2f, type: 3}
-  growingSprite: {fileID: -941893896, guid: 047d761fa6bfa44e088fc3eaf84ddd2f, type: 3}
-  readySprite: {fileID: 4723107735738678597, guid: 047d761fa6bfa44e088fc3eaf84ddd2f, type: 3}
   state: 0
   growthTimer: 0
 --- !u!4 &1644059290
@@ -1833,6 +1869,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1644059291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1644059286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 772997a5328b36697a0147f127a08de1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlotWaterBar
+  offset: {x: 0, y: 0.7}
+  width: 0.8
+  height: 0.12
+  backColor: {r: 0.1, g: 0.1, b: 0.1, a: 0.8}
+  fillColor: {r: 0.3, g: 0.6, b: 1, a: 1}
 --- !u!1 &1700883952
 GameObject:
   m_ObjectHideFlags: 0
@@ -1999,6 +2052,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa31d7481a99ac7499e223a00f351946, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DayManager
+  farmCheckInterval: 1
+  hungerAfterDeath: 0.5
 --- !u!4 &1727670616
 Transform:
   m_ObjectHideFlags: 0
@@ -2156,6 +2211,7 @@ GameObject:
   - component: {fileID: 2094974625}
   - component: {fileID: 2094974624}
   - component: {fileID: 2094974623}
+  - component: {fileID: 2094974627}
   m_Layer: 0
   m_Name: Slot
   m_TagString: FarmPlot
@@ -2284,10 +2340,10 @@ MonoBehaviour:
   baseData: {fileID: 11400000, guid: 5506ffa8ea568be47ac5fefe28ba46d2, type: 2}
   growTime: 15
   foodYield: 1
+  waterPerUse: 0.5
+  witherGracePeriod: 10
+  untilledSprite: {fileID: 0}
   emptySoilSprite: {fileID: -7385789195546760866, guid: 047d761fa6bfa44e088fc3eaf84ddd2f, type: 3}
-  plantedSprite: {fileID: 3234629978573100161, guid: 047d761fa6bfa44e088fc3eaf84ddd2f, type: 3}
-  growingSprite: {fileID: -941893896, guid: 047d761fa6bfa44e088fc3eaf84ddd2f, type: 3}
-  readySprite: {fileID: 4723107735738678597, guid: 047d761fa6bfa44e088fc3eaf84ddd2f, type: 3}
   state: 0
   growthTimer: 0
 --- !u!4 &2094974626
@@ -2305,6 +2361,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2094974627
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2094974622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 772997a5328b36697a0147f127a08de1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlotWaterBar
+  offset: {x: 0, y: 0.7}
+  width: 0.8
+  height: 0.12
+  backColor: {r: 0.1, g: 0.1, b: 0.1, a: 0.8}
+  fillColor: {r: 0.3, g: 0.6, b: 1, a: 1}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
