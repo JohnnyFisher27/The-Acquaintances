@@ -28,6 +28,8 @@ public class FarmPlot : MonoBehaviour
     [SerializeField] private Sprite untilledSprite;
     [SerializeField] private Sprite emptySoilSprite;
 
+    [SerializeField] private Animator animator;
+
     private SpriteRenderer spriteRenderer;
     public CropState state = CropState.Untilled;
     public float growthTimer;
@@ -119,17 +121,33 @@ public class FarmPlot : MonoBehaviour
         switch (tool)
         {
             case ToolType.Hoe:
+                animator.SetBool("IsInteracting", true);
+                animator.SetTrigger("Till");
                 Till();
                 break;
 
             case ToolType.Seeds:
-                if (state == CropState.Ready) Harvest(inventory);
-                else PlantSeed(inventory);
+                if (state == CropState.Ready) {
+                    animator.SetBool("IsInteracting", true);
+                    animator.SetTrigger("Harvest");
+                    Harvest(inventory);
+                } else {
+                    animator.SetBool("IsInteracting", true);
+                    animator.SetTrigger("Plant");
+                    PlantSeed(inventory);
+                }
                 break;
 
             case ToolType.WateringCan:
-                if (state == CropState.Ready) Harvest(inventory);
-                else Water();
+                if (state == CropState.Ready) {
+                    animator.SetBool("IsInteracting", true);
+                    animator.SetTrigger("Harvest");
+                    Harvest(inventory);
+                } else { 
+                    animator.SetBool("IsInteracting", true);
+                    animator.SetTrigger("Water");
+                    Water();
+                }
                 break;
 
             case ToolType.Scythe:

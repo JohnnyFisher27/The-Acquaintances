@@ -4087,6 +4087,7 @@ MonoBehaviour:
   witherGracePeriod: 10
   untilledSprite: {fileID: 0}
   emptySoilSprite: {fileID: -7385789195546760866, guid: 047d761fa6bfa44e088fc3eaf84ddd2f, type: 3}
+  animator: {fileID: 1819344635}
   state: 0
   growthTimer: 0
 --- !u!4 &2046483497
