@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BaseDataPlants
   m_EditorClassIdentifier: Assembly-CSharp::DataPlants
   plants:
-  - namePlant: Plant1
+  - namePlant: Sunspot
     id: 1
     spr: {fileID: 3620058418051504474, guid: 866dd813e11bf42dbbef1d1ac4dae926, type: 3}
     multMorning: 2
@@ -28,7 +28,7 @@ MonoBehaviour:
     readySpr: {fileID: -7639202294550026373, guid: 7585ebecfe4ef4127bf1ed3dcd9cc16d, type: 3}
     witheredSpr: {fileID: 282952652117209374, guid: 866dd813e11bf42dbbef1d1ac4dae926, type: 3}
     neccesaryItems: []
-  - namePlant: Plant2
+  - namePlant: Blue river pedals
     id: 2
     spr: {fileID: 3620058418051504474, guid: 866dd813e11bf42dbbef1d1ac4dae926, type: 3}
     multMorning: 2
@@ -43,7 +43,7 @@ MonoBehaviour:
     readySpr: {fileID: 8133688423319878165, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
     witheredSpr: {fileID: 0}
     neccesaryItems: []
-  - namePlant: Plant3
+  - namePlant: 'Breeze root '
     id: 3
     spr: {fileID: 3620058418051504474, guid: 866dd813e11bf42dbbef1d1ac4dae926, type: 3}
     multMorning: 0.5
