@@ -85,7 +85,25 @@ public class FarmPlot : MonoBehaviour
         if (waterLevel <= 0f)
         {
             dryTimer += Time.deltaTime;
-            if (dryTimer >= witherGracePeriod)
+            float effectiveGrace = witherGracePeriod;
+
+            if (WeatherManager.Instance != null && currentPlant != null) 
+            {
+                switch (WeatherManager.Instance.current) 
+                {
+                    case WeatherType.Heatwave:
+                        effectiveGrace *= Mathf.Lerp(0.3f, 1f, currentPlant.heatResist);
+                        break;
+                    case WeatherType.Windstorm:
+                        effectiveGrace *= Mathf.Lerp(0.3f, 1f, currentPlant.windResist);
+                        break;
+                    case WeatherType.Rainstorm:
+                        effectiveGrace *= Mathf.Lerp(1f, 2f, currentPlant.rainResist);
+                        break;
+                }
+            }
+
+            if (dryTimer >= effectiveGrace)
             {
                 Wither();
             }
