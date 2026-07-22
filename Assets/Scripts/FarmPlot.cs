@@ -29,6 +29,7 @@ public class FarmPlot : MonoBehaviour
     [SerializeField] private Sprite emptySoilSprite;
 
     [SerializeField] private Animator animator;
+    [SerializeField] private TMPro.TextMeshProUGUI growthText;
 
     private SpriteRenderer spriteRenderer;
     public CropState state = CropState.Untilled;
@@ -108,6 +109,7 @@ public class FarmPlot : MonoBehaviour
             };
         }
         growthTimer += Time.deltaTime * periodMult;
+        growthText.text = $"{growthTimer / growTime:P0}";
 
         if (growthTimer >= growTime)
         {
