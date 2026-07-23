@@ -38,4 +38,6 @@ public class Plant
     public Sprite readySpr;
     public Sprite witheredSpr;
 
+    public List<Item> neccesaryItems = new List<Item>();
+
 }
