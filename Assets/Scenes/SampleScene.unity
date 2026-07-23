@@ -1180,6 +1180,7 @@ GameObject:
   - component: {fileID: 1037569755}
   - component: {fileID: 1037569754}
   - component: {fileID: 1037569753}
+  - component: {fileID: 1037569757}
   m_Layer: 0
   m_Name: Slot (1)
   m_TagString: FarmPlot
@@ -1329,6 +1330,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1037569757
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1037569752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 772997a5328b36697a0147f127a08de1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlotWaterBar
+  offset: {x: 0, y: 0.7}
+  width: 0.8
+  height: 0.12
+  backColor: {r: 0.1, g: 0.1, b: 0.1, a: 0.8}
+  fillColor: {r: 0.3, g: 0.6, b: 1, a: 1}
 --- !u!1 &1092648750
 GameObject:
   m_ObjectHideFlags: 0
@@ -2414,6 +2432,7 @@ GameObject:
   - component: {fileID: 1644059289}
   - component: {fileID: 1644059288}
   - component: {fileID: 1644059287}
+  - component: {fileID: 1644059291}
   m_Layer: 0
   m_Name: Slot (2)
   m_TagString: FarmPlot
@@ -2563,6 +2582,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1644059291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1644059286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 772997a5328b36697a0147f127a08de1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlotWaterBar
+  offset: {x: 0, y: 0.7}
+  width: 0.8
+  height: 0.12
+  backColor: {r: 0.1, g: 0.1, b: 0.1, a: 0.8}
+  fillColor: {r: 0.3, g: 0.6, b: 1, a: 1}
 --- !u!1 &1700883952
 GameObject:
   m_ObjectHideFlags: 0
@@ -3082,6 +3118,7 @@ GameObject:
   - component: {fileID: 2094974625}
   - component: {fileID: 2094974624}
   - component: {fileID: 2094974623}
+  - component: {fileID: 2094974627}
   m_Layer: 0
   m_Name: Slot
   m_TagString: FarmPlot
@@ -3231,6 +3268,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2094974627
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2094974622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 772997a5328b36697a0147f127a08de1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlotWaterBar
+  offset: {x: 0, y: 0.7}
+  width: 0.8
+  height: 0.12
+  backColor: {r: 0.1, g: 0.1, b: 0.1, a: 0.8}
+  fillColor: {r: 0.3, g: 0.6, b: 1, a: 1}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

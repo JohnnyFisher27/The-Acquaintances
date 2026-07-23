@@ -65,6 +65,11 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
+    public void FinishInteraction() 
+    {
+        animator.SetBool("IsInteracting", false);
+    }
+
     private void FixedUpdate()
     {
         Vector2 targetVelocity = moveInput * moveSpeed;

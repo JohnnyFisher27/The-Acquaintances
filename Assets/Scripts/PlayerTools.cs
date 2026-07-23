@@ -21,6 +21,8 @@ public class PlayerTools : MonoBehaviour
 
     private PlayerPlanting planting;
 
+    [SerializeField] private TMPro.TextMeshProUGUI toolText;
+
     private void Awake()
     {
         planting = GetComponent<PlayerPlanting>();
@@ -55,6 +57,7 @@ public class PlayerTools : MonoBehaviour
     private void SelectTool(ToolType tool)
     {
         currentTool = tool;
+        toolText.text = $"Tool: {tool} (E)";
         Debug.Log($"Selected tool: {tool}");
     }
 }
