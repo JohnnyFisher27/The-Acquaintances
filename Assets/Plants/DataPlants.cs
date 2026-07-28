@@ -12,17 +12,25 @@ public class DataPlants : ScriptableObject
     }
 }
 
+public enum PlantCategory
+{
+    Healthy,
+    Special,
+    NonFatal
+}
+
 [System.Serializable]
 
-public class Plant 
+public class Plant
 {
     public string namePlant;
     public int id;
+    public PlantCategory category = PlantCategory.Healthy;
     public Sprite spr;
 
-    public float multMorning;
-    public float multAfternoon;
-    public float multNight;
+    public float multMorning = 1f;
+    public float multAfternoon = 1f;
+    public float multNight = 1f;
 
     //Water: fraction of the meter lost per second while growing
     public float waterDepletionRate = 0.05f;
@@ -31,6 +39,14 @@ public class Plant
     [Range(0f, 1f)] public float heatResist;
     [Range(0f, 1f)] public float rainResist;
     [Range(0f, 1f)] public float windResist;
+
+    //Harvest
+    public int foodYield = 1;
+    // NonFatal plants hurt the player when harvested (0.1 = 10% of max hunger)
+    [Range(0f, 1f)] public float harvestHealthPenalty;
+
+    // Used to generate a colored placeholder sprite when no stage sprite is set below
+    public Color placeholderColor = Color.white;
 
     //Sprites
     public Sprite plantedSpr;

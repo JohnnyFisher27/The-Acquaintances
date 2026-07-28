@@ -18,7 +18,6 @@ public class FarmPlot : MonoBehaviour
     [Header("Crop Settings")]
     [SerializeField] private DataPlants baseData;
     [SerializeField] private float growTime = 15f;
-    [SerializeField] private int foodYield = 1;
 
     [Header("Water")]
     [SerializeField] private float waterPerUse = 0.5f;
@@ -36,7 +35,7 @@ public class FarmPlot : MonoBehaviour
     public float growthTimer;
     private float waterLevel;
     private float dryTimer;
-    private float weatherStress;
+    private float soilIntegrity = 1f;
     private Plant currentPlant;
     private DaySystem daySystem;
 
@@ -44,6 +43,12 @@ public class FarmPlot : MonoBehaviour
     public float WaterNormalized => waterLevel;
     public bool ShowWaterBar => state == CropState.Planted || state == CropState.Growing;
     public bool HasLivingCrop => state == CropState.Planted || state == CropState.Growing || state == CropState.Ready;
+
+    // Soil integrity: chipped away in fixed steps by harsh weather
+    // (see WeatherManager). Hits 0 and the plot is destroyed outright,
+    // not just withered - it has to be re-tilled from scratch.
+    public float SoilIntegrityNormalized => soilIntegrity;
+    public bool ShowSoilBar => HasLivingCrop && soilIntegrity < 1f;
 
     public string InteractionText
     {
@@ -215,6 +220,7 @@ public class FarmPlot : MonoBehaviour
         waterLevel = 0f;
         dryTimer = 0f;
         growthTimer = 0f;
+        soilIntegrity = 1f;
 
         UpdateSprite();
         Debug.Log("Seed planted. Water it to begin growing.");
@@ -257,9 +263,16 @@ public class FarmPlot : MonoBehaviour
 
     private void Harvest(PlayerPlanting inventory)
     {
-        inventory.AddFood(foodYield);
+        Plant plant = currentPlant;
+        inventory.AddFood(plant.foodYield);
+
+        if (plant.category == PlantCategory.NonFatal && plant.harvestHealthPenalty > 0f)
+        {
+            inventory.ApplyHarvestGas(plant.harvestHealthPenalty);
+        }
+
         ClearPlot();
-        Debug.Log($"Crop harvested. Received {foodYield} food.");
+        Debug.Log($"Crop harvested. Received {plant.foodYield} food.");
     }
 
     // Rain refills every planted crop.
@@ -271,18 +284,20 @@ public class FarmPlot : MonoBehaviour
         }
     }
 
-    // Storm damage builds up until the crop withers. Resistant plants take less.
-    public void ApplyWeatherStress(float amount)
+    // Harsh weather chips soil integrity down in fixed steps (see
+    // WeatherManager). Resistant/enhanced plants take a reduced step, and a
+    // fully resistant plant takes none. Hits 0 and the plot is destroyed.
+    public void ApplySoilDamage(float amount)
     {
-        if (!HasLivingCrop)
+        if (!HasLivingCrop || amount <= 0f)
         {
             return;
         }
 
-        weatherStress += amount;
-        if (weatherStress >= 1f)
+        soilIntegrity = Mathf.Max(0f, soilIntegrity - amount);
+        if (soilIntegrity <= 0f)
         {
-            Wither();
+            DestroySoil();
         }
     }
 
@@ -295,7 +310,7 @@ public class FarmPlot : MonoBehaviour
         public float growthTimer;
         public float waterLevel;
         public float dryTimer;
-        public float weatherStress;
+        public float soilIntegrity;
     }
 
     public Snapshot Capture()
@@ -307,7 +322,7 @@ public class FarmPlot : MonoBehaviour
             growthTimer = growthTimer,
             waterLevel = waterLevel,
             dryTimer = dryTimer,
-            weatherStress = weatherStress
+            soilIntegrity = soilIntegrity
         };
     }
 
@@ -318,7 +333,7 @@ public class FarmPlot : MonoBehaviour
         growthTimer = snapshot.growthTimer;
         waterLevel = snapshot.waterLevel;
         dryTimer = snapshot.dryTimer;
-        weatherStress = snapshot.weatherStress;
+        soilIntegrity = snapshot.soilIntegrity;
         UpdateSprite();
     }
 
@@ -329,13 +344,27 @@ public class FarmPlot : MonoBehaviour
         Debug.Log("A crop has withered.");
     }
 
+    // Soil integrity ran out: unlike withering, the plot itself is ruined
+    // and needs to be tilled again from scratch.
+    private void DestroySoil()
+    {
+        currentPlant = null;
+        state = CropState.Untilled;
+        waterLevel = 0f;
+        dryTimer = 0f;
+        soilIntegrity = 1f;
+        growthTimer = 0f;
+        UpdateSprite();
+        Debug.Log("The weather destroyed this plot. It needs to be tilled again.");
+    }
+
     private void ClearPlot()
     {
         currentPlant = null;
         state = CropState.Empty;
         waterLevel = 0f;
         dryTimer = 0f;
-        weatherStress = 0f;
+        soilIntegrity = 1f;
         growthTimer = 0f;
         UpdateSprite();
     }
@@ -357,6 +386,12 @@ public class FarmPlot : MonoBehaviour
             CropState.Withered => currentPlant.witheredSpr,
             _ => emptySoilSprite
         };
+
+        // Species without authored art yet fall back to a colored placeholder.
+        if (sprite == null && currentPlant != null)
+        {
+            sprite = PlaceholderCropSprite.Get(currentPlant.placeholderColor, state);
+        }
 
         if (sprite == null)
         {
