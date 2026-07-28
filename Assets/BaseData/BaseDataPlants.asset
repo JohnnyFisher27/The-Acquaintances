@@ -16,26 +16,29 @@ MonoBehaviour:
   - namePlant: Sunspot
     id: 1
     category: 1
-    multMorning: 1
-    multAfternoon: 2
+    spr: {fileID: 3620058418051504474, guid: 866dd813e11bf42dbbef1d1ac4dae926, type: 3}
+    multMorning: 2
+    multAfternoon: 1
     multNight: 0.5
-    waterDepletionRate: 0.04
+    waterDepletionRate: 0.05
     heatResist: 0.5
     rainResist: 0
     windResist: 0
     foodYield: 0
     harvestHealthPenalty: 0
     placeholderColor: {r: 0.95, g: 0.55, b: 0.15, a: 1}
-    plantedSpr: {fileID: 0}
-    grownedSpr: {fileID: 0}
-    readySpr: {fileID: 0}
-    witheredSpr: {fileID: 0}
-  - namePlant: Blue River Petal
+    plantedSpr: {fileID: 8735322932182825036, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
+    grownedSpr: {fileID: -8406855179093674905, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
+    readySpr: {fileID: -7639202294550026373, guid: 7585ebecfe4ef4127bf1ed3dcd9cc16d, type: 3}
+    witheredSpr: {fileID: 282952652117209374, guid: 866dd813e11bf42dbbef1d1ac4dae926, type: 3}
+    neccesaryItems: []
+  - namePlant: Blue river pedals
     id: 2
     category: 1
-    multMorning: 1.5
-    multAfternoon: 1
-    multNight: 1.5
+    spr: {fileID: 3620058418051504474, guid: 866dd813e11bf42dbbef1d1ac4dae926, type: 3}
+    multMorning: 2
+    multAfternoon: 2
+    multNight: 0.2
     waterDepletionRate: 0.05
     heatResist: 0
     rainResist: 0.5
@@ -43,29 +46,57 @@ MonoBehaviour:
     foodYield: 0
     harvestHealthPenalty: 0
     placeholderColor: {r: 0.25, g: 0.55, b: 0.95, a: 1}
-    plantedSpr: {fileID: 0}
-    grownedSpr: {fileID: 0}
-    readySpr: {fileID: 0}
+    plantedSpr: {fileID: 8735322932182825036, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
+    grownedSpr: {fileID: -8406855179093674905, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
+    readySpr: {fileID: 8133688423319878165, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
     witheredSpr: {fileID: 0}
-  - namePlant: Breeze Root
+    neccesaryItems: []
+  - namePlant: Breeze root
     id: 3
     category: 1
-    multMorning: 1
-    multAfternoon: 1
-    multNight: 1
-    waterDepletionRate: 0.04
+    spr: {fileID: 3620058418051504474, guid: 866dd813e11bf42dbbef1d1ac4dae926, type: 3}
+    multMorning: 0.5
+    multAfternoon: 2
+    multNight: 2.5
+    waterDepletionRate: 0.05
     heatResist: 0
     rainResist: 0
     windResist: 0.5
     foodYield: 0
     harvestHealthPenalty: 0
     placeholderColor: {r: 0.35, g: 0.75, b: 0.4, a: 1}
-    plantedSpr: {fileID: 0}
-    grownedSpr: {fileID: 0}
-    readySpr: {fileID: 0}
+    plantedSpr: {fileID: 8735322932182825036, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
+    grownedSpr: {fileID: -8406855179093674905, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
+    readySpr: {fileID: 8133688423319878165, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
     witheredSpr: {fileID: 0}
-  - namePlant: Starlight
+    neccesaryItems: []
+  - namePlant: Mutated Seed
     id: 4
+    category: 1
+    spr: {fileID: 3620058418051504474, guid: 866dd813e11bf42dbbef1d1ac4dae926, type: 3}
+    multMorning: 0.5
+    multAfternoon: 2
+    multNight: 2.5
+    waterDepletionRate: 0.05
+    heatResist: 0
+    rainResist: 0
+    windResist: 0
+    foodYield: 0
+    harvestHealthPenalty: 0
+    placeholderColor: {r: 0.85, g: 0.85, b: 0.95, a: 1}
+    plantedSpr: {fileID: 8735322932182825036, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
+    grownedSpr: {fileID: -8406855179093674905, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
+    readySpr: {fileID: 8133688423319878165, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
+    witheredSpr: {fileID: 0}
+    neccesaryItems:
+    - id: 1
+      cant: 2
+    - id: 2
+      cant: 2
+    - id: 3
+      cant: 2
+  - namePlant: Starlight
+    id: 5
     category: 2
     multMorning: 1
     multAfternoon: 0.5
@@ -81,8 +112,9 @@ MonoBehaviour:
     grownedSpr: {fileID: -7639202294550026373, guid: 7585ebecfe4ef4127bf1ed3dcd9cc16d, type: 3}
     readySpr: {fileID: -7639202294550026373, guid: 7585ebecfe4ef4127bf1ed3dcd9cc16d, type: 3}
     witheredSpr: {fileID: -8978410056028038932, guid: 7585ebecfe4ef4127bf1ed3dcd9cc16d, type: 3}
+    neccesaryItems: []
   - namePlant: Pinch Point
-    id: 5
+    id: 6
     category: 2
     multMorning: 1.5
     multAfternoon: 1.5
@@ -98,8 +130,9 @@ MonoBehaviour:
     grownedSpr: {fileID: 0}
     readySpr: {fileID: 0}
     witheredSpr: {fileID: 0}
+    neccesaryItems: []
   - namePlant: Vertigo
-    id: 6
+    id: 7
     category: 2
     multMorning: 0.5
     multAfternoon: 1
@@ -115,8 +148,9 @@ MonoBehaviour:
     grownedSpr: {fileID: 0}
     readySpr: {fileID: 0}
     witheredSpr: {fileID: 0}
+    neccesaryItems: []
   - namePlant: Tomato
-    id: 7
+    id: 8
     category: 0
     multMorning: 1
     multAfternoon: 2
@@ -132,8 +166,9 @@ MonoBehaviour:
     grownedSpr: {fileID: 0}
     readySpr: {fileID: 0}
     witheredSpr: {fileID: 0}
+    neccesaryItems: []
   - namePlant: Lettuce
-    id: 8
+    id: 9
     category: 0
     multMorning: 2
     multAfternoon: 1
@@ -149,8 +184,9 @@ MonoBehaviour:
     grownedSpr: {fileID: -7638271809763469650, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
     readySpr: {fileID: -6875792930259764646, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
     witheredSpr: {fileID: 0}
+    neccesaryItems: []
   - namePlant: Brambles
-    id: 9
+    id: 10
     category: 0
     multMorning: 1
     multAfternoon: 1.5
@@ -166,3 +202,4 @@ MonoBehaviour:
     grownedSpr: {fileID: 0}
     readySpr: {fileID: 0}
     witheredSpr: {fileID: 0}
+    neccesaryItems: []

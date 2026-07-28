@@ -18,7 +18,7 @@ public class PlayerTools : MonoBehaviour
     public ToolType currentTool = ToolType.Hoe;
 
     // Plant ids in BaseDataPlants run 1..maxSeedId. Bump this when plants are added.
-    [SerializeField] private int maxSeedId = 9;
+    [SerializeField] private int maxSeedId = 10;
 
     // Optional: only used to look up the selected seed's name for toolText.
     [SerializeField] private DataPlants baseData;
