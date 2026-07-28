@@ -18,7 +18,6 @@ public class FarmPlot : MonoBehaviour
     [Header("Crop Settings")]
     [SerializeField] private DataPlants baseData;
     [SerializeField] private float growTime = 15f;
-    [SerializeField] private int foodYield = 1;
 
     [Header("Water")]
     [SerializeField] private float waterPerUse = 0.5f;
@@ -246,9 +245,16 @@ public class FarmPlot : MonoBehaviour
 
     private void Harvest(PlayerPlanting inventory)
     {
-        inventory.AddFood(foodYield);
+        Plant plant = currentPlant;
+        inventory.AddFood(plant.foodYield);
+
+        if (plant.category == PlantCategory.NonFatal && plant.harvestHealthPenalty > 0f)
+        {
+            inventory.ApplyHarvestGas(plant.harvestHealthPenalty);
+        }
+
         ClearPlot();
-        Debug.Log($"Crop harvested. Received {foodYield} food.");
+        Debug.Log($"Crop harvested. Received {plant.foodYield} food.");
     }
 
     // Rain refills every planted crop.
@@ -362,6 +368,12 @@ public class FarmPlot : MonoBehaviour
             CropState.Withered => currentPlant.witheredSpr,
             _ => emptySoilSprite
         };
+
+        // Species without authored art yet fall back to a colored placeholder.
+        if (sprite == null && currentPlant != null)
+        {
+            sprite = PlaceholderCropSprite.Get(currentPlant.placeholderColor, state);
+        }
 
         if (sprite == null)
         {

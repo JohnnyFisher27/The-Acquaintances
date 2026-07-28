@@ -13,30 +13,156 @@ MonoBehaviour:
   m_Name: BaseDataPlants
   m_EditorClassIdentifier: Assembly-CSharp::DataPlants
   plants:
-  - namePlant: 11
+  - namePlant: Sunspot
     id: 1
-    spr: {fileID: -7385789195546760866, guid: 047d761fa6bfa44e088fc3eaf84ddd2f, type: 3}
+    category: 1
+    multMorning: 1
+    multAfternoon: 2
+    multNight: 0.5
+    waterDepletionRate: 0.04
+    heatResist: 0.5
+    rainResist: 0
+    windResist: 0
+    foodYield: 0
+    harvestHealthPenalty: 0
+    placeholderColor: {r: 0.95, g: 0.55, b: 0.15, a: 1}
+    plantedSpr: {fileID: 0}
+    grownedSpr: {fileID: 0}
+    readySpr: {fileID: 0}
+    witheredSpr: {fileID: 0}
+  - namePlant: Blue River Petal
+    id: 2
+    category: 1
+    multMorning: 1.5
+    multAfternoon: 1
+    multNight: 1.5
+    waterDepletionRate: 0.05
+    heatResist: 0
+    rainResist: 0.5
+    windResist: 0
+    foodYield: 0
+    harvestHealthPenalty: 0
+    placeholderColor: {r: 0.25, g: 0.55, b: 0.95, a: 1}
+    plantedSpr: {fileID: 0}
+    grownedSpr: {fileID: 0}
+    readySpr: {fileID: 0}
+    witheredSpr: {fileID: 0}
+  - namePlant: Breeze Root
+    id: 3
+    category: 1
+    multMorning: 1
+    multAfternoon: 1
+    multNight: 1
+    waterDepletionRate: 0.04
+    heatResist: 0
+    rainResist: 0
+    windResist: 0.5
+    foodYield: 0
+    harvestHealthPenalty: 0
+    placeholderColor: {r: 0.35, g: 0.75, b: 0.4, a: 1}
+    plantedSpr: {fileID: 0}
+    grownedSpr: {fileID: 0}
+    readySpr: {fileID: 0}
+    witheredSpr: {fileID: 0}
+  - namePlant: Starlight
+    id: 4
+    category: 2
+    multMorning: 1
+    multAfternoon: 0.5
+    multNight: 2
+    waterDepletionRate: 0.03
+    heatResist: 0
+    rainResist: 0
+    windResist: 0
+    foodYield: 0
+    harvestHealthPenalty: 0.1
+    placeholderColor: {r: 0.95, g: 0.85, b: 0.25, a: 1}
+    plantedSpr: {fileID: -7639202294550026373, guid: 7585ebecfe4ef4127bf1ed3dcd9cc16d, type: 3}
+    grownedSpr: {fileID: -7639202294550026373, guid: 7585ebecfe4ef4127bf1ed3dcd9cc16d, type: 3}
+    readySpr: {fileID: -7639202294550026373, guid: 7585ebecfe4ef4127bf1ed3dcd9cc16d, type: 3}
+    witheredSpr: {fileID: -8978410056028038932, guid: 7585ebecfe4ef4127bf1ed3dcd9cc16d, type: 3}
+  - namePlant: Pinch Point
+    id: 5
+    category: 2
+    multMorning: 1.5
+    multAfternoon: 1.5
+    multNight: 0.5
+    waterDepletionRate: 0.05
+    heatResist: 0
+    rainResist: 0
+    windResist: 0
+    foodYield: 0
+    harvestHealthPenalty: 0.1
+    placeholderColor: {r: 0.9, g: 0.15, b: 0.35, a: 1}
+    plantedSpr: {fileID: 0}
+    grownedSpr: {fileID: 0}
+    readySpr: {fileID: 0}
+    witheredSpr: {fileID: 0}
+  - namePlant: Vertigo
+    id: 6
+    category: 2
+    multMorning: 0.5
+    multAfternoon: 1
+    multNight: 2
+    waterDepletionRate: 0.03
+    heatResist: 0
+    rainResist: 0
+    windResist: 0
+    foodYield: 0
+    harvestHealthPenalty: 0.1
+    placeholderColor: {r: 0.55, g: 0.25, b: 0.85, a: 1}
+    plantedSpr: {fileID: 0}
+    grownedSpr: {fileID: 0}
+    readySpr: {fileID: 0}
+    witheredSpr: {fileID: 0}
+  - namePlant: Tomato
+    id: 7
+    category: 0
+    multMorning: 1
+    multAfternoon: 2
+    multNight: 0.5
+    waterDepletionRate: 0.05
+    heatResist: 0
+    rainResist: 0
+    windResist: 0
+    foodYield: 2
+    harvestHealthPenalty: 0
+    placeholderColor: {r: 0.85, g: 0.3, b: 0.15, a: 1}
+    plantedSpr: {fileID: 0}
+    grownedSpr: {fileID: 0}
+    readySpr: {fileID: 0}
+    witheredSpr: {fileID: 0}
+  - namePlant: Lettuce
+    id: 8
+    category: 0
     multMorning: 2
     multAfternoon: 1
     multNight: 0.5
-    plantedSpr: {fileID: -941893896, guid: 047d761fa6bfa44e088fc3eaf84ddd2f, type: 3}
-    grownedSpr: {fileID: 3234629978573100161, guid: 047d761fa6bfa44e088fc3eaf84ddd2f, type: 3}
-    readySpr: {fileID: -5137238980920108842, guid: b0910302e467f4be6a639de122a67894, type: 3}
-  - namePlant: 21
-    id: 2
-    spr: {fileID: 4723107735738678597, guid: 047d761fa6bfa44e088fc3eaf84ddd2f, type: 3}
-    multMorning: 2
-    multAfternoon: 2
-    multNight: 0.2
+    waterDepletionRate: 0.05
+    heatResist: 0
+    rainResist: 0
+    windResist: 0
+    foodYield: 1
+    harvestHealthPenalty: 0
+    placeholderColor: {r: 0.45, g: 0.7, b: 0.3, a: 1}
+    plantedSpr: {fileID: -2599745249533707853, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
+    grownedSpr: {fileID: -7638271809763469650, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
+    readySpr: {fileID: -6875792930259764646, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
+    witheredSpr: {fileID: 0}
+  - namePlant: Brambles
+    id: 9
+    category: 0
+    multMorning: 1
+    multAfternoon: 1.5
+    multNight: 1
+    waterDepletionRate: 0.04
+    heatResist: 0
+    rainResist: 0
+    windResist: 0
+    foodYield: 3
+    harvestHealthPenalty: 0
+    placeholderColor: {r: 0.45, g: 0.15, b: 0.35, a: 1}
     plantedSpr: {fileID: 0}
     grownedSpr: {fileID: 0}
     readySpr: {fileID: 0}
-  - namePlant: 31
-    id: 3
-    spr: {fileID: 3234629978573100161, guid: 047d761fa6bfa44e088fc3eaf84ddd2f, type: 3}
-    multMorning: 0.5
-    multAfternoon: 2
-    multNight: 2.5
-    plantedSpr: {fileID: 0}
-    grownedSpr: {fileID: 0}
-    readySpr: {fileID: 0}
+    witheredSpr: {fileID: 0}
