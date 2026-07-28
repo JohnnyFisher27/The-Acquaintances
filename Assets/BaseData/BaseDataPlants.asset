@@ -23,6 +23,7 @@ MonoBehaviour:
     heatResist: 0
     rainResist: 0
     windResist: 0
+    groundTimer: 0
     plantedSpr: {fileID: 8735322932182825036, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
     grownedSpr: {fileID: -8406855179093674905, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
     readySpr: {fileID: -7639202294550026373, guid: 7585ebecfe4ef4127bf1ed3dcd9cc16d, type: 3}
@@ -38,6 +39,7 @@ MonoBehaviour:
     heatResist: 0
     rainResist: 0
     windResist: 0
+    groundTimer: 0
     plantedSpr: {fileID: 8735322932182825036, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
     grownedSpr: {fileID: -8406855179093674905, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
     readySpr: {fileID: 8133688423319878165, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
@@ -53,6 +55,7 @@ MonoBehaviour:
     heatResist: 0
     rainResist: 0
     windResist: 0
+    groundTimer: 0
     plantedSpr: {fileID: 8735322932182825036, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
     grownedSpr: {fileID: -8406855179093674905, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
     readySpr: {fileID: 8133688423319878165, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
@@ -68,6 +71,7 @@ MonoBehaviour:
     heatResist: 0
     rainResist: 0
     windResist: 0
+    groundTimer: 0
     plantedSpr: {fileID: 8735322932182825036, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
     grownedSpr: {fileID: -8406855179093674905, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
     readySpr: {fileID: 8133688423319878165, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}

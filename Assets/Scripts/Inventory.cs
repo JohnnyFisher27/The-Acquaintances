@@ -10,8 +10,20 @@ public class Inventory : MonoBehaviour
 
     public DataPlants plants;
 
+    public RectTransform container;
+    public GameObject panelInventory;
+    public GameObject prefabItem;
+
+    public void UpdateSeed(int id) { currentSeed = id; }
+
+    [SerializeField] private int currentSeed;
+    public int CurrentSeed => currentSeed;
+
     private void Update() 
     {
+        if (Keyboard.current.iKey.wasPressedThisFrame)
+            TurnPanel();
+
         if (Keyboard.current.uKey.wasPressedThisFrame) 
         {
             AddItem(1, 1);
@@ -41,6 +53,7 @@ public class Inventory : MonoBehaviour
             
             inventory.Add(new Item(id, cant));
         }
+        if (panelInventory.activeInHierarchy) showItems();
     }
 
 
@@ -52,12 +65,38 @@ public class Inventory : MonoBehaviour
             if (inventory[i].id == id) 
             {
                 inventory[i].cant -= cant;
-                if (inventory[i].cant == 0) inventory.Remove(inventory[i]);
+                if (inventory[i].cant == 0) 
+                {
+                    inventory.Remove(inventory[i]);
+                    if (currentSeed == inventory[i].id) currentSeed = 0;
+                } 
                 return;
             }
         }
+        if (panelInventory.activeInHierarchy) showItems();
     }
-    
+
+    private void TurnPanel()
+    {
+        panelInventory.SetActive(!panelInventory.activeInHierarchy);
+
+        if (panelInventory.activeInHierarchy) showItems();
+    }
+
+    public void showItems() 
+    {
+        foreach (Transform item in container) 
+        {
+            Destroy(item.gameObject);
+        }
+        for (int i = 0; i < inventory.Count; i++) 
+        {
+            GameObject newItem = Instantiate(prefabItem, container);
+            Plant plant = plants.plants.FirstOrDefault(x => x.id == inventory[i].id);
+            newItem.GetComponent<ItemInventory>().SetUp(inventory[i].cant, plant);
+        }
+
+    }
 }
 
 

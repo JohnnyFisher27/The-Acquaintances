@@ -14,15 +14,18 @@ public class DataPlants : ScriptableObject
 
 [System.Serializable]
 
-public class Plant 
+public class Plant
 {
     public string namePlant;
     public int id;
     public Sprite spr;
 
+    public TypeItem type;
+
     public float multMorning;
     public float multAfternoon;
     public float multNight;
+
 
     //Water: fraction of the meter lost per second while growing
     public float waterDepletionRate = 0.05f;
@@ -31,6 +34,8 @@ public class Plant
     [Range(0f, 1f)] public float heatResist;
     [Range(0f, 1f)] public float rainResist;
     [Range(0f, 1f)] public float windResist;
+    public float groundTimer;
+
 
     //Sprites
     public Sprite plantedSpr;
@@ -41,3 +46,4 @@ public class Plant
     public List<Item> neccesaryItems = new List<Item>();
 
 }
+public enum TypeItem { Plant, Objects}
