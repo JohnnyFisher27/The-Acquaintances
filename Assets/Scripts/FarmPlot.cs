@@ -16,7 +16,7 @@ public class FarmPlot : MonoBehaviour
     }
 
     [Header("Crop Settings")]
-    [SerializeField] private DataPlants baseData;
+    
     [SerializeField] private float growTime = 15f;
     [SerializeField] private int foodYield = 1;
 
@@ -183,7 +183,7 @@ public class FarmPlot : MonoBehaviour
             Debug.Log("This soil is already tilled.");
             return;
         }
-
+        
         state = CropState.Empty;
         UpdateSprite();
         Debug.Log("Soil tilled. Ready for a seed.");
@@ -197,7 +197,7 @@ public class FarmPlot : MonoBehaviour
             return;
         }
 
-        Plant plant = baseData.plants.FirstOrDefault(x => x.id == id);
+        Plant plant = GameManager.Instance.runtimePlants.plants.FirstOrDefault(x => x.id == id);
         if (plant == null)
         {
             Debug.Log($"No plant data found for id {id}.");

@@ -8,7 +8,7 @@ public class Inventory : MonoBehaviour
 {
     public List<Item> inventory;
 
-    public DataPlants plants;
+    
 
     public RectTransform container;
     public GameObject panelInventory;
@@ -67,8 +67,8 @@ public class Inventory : MonoBehaviour
                 inventory[i].cant -= cant;
                 if (inventory[i].cant == 0) 
                 {
-                    inventory.Remove(inventory[i]);
                     if (currentSeed == inventory[i].id) currentSeed = 0;
+                    inventory.Remove(inventory[i]);                 
                 } 
                 return;
             }
@@ -92,7 +92,7 @@ public class Inventory : MonoBehaviour
         for (int i = 0; i < inventory.Count; i++) 
         {
             GameObject newItem = Instantiate(prefabItem, container);
-            Plant plant = plants.plants.FirstOrDefault(x => x.id == inventory[i].id);
+            Plant plant = GameManager.Instance.runtimePlants.plants.FirstOrDefault(x => x.id == inventory[i].id);
             newItem.GetComponent<ItemInventory>().SetUp(inventory[i].cant, plant);
         }
 

@@ -20,6 +20,8 @@ public class Plant
     public int id;
     public Sprite spr;
 
+
+
     public TypeItem type;
 
     public float multMorning;
@@ -44,6 +46,40 @@ public class Plant
     public Sprite witheredSpr;
 
     public List<Item> neccesaryItems = new List<Item>();
+
+    public Plant()
+    {
+
+    }
+
+    public Plant(Plant other)
+    {
+        namePlant = other.namePlant;
+        id = other.id;
+
+        spr = other.spr;
+
+        type = other.type;
+
+        multMorning = other.multMorning;
+        multAfternoon = other.multAfternoon;
+        multNight = other.multNight;
+
+        waterDepletionRate = other.waterDepletionRate;
+
+        heatResist = other.heatResist;
+        rainResist = other.rainResist;
+        windResist = other.windResist;
+
+        groundTimer = other.groundTimer;
+
+        plantedSpr = other.plantedSpr;
+        grownedSpr = other.grownedSpr;
+        readySpr = other.readySpr;
+        witheredSpr = other.witheredSpr;
+
+        neccesaryItems = new List<Item>(other.neccesaryItems);
+    }
 
 }
 public enum TypeItem { Plant, Objects}

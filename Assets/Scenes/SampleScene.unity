@@ -228,9 +228,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CraftingSystem
   prefab: {fileID: 1729999983974032721, guid: d916afb76eed13b4a913bd6ffc0bcf68, type: 3}
   recipes: 0400000004000000
-  container: {fileID: 1701015758}
-  plants: {fileID: 11400000, guid: 5506ffa8ea568be47ac5fefe28ba46d2, type: 2}
-  panel: {fileID: 188451682}
+  container: {fileID: 518245516}
+  upgrades:
+  - id: 4
+    multiplier: 0.25
+    mM: 0
+    mA: 1
+    mN: 0
+    wDR: 0
+    hR: 0
+    rR: 0
+    wR: 0
+    gT: 0
+  typeSystem: 1
+  panel: {fileID: 881798047}
 --- !u!61 &96577837
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -489,9 +500,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CraftingSystem
   prefab: {fileID: 1729999983974032721, guid: d916afb76eed13b4a913bd6ffc0bcf68, type: 3}
-  recipes: 04000000
+  recipes: 01000000
   container: {fileID: 1701015758}
-  plants: {fileID: 11400000, guid: 5506ffa8ea568be47ac5fefe28ba46d2, type: 2}
+  upgrades: []
+  typeSystem: 0
   panel: {fileID: 188451682}
 --- !u!61 &236536065
 BoxCollider2D:
@@ -2042,7 +2054,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0a830dc80b08c2429b902272ee8acff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FarmPlot
-  baseData: {fileID: 11400000, guid: 5506ffa8ea568be47ac5fefe28ba46d2, type: 2}
   growTime: 15
   foodYield: 1
   waterPerUse: 0.5
@@ -2352,7 +2363,6 @@ MonoBehaviour:
     cant: 2
   - id: 2
     cant: 2
-  plants: {fileID: 11400000, guid: 5506ffa8ea568be47ac5fefe28ba46d2, type: 2}
   container: {fileID: 1589164416}
   panelInventory: {fileID: 1408053209}
   prefabItem: {fileID: 7401450651788104977, guid: 9b3069368979a884b9f09613a7a12c97, type: 3}
@@ -2932,7 +2942,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0a830dc80b08c2429b902272ee8acff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FarmPlot
-  baseData: {fileID: 11400000, guid: 5506ffa8ea568be47ac5fefe28ba46d2, type: 2}
   growTime: 15
   foodYield: 1
   waterPerUse: 0.5
@@ -3439,7 +3448,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0a830dc80b08c2429b902272ee8acff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FarmPlot
-  baseData: {fileID: 11400000, guid: 5506ffa8ea568be47ac5fefe28ba46d2, type: 2}
   growTime: 15
   foodYield: 1
   waterPerUse: 0.5
@@ -3839,6 +3847,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1727670616}
   - component: {fileID: 1727670615}
+  - component: {fileID: 1727670617}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -3875,6 +3884,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1727670617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1727670614}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60116301992733d4ba6b45640696da1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  baseData: {fileID: 11400000, guid: 5506ffa8ea568be47ac5fefe28ba46d2, type: 2}
+  runtimePlants: {fileID: 0}
 --- !u!1 &1745956402
 GameObject:
   m_ObjectHideFlags: 0
@@ -4462,7 +4485,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0a830dc80b08c2429b902272ee8acff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FarmPlot
-  baseData: {fileID: 11400000, guid: 5506ffa8ea568be47ac5fefe28ba46d2, type: 2}
   growTime: 15
   foodYield: 1
   waterPerUse: 0.5
