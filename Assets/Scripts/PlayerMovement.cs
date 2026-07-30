@@ -12,15 +12,19 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float moveSpeed = 6f;
     [SerializeField] private float acceleration = 50f;
     [SerializeField] private float deceleration = 60f;
+    [SerializeField] private AudioClip grassWalking;
 
     private Rigidbody2D rb;
     private InputAction moveAction;
     private Vector2 moveInput;
+    private float stepTimer;
+    private AudioSource moveSource;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         moveAction = inputActions.FindAction("Player/Move", throwIfNotFound: true);
+        moveSource = gameObject.AddComponent<AudioSource>();
     }
 
     private void OnEnable()
@@ -41,10 +45,17 @@ public class PlayerMovement : MonoBehaviour
             moveInput.Normalize();
         }
 
-        // If player is moving, update walking animation
+        // If player is moving, update walking animation and play sound
 
         if (moveInput.sqrMagnitude > 0f)
         {
+            stepTimer -= Time.deltaTime;
+            if (stepTimer <= 0f)
+            {
+                moveSource.PlayOneShot(grassWalking, 1f);
+                stepTimer = 0.6f; 
+            }
+
             animator.SetBool("IsWalking", true);
 
             if (Mathf.Abs(moveInput.x) > Mathf.Abs(moveInput.y))
@@ -60,6 +71,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
+            stepTimer = 0f;
             animator.SetBool("IsWalking", false);
         }
 

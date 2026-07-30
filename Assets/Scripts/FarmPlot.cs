@@ -27,8 +27,14 @@ public class FarmPlot : MonoBehaviour
     [SerializeField] private Sprite untilledSprite;
     [SerializeField] private Sprite emptySoilSprite;
 
+    [SerializeField] private AudioClip tillingSound;
+    [SerializeField] private AudioClip plantingSound;
+    [SerializeField] private AudioClip wateringSound;
+    [SerializeField] private AudioClip scythingSound;
+    [SerializeField] private AudioClip plantGrownSound;
+
     [SerializeField] private Animator animator;
-    [SerializeField] private TMPro.TextMeshProUGUI growthText;
+    //[SerializeField] private TMPro.TextMeshProUGUI growthText;
 
     private SpriteRenderer spriteRenderer;
     public CropState state = CropState.Untilled;
@@ -132,10 +138,11 @@ public class FarmPlot : MonoBehaviour
             };
         }
         growthTimer += Time.deltaTime * periodMult;
-        growthText.text = $"{growthTimer / growTime:P0}";
+        //growthText.text = $"{growthTimer / growTime:P0}";
 
         if (growthTimer >= growTime)
         {
+            SoundEffectsManager.instance.PlaySound(plantGrownSound, transform, 1f);
             state = CropState.Ready;
             UpdateSprite();
         }
@@ -148,6 +155,7 @@ public class FarmPlot : MonoBehaviour
             case ToolType.Hoe:
                 animator.SetBool("IsInteracting", true);
                 animator.SetTrigger("Till");
+                SoundEffectsManager.instance.PlaySound(tillingSound, transform, 1f);
                 Till();
                 break;
 
@@ -155,10 +163,12 @@ public class FarmPlot : MonoBehaviour
                 if (state == CropState.Ready) {
                     animator.SetBool("IsInteracting", true);
                     animator.SetTrigger("Harvest");
+                    SoundEffectsManager.instance.PlaySound(scythingSound, transform, 1f);
                     Harvest(inventory);
                 } else {
                     animator.SetBool("IsInteracting", true);
                     animator.SetTrigger("Plant");
+                    SoundEffectsManager.instance.PlaySound(plantingSound, transform, 1f);
                     PlantSeed(inventory);
                 }
                 break;
@@ -166,11 +176,12 @@ public class FarmPlot : MonoBehaviour
             case ToolType.WateringCan:
                 if (state == CropState.Ready) {
                     animator.SetBool("IsInteracting", true);
-                    animator.SetTrigger("Harvest");
+                    SoundEffectsManager.instance.PlaySound(scythingSound, transform, 1f);
                     Harvest(inventory);
                 } else { 
                     animator.SetBool("IsInteracting", true);
                     animator.SetTrigger("Water");
+                    SoundEffectsManager.instance.PlaySound(wateringSound, transform, 1f);
                     Water();
                 }
                 break;
