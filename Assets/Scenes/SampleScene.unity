@@ -2027,10 +2027,11 @@ MonoBehaviour:
   witherGracePeriod: 10
   untilledSprite: {fileID: 0}
   emptySoilSprite: {fileID: 3620058418051504474, guid: 866dd813e11bf42dbbef1d1ac4dae926, type: 3}
-  tillingSound: {fileID: 0}
-  plantingSound: {fileID: 0}
-  wateringSound: {fileID: 0}
-  harvestingSound: {fileID: 0}
+  tillingSound: {fileID: 8300000, guid: fe27951a3f9ab483eaaf9b8c6fd04554, type: 3}
+  plantingSound: {fileID: 8300000, guid: acf97f3563fad45829ce007c3c3e2596, type: 3}
+  wateringSound: {fileID: 8300000, guid: e036c0e8b8f314d92878206f672bc5b6, type: 3}
+  scythingSound: {fileID: 8300000, guid: 90a8747e536024154bf50cd55d719e1f, type: 3}
+  plantGrownSound: {fileID: 8300000, guid: d51ad8c95ab4745b892c896b8935223e, type: 3}
   animator: {fileID: 1092648757}
   state: 0
   growthTimer: 0
@@ -2919,10 +2920,11 @@ MonoBehaviour:
   witherGracePeriod: 10
   untilledSprite: {fileID: 0}
   emptySoilSprite: {fileID: 3620058418051504474, guid: 866dd813e11bf42dbbef1d1ac4dae926, type: 3}
-  tillingSound: {fileID: 0}
-  plantingSound: {fileID: 0}
-  wateringSound: {fileID: 0}
-  harvestingSound: {fileID: 0}
+  tillingSound: {fileID: 8300000, guid: fe27951a3f9ab483eaaf9b8c6fd04554, type: 3}
+  plantingSound: {fileID: 8300000, guid: acf97f3563fad45829ce007c3c3e2596, type: 3}
+  wateringSound: {fileID: 8300000, guid: e036c0e8b8f314d92878206f672bc5b6, type: 3}
+  scythingSound: {fileID: 8300000, guid: 90a8747e536024154bf50cd55d719e1f, type: 3}
+  plantGrownSound: {fileID: 8300000, guid: d51ad8c95ab4745b892c896b8935223e, type: 3}
   animator: {fileID: 1092648757}
   state: 0
   growthTimer: 0
@@ -3427,10 +3429,11 @@ MonoBehaviour:
   witherGracePeriod: 10
   untilledSprite: {fileID: 0}
   emptySoilSprite: {fileID: 3620058418051504474, guid: 866dd813e11bf42dbbef1d1ac4dae926, type: 3}
-  tillingSound: {fileID: 0}
-  plantingSound: {fileID: 0}
-  wateringSound: {fileID: 0}
-  harvestingSound: {fileID: 0}
+  tillingSound: {fileID: 8300000, guid: fe27951a3f9ab483eaaf9b8c6fd04554, type: 3}
+  plantingSound: {fileID: 8300000, guid: acf97f3563fad45829ce007c3c3e2596, type: 3}
+  wateringSound: {fileID: 8300000, guid: e036c0e8b8f314d92878206f672bc5b6, type: 3}
+  scythingSound: {fileID: 8300000, guid: 90a8747e536024154bf50cd55d719e1f, type: 3}
+  plantGrownSound: {fileID: 8300000, guid: d51ad8c95ab4745b892c896b8935223e, type: 3}
   animator: {fileID: 1092648757}
   state: 0
   growthTimer: 0
@@ -4469,7 +4472,8 @@ MonoBehaviour:
   tillingSound: {fileID: 8300000, guid: fe27951a3f9ab483eaaf9b8c6fd04554, type: 3}
   plantingSound: {fileID: 8300000, guid: acf97f3563fad45829ce007c3c3e2596, type: 3}
   wateringSound: {fileID: 8300000, guid: e036c0e8b8f314d92878206f672bc5b6, type: 3}
-  harvestingSound: {fileID: 8300000, guid: 90a8747e536024154bf50cd55d719e1f, type: 3}
+  scythingSound: {fileID: 8300000, guid: 90a8747e536024154bf50cd55d719e1f, type: 3}
+  plantGrownSound: {fileID: 8300000, guid: d51ad8c95ab4745b892c896b8935223e, type: 3}
   animator: {fileID: 1092648757}
   state: 0
   growthTimer: 0
