@@ -4,7 +4,7 @@ public class PlayerPlanting: MonoBehaviour
 {
     [SerializeField] private InputActionAsset inputActions;
 
-    public int id;
+    public int id = 1;
 
     [Header("Starting Inventory")]
     [SerializeField] private int seeds = 5;
@@ -72,6 +72,15 @@ public class PlayerPlanting: MonoBehaviour
     public void AddFood(int amount)
     {
         food += Mathf.Max(0, amount);
+    }
+
+    // Non-fatal plants emit gasses when harvested; fraction is of max hunger.
+    public void ApplyHarvestGas(float fraction)
+    {
+        if (playerHunger != null)
+        {
+            playerHunger.Drain(playerHunger.Max * fraction);
+        }
     }
 
     public bool EatFood(PlayerHunger hunger)
