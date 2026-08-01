@@ -9,52 +9,28 @@ public enum WeatherType
     Windstorm
 }
 
-[System.Serializable]
-public struct ForecastEntry
-{
-    public WeatherType type;
-    public float duration;
-}
-
-// Cycles through a fixed forecast of weather conditions, each lasting its
-// own time limit (Ex. Heavy Rain -> Strong Winds -> Extreme Heat -> repeat).
-// While a harsh weather is active it chips every farm plot's soil integrity
-// down in fixed steps until the plot is destroyed. A plant's weather
-// resistance (Plant.heatResist/rainResist/windResist) reduces or, at 1,
-// fully negates each step - this stands in for "alchemy enhancement" until
-// the alchemy machine exists.
+// Rolls a new weather condition each day period and applies its effects
+// to every farm plot. Plant resistances reduce the impact:
+// Heatwave drains water faster (heatResist), Rainstorm refills water but
+// stresses unprotected plants (rainResist), Windstorm stresses plants (windResist).
 public class WeatherManager : MonoBehaviour
 {
     public static WeatherManager Instance { get; private set; }
 
-    [Header("Forecast")]
-    [SerializeField]
-    private ForecastEntry[] forecast =
-    {
-        new ForecastEntry { type = WeatherType.Rainstorm, duration = 45f },
-        new ForecastEntry { type = WeatherType.Windstorm, duration = 45f },
-        new ForecastEntry { type = WeatherType.Heatwave, duration = 45f },
-    };
-
-    [Header("Soil Damage")]
-    [SerializeField] private float damageTickInterval = 5f;
+    [Header("Settings")]
     [Range(0f, 1f)]
-    [SerializeField] private float damageStep = 0.15f;
+    [SerializeField] private float badWeatherChance = 0.5f;
     [SerializeField] private float heatwaveDepletionMultiplier = 2.5f;
     [SerializeField] private float rainRefillPerSecond = 0.05f;
+    [SerializeField] private float stormStressPerSecond = 0.05f;
 
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI weatherText;
-    [SerializeField] private TextMeshProUGUI forecastText;
-    [SerializeField] private TextMeshProUGUI timerText;
 
     public WeatherType current { get; private set; } = WeatherType.Clear;
-    public WeatherType Next => forecast.Length == 0 ? WeatherType.Clear : forecast[(forecastIndex + 1) % forecast.Length].type;
-    public float TimeRemaining => forecast.Length == 0 ? 0f : Mathf.Max(0f, forecast[forecastIndex].duration - elapsed);
 
-    private int forecastIndex = -1;
-    private float elapsed;
-    private float damageTimer;
+    private DaySystem daySystem;
+    private DayPeriod lastPeriod;
     private FarmPlot[] plots;
 
     private void Awake()
@@ -72,29 +48,30 @@ public class WeatherManager : MonoBehaviour
 
     private void Start()
     {
+        daySystem = FindAnyObjectByType<DaySystem>();
         plots = FindObjectsByType<FarmPlot>();
-        Advance();
+
+        if (daySystem != null)
+        {
+            lastPeriod = daySystem.currentPeriod;
+        }
+
+        Roll();
     }
 
     private void Update()
     {
-        if (forecast.Length == 0)
+        // New weather whenever the day period changes.
+        if (daySystem != null && daySystem.currentPeriod != lastPeriod)
         {
-            return;
+            lastPeriod = daySystem.currentPeriod;
+            Roll();
         }
 
-        elapsed += Time.deltaTime;
-        if (elapsed >= forecast[forecastIndex].duration)
-        {
-            Advance();
-        }
-
-        ApplyContinuousEffects();
-        ApplyDamageTick();
-        UpdateForecastDisplay();
+        ApplyEffects();
     }
 
-    // Heat drains water faster on top of the soil damage ticks. Heat-resistant plants are less affected.
+    // Heat drains water faster. Heat-resistant plants are less affected.
     public float GetDepletionMultiplier(Plant plant)
     {
         if (current != WeatherType.Heatwave || plant == null)
@@ -105,38 +82,12 @@ public class WeatherManager : MonoBehaviour
         return Mathf.Lerp(heatwaveDepletionMultiplier, 1f, plant.heatResist);
     }
 
-    // Rain also tops up water levels while it's damaging soil integrity.
-    private void ApplyContinuousEffects()
+    private void ApplyEffects()
     {
-        if (current != WeatherType.Rainstorm)
+        if (current != WeatherType.Rainstorm && current != WeatherType.Windstorm)
         {
             return;
         }
-
-        foreach (FarmPlot plot in plots)
-        {
-            if (plot.CurrentPlant != null)
-            {
-                plot.AddWater(rainRefillPerSecond * Time.deltaTime);
-            }
-        }
-    }
-
-    // Every damageTickInterval seconds, harsh weather knocks a fixed 15%-style
-    // step off each planted plot's soil integrity, scaled down by resistance.
-    private void ApplyDamageTick()
-    {
-        if (current == WeatherType.Clear)
-        {
-            return;
-        }
-
-        damageTimer += Time.deltaTime;
-        if (damageTimer < damageTickInterval)
-        {
-            return;
-        }
-        damageTimer = 0f;
 
         foreach (FarmPlot plot in plots)
         {
@@ -146,50 +97,34 @@ public class WeatherManager : MonoBehaviour
                 continue;
             }
 
-            float resist = current switch
+            if (current == WeatherType.Rainstorm)
             {
-                WeatherType.Rainstorm => plant.rainResist,
-                WeatherType.Windstorm => plant.windResist,
-                WeatherType.Heatwave => plant.heatResist,
-                _ => 0f
-            };
-
-            plot.ApplySoilDamage(damageStep * (1f - resist));
+                plot.AddWater(rainRefillPerSecond * Time.deltaTime);
+                plot.ApplyWeatherStress(stormStressPerSecond * (1f - plant.rainResist) * Time.deltaTime);
+            }
+            else
+            {
+                plot.ApplyWeatherStress(stormStressPerSecond * (1f - plant.windResist) * Time.deltaTime);
+            }
         }
     }
 
-    private void Advance()
+    private void Roll()
     {
-        if (forecast.Length == 0)
+        if (Random.value >= badWeatherChance)
         {
             current = WeatherType.Clear;
-            return;
         }
-
-        forecastIndex = (forecastIndex + 1) % forecast.Length;
-        elapsed = 0f;
-        damageTimer = 0f;
-        current = forecast[forecastIndex].type;
+        else
+        {
+            current = (WeatherType)Random.Range(1, 4);
+        }
 
         if (weatherText != null)
         {
             weatherText.text = current.ToString();
         }
 
-        UpdateForecastDisplay();
-        Debug.Log($"Weather changed: {current} for {forecast[forecastIndex].duration}s");
-    }
-
-    private void UpdateForecastDisplay()
-    {
-        if (forecastText != null)
-        {
-            forecastText.text = $"Next: {Next}";
-        }
-
-        if (timerText != null)
-        {
-            timerText.text = Mathf.CeilToInt(TimeRemaining).ToString();
-        }
+        Debug.Log($"Weather changed: {current}");
     }
 }

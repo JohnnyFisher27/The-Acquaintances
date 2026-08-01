@@ -12,20 +12,12 @@ public class DataPlants : ScriptableObject
     }
 }
 
-public enum PlantCategory
-{
-    Healthy,
-    Special,
-    NonFatal
-}
-
 [System.Serializable]
 
 public class Plant
 {
     public string namePlant;
     public int id;
-    public PlantCategory category = PlantCategory.Healthy;
     public Sprite spr;
 
 
@@ -46,14 +38,6 @@ public class Plant
     [Range(0f, 1f)] public float windResist;
     public float groundTimer;
 
-
-    //Harvest
-    public int foodYield = 1;
-    // NonFatal plants hurt the player when harvested (0.1 = 10% of max hunger)
-    [Range(0f, 1f)] public float harvestHealthPenalty;
-
-    // Used to generate a colored placeholder sprite when no stage sprite is set below
-    public Color placeholderColor = Color.white;
 
     //Sprites
     public Sprite plantedSpr;

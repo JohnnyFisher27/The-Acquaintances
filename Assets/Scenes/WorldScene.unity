@@ -1924,8 +1924,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerTools
   currentTool: 0
-  maxSeedId: 10
-  baseData: {fileID: 11400000, guid: 5506ffa8ea568be47ac5fefe28ba46d2, type: 2}
+  maxSeedId: 3
   toolText: {fileID: 1819116131}
 --- !u!114 &1819344634
 MonoBehaviour:

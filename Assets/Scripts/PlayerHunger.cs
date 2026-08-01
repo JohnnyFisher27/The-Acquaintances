@@ -53,20 +53,4 @@ public class PlayerHunger : MonoBehaviour
             Current = Mathf.Min(maxHunger, Current + amount);
         }
     }
-
-    // Instant hunger loss (e.g. gas from harvesting a non-fatal plant).
-    public void Drain(float amount)
-    {
-        if (depleted)
-        {
-            return;
-        }
-
-        Current = Mathf.Max(0f, Current - amount);
-        if (Current <= 0f)
-        {
-            depleted = true;
-            OnDepleted?.Invoke();
-        }
-    }
 }
