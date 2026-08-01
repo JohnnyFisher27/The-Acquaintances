@@ -16,7 +16,7 @@ public class FarmPlot : MonoBehaviour
     }
 
     [Header("Crop Settings")]
-    [SerializeField] private DataPlants baseData;
+    
     [SerializeField] private float growTime = 15f;
 
     [Header("Water")]
@@ -148,7 +148,7 @@ public class FarmPlot : MonoBehaviour
         }
     }
 
-    public void UseTool(ToolType tool, PlayerPlanting inventory)
+    public void UseTool(ToolType tool, PlayerPlanting planting, Inventory inventory)
     {
         switch (tool)
         {
@@ -163,21 +163,19 @@ public class FarmPlot : MonoBehaviour
                 if (state == CropState.Ready) {
                     animator.SetBool("IsInteracting", true);
                     animator.SetTrigger("Harvest");
-                    SoundEffectsManager.instance.PlaySound(scythingSound, transform, 1f);
-                    Harvest(inventory);
+                    Harvest(planting);
                 } else {
                     animator.SetBool("IsInteracting", true);
                     animator.SetTrigger("Plant");
-                    SoundEffectsManager.instance.PlaySound(plantingSound, transform, 1f);
-                    PlantSeed(inventory);
+                    PlantSeed(inventory.CurrentSeed, inventory);
                 }
                 break;
 
             case ToolType.WateringCan:
                 if (state == CropState.Ready) {
                     animator.SetBool("IsInteracting", true);
-                    SoundEffectsManager.instance.PlaySound(scythingSound, transform, 1f);
-                    Harvest(inventory);
+                    animator.SetTrigger("Harvest");
+                    Harvest(planting);
                 } else { 
                     animator.SetBool("IsInteracting", true);
                     animator.SetTrigger("Water");
@@ -199,13 +197,13 @@ public class FarmPlot : MonoBehaviour
             Debug.Log("This soil is already tilled.");
             return;
         }
-
+        
         state = CropState.Empty;
         UpdateSprite();
         Debug.Log("Soil tilled. Ready for a seed.");
     }
 
-    private void PlantSeed(PlayerPlanting inventory)
+    private void PlantSeed(int id, Inventory inventory )
     {
         if (state != CropState.Empty)
         {
@@ -213,20 +211,28 @@ public class FarmPlot : MonoBehaviour
             return;
         }
 
-        Plant plant = baseData.plants.FirstOrDefault(x => x.id == inventory.id);
+        Plant plant = GameManager.Instance.runtimePlants.plants.FirstOrDefault(x => x.id == id);
         if (plant == null)
         {
-            Debug.Log($"No plant data found for id {inventory.id}.");
+            Debug.Log($"No plant data found for id {id}.");
             return;
         }
 
-        if (!inventory.UseSeed())
+        bool isExisting = false;
+        for (int i = 0; i < inventory.inventory.Count; i++) 
         {
-            Debug.Log("You do not have any seeds.");
-            return;
+            if (inventory.inventory[i].id == id) 
+            {
+                isExisting = true;
+                break;
+            }
         }
 
+        if (!isExisting) return;
+
+        inventory.RestItem(id, 1);
         currentPlant = plant;
+        growTime = plant.groundTimer;
         state = CropState.Planted;
         waterLevel = 0f;
         dryTimer = 0f;

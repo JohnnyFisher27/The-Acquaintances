@@ -28,9 +28,14 @@ public class Plant
     public PlantCategory category = PlantCategory.Healthy;
     public Sprite spr;
 
-    public float multMorning = 1f;
-    public float multAfternoon = 1f;
-    public float multNight = 1f;
+
+
+    public TypeItem type;
+
+    public float multMorning;
+    public float multAfternoon;
+    public float multNight;
+
 
     //Water: fraction of the meter lost per second while growing
     public float waterDepletionRate = 0.05f;
@@ -39,6 +44,8 @@ public class Plant
     [Range(0f, 1f)] public float heatResist;
     [Range(0f, 1f)] public float rainResist;
     [Range(0f, 1f)] public float windResist;
+    public float groundTimer;
+
 
     //Harvest
     public int foodYield = 1;
@@ -56,4 +63,39 @@ public class Plant
 
     public List<Item> neccesaryItems = new List<Item>();
 
+    public Plant()
+    {
+
+    }
+
+    public Plant(Plant other)
+    {
+        namePlant = other.namePlant;
+        id = other.id;
+
+        spr = other.spr;
+
+        type = other.type;
+
+        multMorning = other.multMorning;
+        multAfternoon = other.multAfternoon;
+        multNight = other.multNight;
+
+        waterDepletionRate = other.waterDepletionRate;
+
+        heatResist = other.heatResist;
+        rainResist = other.rainResist;
+        windResist = other.windResist;
+
+        groundTimer = other.groundTimer;
+
+        plantedSpr = other.plantedSpr;
+        grownedSpr = other.grownedSpr;
+        readySpr = other.readySpr;
+        witheredSpr = other.witheredSpr;
+
+        neccesaryItems = new List<Item>(other.neccesaryItems);
+    }
+
 }
+public enum TypeItem { Plant, Objects}

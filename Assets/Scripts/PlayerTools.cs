@@ -25,11 +25,14 @@ public class PlayerTools : MonoBehaviour
 
     private PlayerPlanting planting;
 
+    private Inventory inventory;
+
     [SerializeField] private TMPro.TextMeshProUGUI toolText;
 
     private void Awake()
     {
         planting = GetComponent<PlayerPlanting>();
+        inventory = GetComponent<Inventory>();
     }
 
     private void Start()
@@ -60,7 +63,7 @@ public class PlayerTools : MonoBehaviour
 
         if (kb.eKey.wasPressedThisFrame && planting.farmplot != null)
         {
-            planting.farmplot.UseTool(currentTool, planting);
+            planting.farmplot.UseTool(currentTool, planting, inventory);
         }
     }
 
