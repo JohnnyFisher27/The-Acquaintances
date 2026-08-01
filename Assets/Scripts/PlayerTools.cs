@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -17,7 +18,10 @@ public class PlayerTools : MonoBehaviour
     public ToolType currentTool = ToolType.Hoe;
 
     // Plant ids in BaseDataPlants run 1..maxSeedId. Bump this when plants are added.
-    [SerializeField] private int maxSeedId = 3;
+    [SerializeField] private int maxSeedId = 10;
+
+    // Optional: only used to look up the selected seed's name for toolText.
+    [SerializeField] private DataPlants baseData;
 
     private PlayerPlanting planting;
 
@@ -29,6 +33,11 @@ public class PlayerTools : MonoBehaviour
     {
         planting = GetComponent<PlayerPlanting>();
         inventory = GetComponent<Inventory>();
+    }
+
+    private void Start()
+    {
+        UpdateToolText();
     }
 
     private void Update()
@@ -44,10 +53,11 @@ public class PlayerTools : MonoBehaviour
         if (kb.digit3Key.wasPressedThisFrame) SelectTool(ToolType.WateringCan);
         if (kb.digit4Key.wasPressedThisFrame) SelectTool(ToolType.Scythe);
 
-        // R cycles which seed type gets planted (3 plant types so far).
+        // R cycles which seed type gets planted.
         if (kb.rKey.wasPressedThisFrame)
         {
             planting.id = planting.id % maxSeedId + 1;
+            UpdateToolText();
             Debug.Log($"Selected seed type: {planting.id}");
         }
 
@@ -60,7 +70,26 @@ public class PlayerTools : MonoBehaviour
     private void SelectTool(ToolType tool)
     {
         currentTool = tool;
-        toolText.text = $"Tool: {tool} (E)";
+        UpdateToolText();
         Debug.Log($"Selected tool: {tool}");
+    }
+
+    private void UpdateToolText()
+    {
+        if (toolText == null)
+        {
+            return;
+        }
+
+        if (currentTool == ToolType.Seeds && baseData != null)
+        {
+            Plant plant = baseData.plants.FirstOrDefault(p => p.id == planting.id);
+            string name = plant != null ? plant.namePlant : planting.id.ToString();
+            toolText.text = $"Tool: Seeds - {name} (E, R to cycle)";
+        }
+        else
+        {
+            toolText.text = $"Tool: {currentTool} (E)";
+        }
     }
 }
