@@ -250,7 +250,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35baf87d224f0be4eb7bd3d2ea4c941a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayButton
-  gameSceneName: WorldScene
+  gameSceneName: SampleScene
   tutorialSceneName: Tutorial
   menuSceneName: MainMenu
   currentButton: {fileID: 924382303}

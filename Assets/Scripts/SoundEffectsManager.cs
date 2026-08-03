@@ -17,19 +17,13 @@ public class SoundEffectsManager : MonoBehaviour
 
     public void PlaySound(AudioClip audioClip, Transform spawnTransform, float volume)
     {
-        // A missing clip or prefab used to null-ref and abort whatever
-        // gameplay action was trying to play the sound.
-        if (audioClip == null || soundFXObject == null || spawnTransform == null)
-        {
-            return;
-        }
-
         AudioSource audioSource = Instantiate(soundFXObject, spawnTransform.position, Quaternion.identity);
         audioSource.volume = volume;
         audioSource.clip = audioClip;
         audioSource.Play();
 
-        Destroy(audioSource.gameObject, audioClip.length);
+        float clipLength = audioSource.clip.length;
+        Destroy(audioSource.gameObject, clipLength);
     }
     
 }

@@ -144,7 +144,7 @@ public class FarmPlot : MonoBehaviour
 
         if (growthTimer >= activeGrowTime)
         {
-            PlaySfx(plantGrownSound);
+            SoundEffectsManager.instance.PlaySound(plantGrownSound, transform, 1f);
             state = CropState.Ready;
             UpdateSprite();
         }
@@ -164,18 +164,38 @@ public class FarmPlot : MonoBehaviour
         switch (tool)
         {
             case ToolType.Hoe:
-                Interact("Till", tillingSound);
+                animator.SetBool("IsInteracting", true);
+                animator.SetTrigger("Till");
+                SoundEffectsManager.instance.PlaySound(tillingSound, transform, 1f);
                 Till();
                 break;
 
             case ToolType.Seeds:
-                Interact("Plant", plantingSound);
-                PlantSeed(planting, inventory);
+                if (state == CropState.Ready) {
+                    animator.SetBool("IsInteracting", true);
+                    animator.SetTrigger("Harvest");
+                    SoundEffectsManager.instance.PlaySound(scythingSound, transform, 1f);
+                    Harvest(planting);
+                } else {
+                    animator.SetBool("IsInteracting", true);
+                    animator.SetTrigger("Plant");
+                    SoundEffectsManager.instance.PlaySound(plantingSound, transform, 1f);
+                    PlantSeed(planting.id, inventory);
+                }
                 break;
 
             case ToolType.WateringCan:
-                Interact("Water", wateringSound);
-                Water();
+                if (state == CropState.Ready) {
+                    animator.SetBool("IsInteracting", true);
+                    animator.SetTrigger("Harvest");
+                    SoundEffectsManager.instance.PlaySound(scythingSound, transform, 1f);
+                    Harvest(planting);
+                } else { 
+                    animator.SetBool("IsInteracting", true);
+                    animator.SetTrigger("Water");
+                    SoundEffectsManager.instance.PlaySound(wateringSound, transform, 1f);
+                    Water();
+                }
                 break;
 
             case ToolType.Scythe:

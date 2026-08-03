@@ -241,7 +241,7 @@ MonoBehaviour:
     wR: 0
     gT: 0
   typeSystem: 1
-  panel: {fileID: 881798047}
+  panel: {fileID: 0}
 --- !u!61 &96577837
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -647,7 +647,7 @@ Transform:
   m_GameObject: {fileID: 236536063}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -5, z: 0}
+  m_LocalPosition: {x: -0.24, y: -5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -818,7 +818,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1745956403}
-  m_Father: {fileID: 881798048}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
@@ -869,7 +869,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 881798047}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
@@ -1076,7 +1076,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 881798048}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1649,7 +1649,6 @@ RectTransform:
   - {fileID: 520804338}
   - {fileID: 1022768085}
   - {fileID: 188451683}
-  - {fileID: 881798048}
   - {fileID: 1408053210}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1763,7 +1762,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &881798047
+--- !u!1 &801957894
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1771,75 +1770,43 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 881798048}
-  - component: {fileID: 881798050}
-  - component: {fileID: 881798049}
+  - component: {fileID: 801957896}
+  - component: {fileID: 801957895}
   m_Layer: 0
-  m_Name: Alchemy
+  m_Name: SoundFXManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!224 &881798048
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 881798047}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 518245516}
-  - {fileID: 395878514}
-  m_Father: {fileID: 606779918}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &881798049
+  m_IsActive: 1
+--- !u!114 &801957895
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 881798047}
+  m_GameObject: {fileID: 801957894}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Script: {fileID: 11500000, guid: 04c8677a2264e413687f51fa9fd4ccb6, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
-  m_Material: {fileID: 0}
-  m_Color: {r: 0.21960786, g: 0.21960786, b: 0.21960786, a: 0}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &881798050
-CanvasRenderer:
+  m_EditorClassIdentifier: Assembly-CSharp::SoundEffectsManager
+  soundFXObject: {fileID: 6111029685014915783, guid: e5a188f228b7246a1ad21c5a81e7ae80, type: 3}
+--- !u!4 &801957896
+Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 881798047}
-  m_CullTransparentMesh: 1
+  m_GameObject: {fileID: 801957894}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1022768084
 GameObject:
   m_ObjectHideFlags: 0
@@ -2062,12 +2029,11 @@ MonoBehaviour:
   untilledSprite: {fileID: 0}
   emptySoilSprite: {fileID: 3620058418051504474, guid: 866dd813e11bf42dbbef1d1ac4dae926, type: 3}
   tillingSound: {fileID: 8300000, guid: fe27951a3f9ab483eaaf9b8c6fd04554, type: 3}
-  plantingSound: {fileID: 0}
+  plantingSound: {fileID: 8300000, guid: acf97f3563fad45829ce007c3c3e2596, type: 3}
   wateringSound: {fileID: 8300000, guid: e036c0e8b8f314d92878206f672bc5b6, type: 3}
   scythingSound: {fileID: 8300000, guid: 90a8747e536024154bf50cd55d719e1f, type: 3}
-  plantGrownSound: {fileID: 0}
-  animator: {fileID: 0}
-  growthText: {fileID: 0}
+  plantGrownSound: {fileID: 8300000, guid: d51ad8c95ab4745b892c896b8935223e, type: 3}
+  animator: {fileID: 1092648757}
   state: 0
   growthTimer: 0
 --- !u!4 &1037569756
@@ -2283,6 +2249,7 @@ MonoBehaviour:
   moveSpeed: 6
   acceleration: 50
   deceleration: 60
+  grassWalking: {fileID: 8300000, guid: 804bb0e49d00d411fbd2b8518ff7df4d, type: 3}
 --- !u!114 &1092648756
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2351,7 +2318,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerTools
   currentTool: 0
   maxSeedId: 3
-  toolText: {fileID: 1700883953}
+  toolText: {fileID: 0}
 --- !u!114 &1092648761
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2958,12 +2925,11 @@ MonoBehaviour:
   untilledSprite: {fileID: 0}
   emptySoilSprite: {fileID: 3620058418051504474, guid: 866dd813e11bf42dbbef1d1ac4dae926, type: 3}
   tillingSound: {fileID: 8300000, guid: fe27951a3f9ab483eaaf9b8c6fd04554, type: 3}
-  plantingSound: {fileID: 0}
+  plantingSound: {fileID: 8300000, guid: acf97f3563fad45829ce007c3c3e2596, type: 3}
   wateringSound: {fileID: 8300000, guid: e036c0e8b8f314d92878206f672bc5b6, type: 3}
   scythingSound: {fileID: 8300000, guid: 90a8747e536024154bf50cd55d719e1f, type: 3}
-  plantGrownSound: {fileID: 0}
-  animator: {fileID: 0}
-  growthText: {fileID: 0}
+  plantGrownSound: {fileID: 8300000, guid: d51ad8c95ab4745b892c896b8935223e, type: 3}
+  animator: {fileID: 1092648757}
   state: 0
   growthTimer: 0
 --- !u!4 &1573709763
@@ -3470,12 +3436,11 @@ MonoBehaviour:
   untilledSprite: {fileID: 0}
   emptySoilSprite: {fileID: 3620058418051504474, guid: 866dd813e11bf42dbbef1d1ac4dae926, type: 3}
   tillingSound: {fileID: 8300000, guid: fe27951a3f9ab483eaaf9b8c6fd04554, type: 3}
-  plantingSound: {fileID: 0}
+  plantingSound: {fileID: 8300000, guid: acf97f3563fad45829ce007c3c3e2596, type: 3}
   wateringSound: {fileID: 8300000, guid: e036c0e8b8f314d92878206f672bc5b6, type: 3}
   scythingSound: {fileID: 8300000, guid: 90a8747e536024154bf50cd55d719e1f, type: 3}
-  plantGrownSound: {fileID: 0}
-  animator: {fileID: 0}
-  growthText: {fileID: 0}
+  plantGrownSound: {fileID: 8300000, guid: d51ad8c95ab4745b892c896b8935223e, type: 3}
+  animator: {fileID: 1092648757}
   state: 0
   growthTimer: 0
 --- !u!4 &1644059290
@@ -4588,30 +4553,22 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 25d091eebaef00a46962df8f9e359d9f, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlotStormBar
-  offset: {x: 0, y: 0.9}
-  width: 0.8
-  height: 0.12
-  backColor: {r: 0.1, g: 0.1, b: 0.1, a: 0.8}
-  fillColor: {r: 0.85, g: 0.25, b: 0.2, a: 1}
---- !u!1 &1727670620
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1727670621}
-  - component: {fileID: 1727670617}
-  m_Layer: 0
-  m_Name: PersistentGameManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1727670621
+  m_EditorClassIdentifier: Assembly-CSharp::FarmPlot
+  growTime: 15
+  foodYield: 1
+  waterPerUse: 0.5
+  witherGracePeriod: 10
+  untilledSprite: {fileID: 0}
+  emptySoilSprite: {fileID: 3620058418051504474, guid: 866dd813e11bf42dbbef1d1ac4dae926, type: 3}
+  tillingSound: {fileID: 8300000, guid: fe27951a3f9ab483eaaf9b8c6fd04554, type: 3}
+  plantingSound: {fileID: 8300000, guid: acf97f3563fad45829ce007c3c3e2596, type: 3}
+  wateringSound: {fileID: 8300000, guid: e036c0e8b8f314d92878206f672bc5b6, type: 3}
+  scythingSound: {fileID: 8300000, guid: 90a8747e536024154bf50cd55d719e1f, type: 3}
+  plantGrownSound: {fileID: 8300000, guid: d51ad8c95ab4745b892c896b8935223e, type: 3}
+  animator: {fileID: 1092648757}
+  state: 0
+  growthTimer: 0
+--- !u!4 &2094974626
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4645,5 +4602,7 @@ SceneRoots:
   - {fileID: 1588425666}
   - {fileID: 2064805463}
   - {fileID: 236536068}
+  - {fileID: 801957896}
   - {fileID: 96577840}
-  - {fileID: 2121387435}
+  - {fileID: 395878514}
+  - {fileID: 518245516}
