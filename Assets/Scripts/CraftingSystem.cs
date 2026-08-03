@@ -1,10 +1,13 @@
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
 using System;
-using TMPro;
+using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine.UI;
+
+// Two stations share this component. Crafting turns harvested produce into a
+// seed of a new species; Alchemy spends produce to permanently upgrade a
+// species' runtime stats for the rest of the run.
 public class CraftingSystem : MonoBehaviour
 {
     public GameObject prefab;
@@ -17,181 +20,256 @@ public class CraftingSystem : MonoBehaviour
 
     [Header("UI")]
     public GameObject panel;
-    private void Start() 
+
+    private Inventory inventory;
+    private readonly List<GameObject> rows = new List<GameObject>();
+    private bool refreshQueued;
+
+    private Inventory Inv
     {
+        get
+        {
+            if (inventory == null)
+            {
+                inventory = FindAnyObjectByType<Inventory>();
+            }
+            return inventory;
+        }
+    }
+
+    private void Start()
+    {
+        if (Inv != null)
+        {
+            Inv.OnChanged += QueueRefresh;
+        }
+
+        if (panel != null)
+        {
+            panel.SetActive(false);
+        }
+
         ShowRecipies();
+    }
+
+    private void OnDestroy()
+    {
+        if (inventory != null)
+        {
+            inventory.OnChanged -= QueueRefresh;
+        }
+    }
+
+    // Crafting mutates the inventory several times in a row, and each change
+    // would otherwise rebuild the rows mid-click. Coalesce to one rebuild.
+    private void QueueRefresh()
+    {
+        refreshQueued = true;
+    }
+
+    private void LateUpdate()
+    {
+        if (refreshQueued)
+        {
+            refreshQueued = false;
+            ShowRecipies();
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.CompareTag("Player")) 
+        if (collision.collider.CompareTag("Player") && panel != null && !panel.activeInHierarchy)
         {
-            if (!panel.activeInHierarchy) 
-            {
-                panel.SetActive(true);
-                ShowRecipies();
-            }
-        
+            panel.SetActive(true);
+            ShowRecipies();
         }
     }
-    public void ShowRecipies() 
-    {
-        if (container.childCount > 0) return;
 
-        switch (typeSystem) 
+    // Walking away closes the station again; nothing used to dismiss it.
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.collider.CompareTag("Player") && panel != null)
+        {
+            panel.SetActive(false);
+        }
+    }
+
+    public void ShowRecipies()
+    {
+        if (container == null || prefab == null || Inv == null)
+        {
+            return;
+        }
+
+        // Tracked explicitly rather than via childCount, which still reports
+        // objects that are only queued for destruction this frame.
+        for (int i = 0; i < rows.Count; i++)
+        {
+            if (rows[i] != null)
+            {
+                Destroy(rows[i]);
+            }
+        }
+        rows.Clear();
+
+        switch (typeSystem)
         {
             case TypeSystem.Crafting:
                 for (int i = 0; i < recipes.Count; i++)
                 {
-                    Plant p = GameManager.Instance.runtimePlants.plants.FirstOrDefault(x => x.id == recipes[i]);
-
-                    GameObject newRecipe = Instantiate(prefab, container);
-                    newRecipe.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = p.namePlant;
-
-                    string items = "";
-                    for (int j = 0; j < p.neccesaryItems.Count; j++)
+                    Plant p = Inv.PlantData(recipes[i]);
+                    if (p == null)
                     {
-                        bool islast = j == p.neccesaryItems.Count - 1;
-                        Plant adI = GameManager.Instance.runtimePlants.plants.FirstOrDefault(x => x.id == p.neccesaryItems[j].id);
-                        items += adI.namePlant + " : " + p.neccesaryItems[j].cant + (islast ? "." : " + ");
-
+                        Debug.LogWarning($"[Craft] recipe id {recipes[i]} has no plant data.");
+                        continue;
                     }
-                    newRecipe.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = items;
-                    newRecipe.transform.GetChild(2).GetComponent<Button>().onClick.AddListener(() => tryMakeItem(p.id));
+
+                    int id = p.id;
+                    BuildRow(p, p.namePlant + " (seed)", () => tryMakeItem(id));
                 }
                 break;
+
             case TypeSystem.Alchemy:
                 for (int i = 0; i < upgrades.Count; i++)
                 {
-                    int index = i;
-
-                    Plant p = GameManager.Instance.runtimePlants.plants.FirstOrDefault(x => x.id == upgrades[i].id);
-
-                    GameObject newRecipe = Instantiate(prefab, container);
-                    newRecipe.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = p.namePlant;
-
-                    string items = "";
-                    for (int j = 0; j < p.neccesaryItems.Count; j++)
+                    Upgrade upgrade = upgrades[i];
+                    Plant p = Inv.PlantData(upgrade.id);
+                    if (p == null)
                     {
-                        bool islast = j == p.neccesaryItems.Count - 1;
-                        Plant adI = GameManager.Instance.runtimePlants.plants.FirstOrDefault(x => x.id == p.neccesaryItems[j].id);
-                        items += adI.namePlant + " : " + p.neccesaryItems[j].cant + (islast ? "." : " + ");
-
+                        Debug.LogWarning($"[Alchemy] upgrade id {upgrade.id} has no plant data.");
+                        continue;
                     }
-                    newRecipe.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = items;
-                    newRecipe.transform.GetChild(2).GetComponent<Button>().onClick.AddListener(() => TryMakeUpgrade(upgrades[index]));
+
+                    BuildRow(p, p.namePlant + " (upgrade)", () => TryMakeUpgrade(upgrade));
                 }
                 break;
         }
-        
     }
-    public void tryMakeItem(int id) 
+
+    // One row: name, ingredients as held/needed, and a button disabled when the
+    // player is short so the cost is readable before clicking.
+    private void BuildRow(Plant p, string title, Action onClick)
     {
-        Plant p = GameManager.Instance.runtimePlants.plants.FirstOrDefault(x => x.id == id);
-        Inventory inventory = FindAnyObjectByType<Inventory>();
+        GameObject newRecipe = Instantiate(prefab, container);
+        rows.Add(newRecipe);
+        newRecipe.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = title;
 
+        string items = "";
         bool canCraft = true;
-        for (int i = 0; i < p.neccesaryItems.Count; i ++) 
+        for (int j = 0; j < p.neccesaryItems.Count; j++)
         {
-            int neededId = p.neccesaryItems[i].id;
-            int neededCant = p.neccesaryItems[i].cant;
+            Item need = p.neccesaryItems[j];
+            Plant ingredient = Inv.PlantData(need.id);
+            string name = ingredient != null ? ingredient.namePlant : need.id.ToString();
 
-            var inventoryItem = inventory.inventory.FirstOrDefault(x => x.id == neededId);
-
-            if ( inventoryItem == null || inventoryItem.cant < neededCant) 
+            int held = Inv.Count(ItemKind.Produce, need.id);
+            if (held < need.cant)
             {
                 canCraft = false;
-                Debug.Log($"[Craft] player doesn't have {neededId} : {neededId}");
-                break;
+            }
+
+            bool islast = j == p.neccesaryItems.Count - 1;
+            items += $"{name} : {held}/{need.cant}" + (islast ? "." : " + ");
+        }
+        newRecipe.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = items;
+
+        Button button = newRecipe.transform.GetChild(2).GetComponent<Button>();
+        button.interactable = canCraft;
+        button.onClick.AddListener(() => onClick());
+    }
+
+    // Check everything before spending anything, so a partial craft can never
+    // eat the player's reagents.
+    private bool SpendIngredients(Plant p)
+    {
+        for (int i = 0; i < p.neccesaryItems.Count; i++)
+        {
+            Item need = p.neccesaryItems[i];
+            if (Inv.Count(ItemKind.Produce, need.id) < need.cant)
+            {
+                Debug.Log($"[Craft] not enough of item {need.id} for {p.namePlant}.");
+                return false;
             }
         }
-        if (!canCraft) 
+
+        for (int i = 0; i < p.neccesaryItems.Count; i++)
         {
-            Debug.Log("[Craft] player doesn't have necessary items");
+            Item need = p.neccesaryItems[i];
+            Inv.RestItem(ItemKind.Produce, need.id, need.cant);
+        }
+
+        return true;
+    }
+
+    public void tryMakeItem(int id)
+    {
+        Plant p = Inv != null ? Inv.PlantData(id) : null;
+        if (p == null || !SpendIngredients(p))
+        {
             return;
         }
-        for (int i = 0; i < p.neccesaryItems.Count; i++) 
-        {
-            int neededId = p.neccesaryItems[i].id;
-            int neededCant = p.neccesaryItems[i].cant;
 
-
-            inventory.RestItem(neededId, neededCant);
-
-        }
-        inventory.AddItem(id, 1);
-        Debug.Log($"[Craft] {p.namePlant} create!");
-
-
+        Inv.AddItem(ItemKind.Seed, id, 1);
+        Debug.Log($"[Craft] created a {p.namePlant} seed.");
     }
+
+    // Upgrades write into the runtime plant copies, so they last the run
+    // without ever touching the BaseDataPlants asset on disk.
     public void TryMakeUpgrade(Upgrade currentUpgrade)
     {
-        Plant p = GameManager.Instance.runtimePlants.plants.FirstOrDefault(x => x.id == currentUpgrade.id);
-        Inventory inventory = FindAnyObjectByType<Inventory>();
-
-        bool canCraft = true;
-        for (int i = 0; i < p.neccesaryItems.Count; i++)
+        if (Inv == null || GameManager.Instance == null || GameManager.Instance.runtimePlants == null)
         {
-            int neededId = p.neccesaryItems[i].id;
-            int neededCant = p.neccesaryItems[i].cant;
-
-            var inventoryItem = inventory.inventory.FirstOrDefault(x => x.id == neededId);
-
-            if (inventoryItem == null || inventoryItem.cant < neededCant)
-            {
-                canCraft = false;
-                Debug.Log($"[Craft] player doesn't have {neededId} : {neededId}");
-                break;
-            }
-        }
-        if (!canCraft)
-        {
-            Debug.Log("[Craft] player doesn't have necessary items");
+            Debug.LogWarning("[Alchemy] no runtime plant data to upgrade.");
             return;
         }
-        for (int i = 0; i < p.neccesaryItems.Count; i++)
+
+        Plant p = Inv.PlantData(currentUpgrade.id);
+        if (p == null || !SpendIngredients(p))
         {
-            int neededId = p.neccesaryItems[i].id;
-            int neededCant = p.neccesaryItems[i].cant;
-
-
-            inventory.RestItem(neededId, neededCant);
-
+            return;
         }
-        for (int i = 0; i < GameManager.Instance.runtimePlants.plants.Count; i++) 
+
+        List<Plant> runtime = GameManager.Instance.runtimePlants.plants;
+        for (int i = 0; i < runtime.Count; i++)
         {
-            if (GameManager.Instance.runtimePlants.plants[i].id == currentUpgrade.id) 
+            if (runtime[i].id != currentUpgrade.id)
             {
-                RunTimePlants runTime = GameManager.Instance.runtimePlants;
-
-                if (currentUpgrade.mM) runTime.plants[i].multMorning *= currentUpgrade.multiplier;
-                if (currentUpgrade.mA) runTime.plants[i].multAfternoon *= currentUpgrade.multiplier;
-                if (currentUpgrade.mN) runTime.plants[i].multNight *= currentUpgrade.multiplier;
-                if (currentUpgrade.wDR) runTime.plants[i].waterDepletionRate *= currentUpgrade.multiplier;
-                if (currentUpgrade.hR) runTime.plants[i].heatResist *= currentUpgrade.multiplier;
-                if (currentUpgrade.rR) runTime.plants[i].rainResist *= currentUpgrade.multiplier;
-                if (currentUpgrade.wR) runTime.plants[i].windResist *= currentUpgrade.multiplier;
-                if (currentUpgrade.gT) runTime.plants[i].groundTimer *= currentUpgrade.multiplier;
-
-                Debug.Log(
-                    $"Datos actualizados de: {runTime.plants[i].namePlant}\n" +
-                    $"\nMult Morning: {runTime.plants[i].multMorning}" +
-                    $"\nMult Afternoon: {runTime.plants[i].multAfternoon}" +
-                    $"\nMult Night: {runTime.plants[i].multNight}" +
-                    $"\nWater Depletion Rate: {runTime.plants[i].waterDepletionRate}" +
-                    $"\nHeat Resist: {runTime.plants[i].heatResist}" +
-                    $"\nRain Resist: {runTime.plants[i].rainResist}" +
-                    $"\nWind Resist: {runTime.plants[i].windResist}" +
-                    $"\nGrow Timer: {runTime.plants[i].groundTimer}"
-                );
-                return;
+                continue;
             }
+
+            if (currentUpgrade.mM) runtime[i].multMorning *= currentUpgrade.multiplier;
+            if (currentUpgrade.mA) runtime[i].multAfternoon *= currentUpgrade.multiplier;
+            if (currentUpgrade.mN) runtime[i].multNight *= currentUpgrade.multiplier;
+            if (currentUpgrade.wDR) runtime[i].waterDepletionRate *= currentUpgrade.multiplier;
+            if (currentUpgrade.gT) runtime[i].groundTimer *= currentUpgrade.multiplier;
+
+            // Resistances are 0-1 where higher is better, so multiplying is
+            // wrong twice over: a plant sitting at 0 can never improve, and the
+            // authored multipliers are below 1, which would make it worse.
+            // Treat the multiplier as the fraction of the remaining gap to
+            // immunity that this upgrade closes.
+            if (currentUpgrade.hR) runtime[i].heatResist = ImproveResist(runtime[i].heatResist, currentUpgrade.multiplier);
+            if (currentUpgrade.rR) runtime[i].rainResist = ImproveResist(runtime[i].rainResist, currentUpgrade.multiplier);
+            if (currentUpgrade.wR) runtime[i].windResist = ImproveResist(runtime[i].windResist, currentUpgrade.multiplier);
+
+            Debug.Log(
+                $"[Alchemy] upgraded {runtime[i].namePlant}: " +
+                $"morning {runtime[i].multMorning:F2}, afternoon {runtime[i].multAfternoon:F2}, " +
+                $"night {runtime[i].multNight:F2}, water {runtime[i].waterDepletionRate:F3}, " +
+                $"heat {runtime[i].heatResist:F2}, rain {runtime[i].rainResist:F2}, " +
+                $"wind {runtime[i].windResist:F2}, grow {runtime[i].groundTimer:F1}");
+            return;
         }
     }
 
+    private static float ImproveResist(float current, float multiplier)
+    {
+        return Mathf.Clamp01(current + (1f - current) * Mathf.Clamp01(multiplier));
+    }
 }
+
 [Serializable]
-public class Upgrade 
+public class Upgrade
 {
     public int id;
     public float multiplier;
@@ -205,9 +283,7 @@ public class Upgrade
     public bool wR;
     public bool gT;
 
-
-
-    public Upgrade(int id, float multiplier, bool mM, bool mA, bool mN, bool wDR, bool hR, bool rR, bool wR, bool gT) 
+    public Upgrade(int id, float multiplier, bool mM, bool mA, bool mN, bool wDR, bool hR, bool rR, bool wR, bool gT)
     {
         this.id = id;
         this.multiplier = multiplier;
@@ -219,7 +295,5 @@ public class Upgrade
         this.rR = rR;
         this.wR = wR;
         this.gT = gT;
-
     }
 }
-

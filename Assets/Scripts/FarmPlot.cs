@@ -16,9 +16,10 @@ public class FarmPlot : MonoBehaviour
     }
 
     [Header("Crop Settings")]
-    
     [SerializeField] private float growTime = 15f;
-    [SerializeField] private int foodYield = 1;
+
+    // Resolved per planting from Plant.groundTimer, falling back to growTime.
+    private float activeGrowTime = 15f;
 
     [Header("Water")]
     [SerializeField] private float waterPerUse = 0.5f;
@@ -42,7 +43,7 @@ public class FarmPlot : MonoBehaviour
     public float growthTimer;
     private float waterLevel;
     private float dryTimer;
-    private float weatherStress;
+    private float soilIntegrity = 1f;
     private Plant currentPlant;
     private DaySystem daySystem;
 
@@ -50,6 +51,12 @@ public class FarmPlot : MonoBehaviour
     public float WaterNormalized => waterLevel;
     public bool ShowWaterBar => state == CropState.Planted || state == CropState.Growing;
     public bool HasLivingCrop => state == CropState.Planted || state == CropState.Growing || state == CropState.Ready;
+
+    // Soil integrity: chipped away in fixed steps by harsh weather
+    // (see WeatherManager). Hits 0 and the plot is destroyed outright,
+    // not just withered - it has to be re-tilled from scratch.
+    public float SoilIntegrityNormalized => soilIntegrity;
+    public bool ShowSoilBar => HasLivingCrop && soilIntegrity < 1f;
 
     public string InteractionText
     {
@@ -77,7 +84,7 @@ public class FarmPlot : MonoBehaviour
 
     private void Update()
     {
-        if (state != CropState.Growing)
+        if (state != CropState.Growing || currentPlant == null)
         {
             return;
         }
@@ -135,7 +142,7 @@ public class FarmPlot : MonoBehaviour
         growthTimer += Time.deltaTime * periodMult;
         //growthText.text = $"{growthTimer / growTime:P0}";
 
-        if (growthTimer >= growTime)
+        if (growthTimer >= activeGrowTime)
         {
             SoundEffectsManager.instance.PlaySound(plantGrownSound, transform, 1f);
             state = CropState.Ready;
@@ -145,6 +152,15 @@ public class FarmPlot : MonoBehaviour
 
     public void UseTool(ToolType tool, PlayerPlanting planting, Inventory inventory)
     {
+        // A ready crop is always harvested, whatever is in hand. Scything one
+        // used to throw the whole yield away.
+        if (state == CropState.Ready)
+        {
+            Interact("Harvest", scythingSound);
+            Harvest(planting);
+            return;
+        }
+
         switch (tool)
         {
             case ToolType.Hoe:
@@ -183,8 +199,30 @@ public class FarmPlot : MonoBehaviour
                 break;
 
             case ToolType.Scythe:
+                Interact("Harvest", scythingSound);
                 Scythe();
                 break;
+        }
+    }
+
+    // Animator and the sound manager are both optional in a scene, so neither
+    // is allowed to take the interaction down with it.
+    private void Interact(string trigger, AudioClip clip)
+    {
+        if (animator != null)
+        {
+            animator.SetBool("IsInteracting", true);
+            animator.SetTrigger(trigger);
+        }
+
+        PlaySfx(clip);
+    }
+
+    private void PlaySfx(AudioClip clip)
+    {
+        if (clip != null && SoundEffectsManager.instance != null)
+        {
+            SoundEffectsManager.instance.PlaySound(clip, transform, 1f);
         }
     }
 
@@ -195,13 +233,13 @@ public class FarmPlot : MonoBehaviour
             Debug.Log("This soil is already tilled.");
             return;
         }
-        
+
         state = CropState.Empty;
         UpdateSprite();
         Debug.Log("Soil tilled. Ready for a seed.");
     }
 
-    private void PlantSeed(int id, Inventory inventory )
+    private void PlantSeed(PlayerPlanting planting, Inventory inventory)
     {
         if (state != CropState.Empty)
         {
@@ -209,32 +247,34 @@ public class FarmPlot : MonoBehaviour
             return;
         }
 
-        Plant plant = GameManager.Instance.runtimePlants.plants.FirstOrDefault(x => x.id == id);
+        int id = inventory.CurrentSeed;
+
+        // Through the inventory so the runtime copy is used and alchemy
+        // upgrades to grow time and resistances actually take effect.
+        Plant plant = inventory.PlantData(id);
         if (plant == null)
         {
             Debug.Log($"No plant data found for id {id}.");
             return;
         }
 
-        bool isExisting = false;
-        for (int i = 0; i < inventory.inventory.Count; i++) 
+        // Seeds are per species now, so planting spends a seed of exactly the
+        // type the player has selected.
+        if (!planting.UseSeed(plant.id))
         {
-            if (inventory.inventory[i].id == id) 
-            {
-                isExisting = true;
-                break;
-            }
+            Debug.Log($"You have no {plant.namePlant} seeds.");
+            return;
         }
 
-        if (!isExisting) return;
+        // Species can define their own grow time; 0 keeps the plot default.
+        activeGrowTime = plant.groundTimer > 0f ? plant.groundTimer : growTime;
 
-        inventory.RestItem(id, 1);
         currentPlant = plant;
-        growTime = plant.groundTimer;
         state = CropState.Planted;
         waterLevel = 0f;
         dryTimer = 0f;
         growthTimer = 0f;
+        soilIntegrity = 1f;
 
         UpdateSprite();
         Debug.Log("Seed planted. Water it to begin growing.");
@@ -277,9 +317,25 @@ public class FarmPlot : MonoBehaviour
 
     private void Harvest(PlayerPlanting inventory)
     {
-        inventory.AddFood(foodYield);
+        Plant plant = currentPlant;
+        if (plant == null)
+        {
+            ClearPlot();
+            return;
+        }
+
+        // Produce goes into the shared inventory as a stack of this species, so
+        // it can be eaten or spent at the alchemy table. Reagents like Sunspot
+        // yield no food but still hand over one item.
+        int produce = Mathf.Max(1, plant.foodYield);
+        inventory.AddProduce(plant.id, produce);
+
+        // Seed recovered off the crop itself, the way you'd save seed from a
+        // real harvest. Sterile species (seedYield 0) have to be re-crafted.
+        inventory.AddSeeds(plant.id, plant.seedYield);
+
         ClearPlot();
-        Debug.Log($"Crop harvested. Received {foodYield} food.");
+        Debug.Log($"Harvested {produce} {plant.namePlant}, recovered {plant.seedYield} seed(s).");
     }
 
     // Rain refills every planted crop.
@@ -291,18 +347,20 @@ public class FarmPlot : MonoBehaviour
         }
     }
 
-    // Storm damage builds up until the crop withers. Resistant plants take less.
-    public void ApplyWeatherStress(float amount)
+    // Harsh weather chips soil integrity down in fixed steps (see
+    // WeatherManager). Resistant/enhanced plants take a reduced step, and a
+    // fully resistant plant takes none. Hits 0 and the plot is destroyed.
+    public void ApplySoilDamage(float amount)
     {
-        if (!HasLivingCrop)
+        if (!HasLivingCrop || amount <= 0f)
         {
             return;
         }
 
-        weatherStress += amount;
-        if (weatherStress >= 1f)
+        soilIntegrity = Mathf.Max(0f, soilIntegrity - amount);
+        if (soilIntegrity <= 0f)
         {
-            Wither();
+            DestroySoil();
         }
     }
 
@@ -315,7 +373,8 @@ public class FarmPlot : MonoBehaviour
         public float growthTimer;
         public float waterLevel;
         public float dryTimer;
-        public float weatherStress;
+        public float soilIntegrity;
+        public float activeGrowTime;
     }
 
     public Snapshot Capture()
@@ -327,7 +386,8 @@ public class FarmPlot : MonoBehaviour
             growthTimer = growthTimer,
             waterLevel = waterLevel,
             dryTimer = dryTimer,
-            weatherStress = weatherStress
+            soilIntegrity = soilIntegrity,
+            activeGrowTime = activeGrowTime
         };
     }
 
@@ -338,7 +398,8 @@ public class FarmPlot : MonoBehaviour
         growthTimer = snapshot.growthTimer;
         waterLevel = snapshot.waterLevel;
         dryTimer = snapshot.dryTimer;
-        weatherStress = snapshot.weatherStress;
+        soilIntegrity = snapshot.soilIntegrity;
+        activeGrowTime = snapshot.activeGrowTime > 0f ? snapshot.activeGrowTime : growTime;
         UpdateSprite();
     }
 
@@ -349,13 +410,27 @@ public class FarmPlot : MonoBehaviour
         Debug.Log("A crop has withered.");
     }
 
+    // Soil integrity ran out: unlike withering, the plot itself is ruined
+    // and needs to be tilled again from scratch.
+    private void DestroySoil()
+    {
+        currentPlant = null;
+        state = CropState.Untilled;
+        waterLevel = 0f;
+        dryTimer = 0f;
+        soilIntegrity = 1f;
+        growthTimer = 0f;
+        UpdateSprite();
+        Debug.Log("The weather destroyed this plot. It needs to be tilled again.");
+    }
+
     private void ClearPlot()
     {
         currentPlant = null;
         state = CropState.Empty;
         waterLevel = 0f;
         dryTimer = 0f;
-        weatherStress = 0f;
+        soilIntegrity = 1f;
         growthTimer = 0f;
         UpdateSprite();
     }
@@ -367,16 +442,26 @@ public class FarmPlot : MonoBehaviour
             return;
         }
 
-        Sprite sprite = state switch
+        // A crop state with no plant behind it (a bad restore, say) falls
+        // through to bare soil instead of null-reffing.
+        Sprite sprite = currentPlant == null
+            ? (state == CropState.Untilled ? untilledSprite : emptySoilSprite)
+            : state switch
+            {
+                CropState.Untilled => untilledSprite,
+                CropState.Empty => emptySoilSprite,
+                CropState.Planted => currentPlant.plantedSpr,
+                CropState.Growing => currentPlant.grownedSpr,
+                CropState.Ready => currentPlant.readySpr,
+                CropState.Withered => currentPlant.witheredSpr,
+                _ => emptySoilSprite
+            };
+
+        // Species without authored art yet fall back to a colored placeholder.
+        if (sprite == null && currentPlant != null)
         {
-            CropState.Untilled => untilledSprite,
-            CropState.Empty => emptySoilSprite,
-            CropState.Planted => currentPlant.plantedSpr,
-            CropState.Growing => currentPlant.grownedSpr,
-            CropState.Ready => currentPlant.readySpr,
-            CropState.Withered => currentPlant.witheredSpr,
-            _ => emptySoilSprite
-        };
+            sprite = PlaceholderCropSprite.Get(currentPlant.placeholderColor, state);
+        }
 
         if (sprite == null)
         {
@@ -384,5 +469,8 @@ public class FarmPlot : MonoBehaviour
         }
 
         spriteRenderer.sprite = sprite;
+
+        bool untilledWithoutArt = state == CropState.Untilled && untilledSprite == null;
+        spriteRenderer.color = untilledWithoutArt ? new Color(0.62f, 0.55f, 0.45f) : Color.white;
     }
 }

@@ -30,12 +30,18 @@ public class DayManager : MonoBehaviour
         daySystem = FindAnyObjectByType<DaySystem>();
         plots = FindObjectsByType<FarmPlot>();
 
-        hunger.OnDepleted += HandlePlayerDeath;
+        if (hunger != null)
+        {
+            hunger.OnDepleted += HandlePlayerDeath;
+        }
 
         TakeCheckpoint();
 
-        fader.SetBlack();
-        fader.FadeIn();
+        if (fader != null)
+        {
+            fader.SetBlack();
+            fader.FadeIn();
+        }
     }
 
     private void Update()
