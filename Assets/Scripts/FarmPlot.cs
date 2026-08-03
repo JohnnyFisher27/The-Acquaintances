@@ -82,7 +82,7 @@ public class FarmPlot : MonoBehaviour
 
     private void Update()
     {
-        if (state != CropState.Growing)
+        if (state != CropState.Growing || currentPlant == null)
         {
             return;
         }
@@ -142,7 +142,7 @@ public class FarmPlot : MonoBehaviour
 
         if (growthTimer >= growTime)
         {
-            SoundEffectsManager.instance.PlaySound(plantGrownSound, transform, 1f);
+            PlaySfx(plantGrownSound);
             state = CropState.Ready;
             UpdateSprite();
         }
@@ -150,45 +150,57 @@ public class FarmPlot : MonoBehaviour
 
     public void UseTool(ToolType tool, PlayerPlanting inventory)
     {
+        // A ready crop is always harvested, whatever is in hand. Scything one
+        // used to throw the whole yield away.
+        if (state == CropState.Ready)
+        {
+            Interact("Harvest", scythingSound);
+            Harvest(inventory);
+            return;
+        }
+
         switch (tool)
         {
             case ToolType.Hoe:
-                animator.SetBool("IsInteracting", true);
-                animator.SetTrigger("Till");
-                SoundEffectsManager.instance.PlaySound(tillingSound, transform, 1f);
+                Interact("Till", tillingSound);
                 Till();
                 break;
 
             case ToolType.Seeds:
-                if (state == CropState.Ready) {
-                    animator.SetBool("IsInteracting", true);
-                    animator.SetTrigger("Harvest");
-                    SoundEffectsManager.instance.PlaySound(scythingSound, transform, 1f);
-                    Harvest(inventory);
-                } else {
-                    animator.SetBool("IsInteracting", true);
-                    animator.SetTrigger("Plant");
-                    SoundEffectsManager.instance.PlaySound(plantingSound, transform, 1f);
-                    PlantSeed(inventory);
-                }
+                Interact("Plant", plantingSound);
+                PlantSeed(inventory);
                 break;
 
             case ToolType.WateringCan:
-                if (state == CropState.Ready) {
-                    animator.SetBool("IsInteracting", true);
-                    SoundEffectsManager.instance.PlaySound(scythingSound, transform, 1f);
-                    Harvest(inventory);
-                } else { 
-                    animator.SetBool("IsInteracting", true);
-                    animator.SetTrigger("Water");
-                    SoundEffectsManager.instance.PlaySound(wateringSound, transform, 1f);
-                    Water();
-                }
+                Interact("Water", wateringSound);
+                Water();
                 break;
 
             case ToolType.Scythe:
+                Interact("Harvest", scythingSound);
                 Scythe();
                 break;
+        }
+    }
+
+    // Animator and the sound manager are both optional in a scene, so neither
+    // is allowed to take the interaction down with it.
+    private void Interact(string trigger, AudioClip clip)
+    {
+        if (animator != null)
+        {
+            animator.SetBool("IsInteracting", true);
+            animator.SetTrigger(trigger);
+        }
+
+        PlaySfx(clip);
+    }
+
+    private void PlaySfx(AudioClip clip)
+    {
+        if (clip != null && SoundEffectsManager.instance != null)
+        {
+            SoundEffectsManager.instance.PlaySound(clip, transform, 1f);
         }
     }
 
@@ -220,9 +232,11 @@ public class FarmPlot : MonoBehaviour
             return;
         }
 
-        if (!inventory.UseSeed())
+        // Seeds are per species now, so planting spends a seed of exactly the
+        // type the player has selected.
+        if (!inventory.UseSeed(plant.id))
         {
-            Debug.Log("You do not have any seeds.");
+            Debug.Log($"You have no {plant.namePlant} seeds.");
             return;
         }
 
@@ -275,15 +289,24 @@ public class FarmPlot : MonoBehaviour
     private void Harvest(PlayerPlanting inventory)
     {
         Plant plant = currentPlant;
-        inventory.AddFood(plant.foodYield);
-
-        if (plant.category == PlantCategory.NonFatal && plant.harvestHealthPenalty > 0f)
+        if (plant == null)
         {
-            inventory.ApplyHarvestGas(plant.harvestHealthPenalty);
+            ClearPlot();
+            return;
         }
 
+        // Produce goes into the shared inventory as a stack of this species, so
+        // it can be eaten or spent at the alchemy table. Reagents like Sunspot
+        // yield no food but still hand over one item.
+        int produce = Mathf.Max(1, plant.foodYield);
+        inventory.AddProduce(plant.id, produce);
+
+        // Seed recovered off the crop itself, the way you'd save seed from a
+        // real harvest. Sterile species (seedYield 0) have to be re-crafted.
+        inventory.AddSeeds(plant.id, plant.seedYield);
+
         ClearPlot();
-        Debug.Log($"Crop harvested. Received {plant.foodYield} food.");
+        Debug.Log($"Harvested {produce} {plant.namePlant}, recovered {plant.seedYield} seed(s).");
     }
 
     // Rain refills every planted crop.
@@ -387,16 +410,20 @@ public class FarmPlot : MonoBehaviour
             return;
         }
 
-        Sprite sprite = state switch
-        {
-            CropState.Untilled => untilledSprite,
-            CropState.Empty => emptySoilSprite,
-            CropState.Planted => currentPlant.plantedSpr,
-            CropState.Growing => currentPlant.grownedSpr,
-            CropState.Ready => currentPlant.readySpr,
-            CropState.Withered => currentPlant.witheredSpr,
-            _ => emptySoilSprite
-        };
+        // A crop state with no plant behind it (a bad restore, say) falls
+        // through to bare soil instead of null-reffing.
+        Sprite sprite = currentPlant == null
+            ? (state == CropState.Untilled ? untilledSprite : emptySoilSprite)
+            : state switch
+            {
+                CropState.Untilled => untilledSprite,
+                CropState.Empty => emptySoilSprite,
+                CropState.Planted => currentPlant.plantedSpr,
+                CropState.Growing => currentPlant.grownedSpr,
+                CropState.Ready => currentPlant.readySpr,
+                CropState.Withered => currentPlant.witheredSpr,
+                _ => emptySoilSprite
+            };
 
         // Species without authored art yet fall back to a colored placeholder.
         if (sprite == null && currentPlant != null)

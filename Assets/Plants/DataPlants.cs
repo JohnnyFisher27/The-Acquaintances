@@ -1,17 +1,15 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 using System.Collections.Generic;
 using System.Collections;
 [CreateAssetMenu(fileName = "BaseDataPlants", menuName = "DataPlant")]
 public class DataPlants : ScriptableObject
 {
     public List<Plant> plants = new List<Plant>();
-
-    private void OnEnable()
-    {
-        
-    }
 }
 
+// Healthy: ordinary food. Special: alchemy reagents, inedible. NonFatal: edible
+// but it costs you health, which is the point of the name.
 public enum PlantCategory
 {
     Healthy,
@@ -26,6 +24,9 @@ public class Plant
     public string namePlant;
     public int id;
     public PlantCategory category = PlantCategory.Healthy;
+
+    // Reserved for an inventory/recipe icon. Nothing reads it yet; the plot
+    // sprites below are what actually render.
     public Sprite spr;
 
     public float multMorning = 1f;
@@ -41,9 +42,20 @@ public class Plant
     [Range(0f, 1f)] public float windResist;
 
     //Harvest
+    // How many produce items one harvest drops.
     public int foodYield = 1;
-    // NonFatal plants hurt the player when harvested (0.1 = 10% of max hunger)
-    [Range(0f, 1f)] public float harvestHealthPenalty;
+
+    // Seeds recovered from a harvest, like collecting seed from a real crop.
+    // 0 makes a species sterile, so the only way to get more is to craft it.
+    public int seedYield = 1;
+
+    // Hunger restored per item eaten. 0 falls back to PlayerPlanting's default,
+    // so species with no authored value still work.
+    public float hungerRestored;
+
+    // NonFatal plants cost health when eaten (0.1 = 10% of max hunger).
+    [FormerlySerializedAs("harvestHealthPenalty")]
+    [Range(0f, 1f)] public float eatHealthPenalty;
 
     // Used to generate a colored placeholder sprite when no stage sprite is set below
     public Color placeholderColor = Color.white;
