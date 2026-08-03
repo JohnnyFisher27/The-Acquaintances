@@ -1,31 +1,61 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
+
+// The player's view onto the shared Inventory. Seeds and food used to be two
+// loose ints here; they are now stacks in Inventory so that what you harvest is
+// the same thing the alchemy table crafts with.
 public class PlayerPlanting: MonoBehaviour
 {
     [SerializeField] private InputActionAsset inputActions;
 
-    public int id;
-
-    [Header("Starting Inventory")]
-    [SerializeField] private int seeds = 5;
-    [SerializeField] private int food = 0;
-
     [Header("Food")]
     [SerializeField] private float hungerRestoredPerFood = 250f;
 
-    private InputAction interAction;
-    public int Seeds => seeds;
-    public int Food => food;
     private PlayerHunger playerHunger;
+    private Inventory inv;
+
+    // Selection lives on Inventory so the panel and R-cycling agree. Kept under
+    // the old name because FarmPlot and PlayerTools read it.
+    public int id
+    {
+        get => Inv.CurrentSeed;
+        set => Inv.UpdateSeed(value);
+    }
+
+    // Read-only views kept so DayManager's lose condition and the HUD still work.
+    public int Seeds => Inv.TotalOf(ItemKind.Seed);
+    public int Food => EdibleProduce().Sum(x => x.cant);
+
+    public Inventory Inv
+    {
+        get
+        {
+            if (inv == null)
+            {
+                inv = FindAnyObjectByType<Inventory>();
+                if (inv == null)
+                {
+                    // Nothing in the scene: keep the game playable rather than
+                    // null-reffing on the first planting.
+                    inv = gameObject.AddComponent<Inventory>();
+                }
+            }
+            return inv;
+        }
+    }
+
     private void Awake()
     {
         playerHunger = GetComponent<PlayerHunger>();
     }
 
-    // Tool use (E) lives in PlayerTools now. Eating stays here.
+    // Tool use (left click) lives in PlayerTools now. Eating stays here.
     public void Update()
     {
-        if (Keyboard.current.qKey.wasPressedThisFrame)
+        Keyboard kb = Keyboard.current;
+        if (kb != null && kb.qKey.wasPressedThisFrame)
         {
             EatFood(playerHunger);
         }
@@ -36,54 +66,89 @@ public class PlayerPlanting: MonoBehaviour
     // Inventory snapshot for the midnight checkpoint in DayManager.
     public struct Snapshot
     {
-        public int seeds;
-        public int food;
         public int id;
+        public List<Item> items;
     }
 
     public Snapshot Capture()
     {
-        return new Snapshot { seeds = seeds, food = food, id = id };
+        return new Snapshot { id = id, items = Inv.Capture() };
     }
 
     public void Restore(Snapshot snapshot)
     {
-        seeds = snapshot.seeds;
-        food = snapshot.food;
-        id = snapshot.id;
+        Inv.Restore(snapshot.items);
+        Inv.UpdateSeed(snapshot.id);
     }
 
-    public bool UseSeed()
+    // Spends one seed of the given species. False means the player had none.
+    public bool UseSeed(int plantId)
     {
-        if (seeds <= 0)
-        {
-            return false;
-        }
-
-        seeds--;
-        return true;
+        return Inv.RestItem(ItemKind.Seed, plantId, 1);
     }
 
-    public void AddSeeds(int amount)
+    public void AddSeeds(int plantId, int amount)
     {
-        seeds += Mathf.Max(0, amount);
+        Inv.AddItem(ItemKind.Seed, plantId, amount);
     }
 
-    public void AddFood(int amount)
+    public void AddProduce(int plantId, int amount)
     {
-        food += Mathf.Max(0, amount);
+        Inv.AddItem(ItemKind.Produce, plantId, amount);
     }
 
+    // Eats one produce, preferring the species currently selected so the player
+    // can pick what to burn through. Alchemy reagents are skipped.
     public bool EatFood(PlayerHunger hunger)
     {
-        if (food <= 0 || hunger == null)
+        if (hunger == null)
         {
             return false;
         }
 
-        food--;
-        hunger.Eat(hungerRestoredPerFood);
+        List<Item> edible = EdibleProduce();
+        if (edible.Count == 0)
+        {
+            Debug.Log("You have nothing edible to eat.");
+            return false;
+        }
+
+        Item chosen = edible.FirstOrDefault(x => x.id == id) ?? edible[0];
+        if (!Inv.RestItem(ItemKind.Produce, chosen.id, 1))
+        {
+            return false;
+        }
+
+        Plant plant = Inv.PlantData(chosen.id);
+        string name = plant != null ? plant.namePlant : chosen.id.ToString();
+
+        // Species can carry their own nutrition; 0 means "use the default".
+        float restored = plant != null && plant.hungerRestored > 0f
+            ? plant.hungerRestored
+            : hungerRestoredPerFood;
+
+        hunger.Eat(restored);
+
+        // NonFatal plants are edible but toxic. The cost lands here, on eating,
+        // rather than on harvesting - picking a plant was never what hurt you.
+        if (plant != null && plant.eatHealthPenalty > 0f)
+        {
+            hunger.Drain(hunger.Max * plant.eatHealthPenalty);
+            Debug.Log($"Ate {name}. It restored {restored:F0} but made you ill.");
+        }
+        else
+        {
+            Debug.Log($"Ate {name}. Restored {restored:F0} hunger.");
+        }
+
         return true;
+    }
+
+    private List<Item> EdibleProduce()
+    {
+        return Inv.inventory
+            .Where(x => x.kind == ItemKind.Produce && x.cant > 0 && Inv.IsEdible(x.id))
+            .ToList();
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -92,10 +157,6 @@ public class PlayerPlanting: MonoBehaviour
         {
             farmplot = other.GetComponent<FarmPlot>();
         }
-    }
-    private void OnTriggerStay2D(Collider2D other)
-    {
-        
     }
 
     private void OnTriggerExit2D(Collider2D other)

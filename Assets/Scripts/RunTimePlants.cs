@@ -1,12 +1,27 @@
 using UnityEngine;
 using System.Collections.Generic;
-public class RunTimePlants : MonoBehaviour
+
+// Per-run copies of the plant data. Alchemy upgrades write in here so they last
+// the run without ever modifying the BaseDataPlants asset on disk.
+//
+// Deliberately NOT a MonoBehaviour: GameManager builds this with `new`, and
+// Unity reports a MonoBehaviour created that way as null through its overloaded
+// null operator. Every `runtimePlants != null` check therefore failed, so
+// upgrades never applied and plant lookups always fell back to the asset.
+[System.Serializable]
+public class RunTimePlants
 {
     public List<Plant> plants = new();
 
-    public RunTimePlants(DataPlants baseData) 
+    public RunTimePlants(DataPlants baseData)
     {
-        foreach (Plant plant in baseData.plants) 
+        if (baseData == null)
+        {
+            Debug.LogWarning("[RunTimePlants] no base data assigned.");
+            return;
+        }
+
+        foreach (Plant plant in baseData.plants)
         {
             plants.Add(new Plant(plant));
         }

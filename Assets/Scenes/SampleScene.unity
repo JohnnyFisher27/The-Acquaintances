@@ -500,7 +500,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CraftingSystem
   prefab: {fileID: 1729999983974032721, guid: d916afb76eed13b4a913bd6ffc0bcf68, type: 3}
-  recipes: 01000000
+  recipes: 040000000a000000050000000600000007000000
   container: {fileID: 1701015758}
   upgrades: []
   typeSystem: 0
@@ -1929,6 +1929,7 @@ GameObject:
   - component: {fileID: 1037569754}
   - component: {fileID: 1037569753}
   - component: {fileID: 1037569757}
+  - component: {fileID: 1900000001}
   m_Layer: 0
   m_Name: Slot (1)
   m_TagString: FarmPlot
@@ -2060,6 +2061,11 @@ MonoBehaviour:
   witherGracePeriod: 10
   untilledSprite: {fileID: 0}
   emptySoilSprite: {fileID: 3620058418051504474, guid: 866dd813e11bf42dbbef1d1ac4dae926, type: 3}
+  tillingSound: {fileID: 8300000, guid: fe27951a3f9ab483eaaf9b8c6fd04554, type: 3}
+  plantingSound: {fileID: 0}
+  wateringSound: {fileID: 8300000, guid: e036c0e8b8f314d92878206f672bc5b6, type: 3}
+  scythingSound: {fileID: 8300000, guid: 90a8747e536024154bf50cd55d719e1f, type: 3}
+  plantGrownSound: {fileID: 0}
   animator: {fileID: 0}
   growthText: {fileID: 0}
   state: 0
@@ -2366,7 +2372,8 @@ MonoBehaviour:
   container: {fileID: 1589164416}
   panelInventory: {fileID: 1408053209}
   prefabItem: {fileID: 7401450651788104977, guid: 9b3069368979a884b9f09613a7a12c97, type: 3}
-  currentSeed: 0
+  plants: {fileID: 11400000, guid: 5506ffa8ea568be47ac5fefe28ba46d2, type: 2}
+  currentSeed: 1
 --- !u!1 &1211612076
 GameObject:
   m_ObjectHideFlags: 0
@@ -2817,6 +2824,8 @@ GameObject:
   - component: {fileID: 1573709762}
   - component: {fileID: 1573709761}
   - component: {fileID: 1573709760}
+  - component: {fileID: 1900000003}
+  - component: {fileID: 1900000004}
   m_Layer: 0
   m_Name: Slot (3)
   m_TagString: FarmPlot
@@ -2948,6 +2957,11 @@ MonoBehaviour:
   witherGracePeriod: 10
   untilledSprite: {fileID: 0}
   emptySoilSprite: {fileID: 3620058418051504474, guid: 866dd813e11bf42dbbef1d1ac4dae926, type: 3}
+  tillingSound: {fileID: 8300000, guid: fe27951a3f9ab483eaaf9b8c6fd04554, type: 3}
+  plantingSound: {fileID: 0}
+  wateringSound: {fileID: 8300000, guid: e036c0e8b8f314d92878206f672bc5b6, type: 3}
+  scythingSound: {fileID: 8300000, guid: 90a8747e536024154bf50cd55d719e1f, type: 3}
+  plantGrownSound: {fileID: 0}
   animator: {fileID: 0}
   growthText: {fileID: 0}
   state: 0
@@ -3323,6 +3337,7 @@ GameObject:
   - component: {fileID: 1644059288}
   - component: {fileID: 1644059287}
   - component: {fileID: 1644059291}
+  - component: {fileID: 1900000002}
   m_Layer: 0
   m_Name: Slot (2)
   m_TagString: FarmPlot
@@ -3454,6 +3469,11 @@ MonoBehaviour:
   witherGracePeriod: 10
   untilledSprite: {fileID: 0}
   emptySoilSprite: {fileID: 3620058418051504474, guid: 866dd813e11bf42dbbef1d1ac4dae926, type: 3}
+  tillingSound: {fileID: 8300000, guid: fe27951a3f9ab483eaaf9b8c6fd04554, type: 3}
+  plantingSound: {fileID: 0}
+  wateringSound: {fileID: 8300000, guid: e036c0e8b8f314d92878206f672bc5b6, type: 3}
+  scythingSound: {fileID: 8300000, guid: 90a8747e536024154bf50cd55d719e1f, type: 3}
+  plantGrownSound: {fileID: 0}
   animator: {fileID: 0}
   growthText: {fileID: 0}
   state: 0
@@ -3848,6 +3868,8 @@ GameObject:
   - component: {fileID: 1727670616}
   - component: {fileID: 1727670615}
   - component: {fileID: 1727670617}
+  - component: {fileID: 1727670618}
+  - component: {fileID: 1727670619}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -3897,7 +3919,51 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   baseData: {fileID: 11400000, guid: 5506ffa8ea568be47ac5fefe28ba46d2, type: 2}
-  runtimePlants: {fileID: 0}
+--- !u!114 &1727670618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1727670614}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1438fc1f760f2a68c111ca1a2acf8cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WeatherManager
+  forecast:
+  - type: 0
+    duration: 30
+  - type: 2
+    duration: 25
+  - type: 0
+    duration: 30
+  - type: 3
+    duration: 25
+  - type: 0
+    duration: 30
+  - type: 1
+    duration: 25
+  damageTickInterval: 5
+  damageStep: 0.15
+  heatwaveDepletionMultiplier: 2.5
+  rainRefillPerSecond: 0.05
+  weatherText: {fileID: 0}
+  forecastText: {fileID: 0}
+  timerText: {fileID: 0}
+--- !u!114 &1727670619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1727670614}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04c8677a2264e413687f51fa9fd4ccb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SoundEffectsManager
+  soundFXObject: {fileID: 6111029685014915783, guid: e5a188f228b7246a1ad21c5a81e7ae80, type: 3}
 --- !u!1 &1745956402
 GameObject:
   m_ObjectHideFlags: 0
@@ -4461,6 +4527,74 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 376807cf277d6154a83d38379cc98553, type: 3}
+--- !u!114 &1900000001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1037569752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25d091eebaef00a46962df8f9e359d9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlotStormBar
+  offset: {x: 0, y: 0.9}
+  width: 0.8
+  height: 0.12
+  backColor: {r: 0.1, g: 0.1, b: 0.1, a: 0.8}
+  fillColor: {r: 0.85, g: 0.25, b: 0.2, a: 1}
+--- !u!114 &1900000002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1644059286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25d091eebaef00a46962df8f9e359d9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlotStormBar
+  offset: {x: 0, y: 0.9}
+  width: 0.8
+  height: 0.12
+  backColor: {r: 0.1, g: 0.1, b: 0.1, a: 0.8}
+  fillColor: {r: 0.85, g: 0.25, b: 0.2, a: 1}
+--- !u!114 &1900000003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1573709759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 772997a5328b36697a0147f127a08de1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlotWaterBar
+  offset: {x: 0, y: 0.7}
+  width: 0.8
+  height: 0.12
+  backColor: {r: 0.1, g: 0.1, b: 0.1, a: 0.8}
+  fillColor: {r: 0.3, g: 0.6, b: 1, a: 1}
+--- !u!114 &1900000004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1573709759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25d091eebaef00a46962df8f9e359d9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlotStormBar
+  offset: {x: 0, y: 0.9}
+  width: 0.8
+  height: 0.12
+  backColor: {r: 0.1, g: 0.1, b: 0.1, a: 0.8}
+  fillColor: {r: 0.85, g: 0.25, b: 0.2, a: 1}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
