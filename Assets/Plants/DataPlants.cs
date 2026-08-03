@@ -17,6 +17,8 @@ public enum PlantCategory
     NonFatal
 }
 
+public enum TypeItem { Plant, Objects }
+
 [System.Serializable]
 
 public class Plant
@@ -25,9 +27,10 @@ public class Plant
     public int id;
     public PlantCategory category = PlantCategory.Healthy;
 
-    // Reserved for an inventory/recipe icon. Nothing reads it yet; the plot
-    // sprites below are what actually render.
+    // Icon shown in the inventory panel and recipe rows.
     public Sprite spr;
+
+    public TypeItem type;
 
     public float multMorning = 1f;
     public float multAfternoon = 1f;
@@ -40,6 +43,10 @@ public class Plant
     [Range(0f, 1f)] public float heatResist;
     [Range(0f, 1f)] public float rainResist;
     [Range(0f, 1f)] public float windResist;
+
+    // Seconds of growth this species needs. 0 falls back to the plot's own
+    // growTime. The alchemy table's gT upgrade scales this.
+    public float groundTimer;
 
     //Harvest
     // How many produce items one harvest drops.
@@ -68,4 +75,47 @@ public class Plant
 
     public List<Item> neccesaryItems = new List<Item>();
 
+    public Plant()
+    {
+
+    }
+
+    // Used by RunTimePlants to make a mutable per-run copy, so alchemy upgrades
+    // change the run without writing back into the asset. Every field has to be
+    // copied here or upgrades silently drop it.
+    public Plant(Plant other)
+    {
+        namePlant = other.namePlant;
+        id = other.id;
+        category = other.category;
+
+        spr = other.spr;
+        type = other.type;
+
+        multMorning = other.multMorning;
+        multAfternoon = other.multAfternoon;
+        multNight = other.multNight;
+
+        waterDepletionRate = other.waterDepletionRate;
+
+        heatResist = other.heatResist;
+        rainResist = other.rainResist;
+        windResist = other.windResist;
+
+        groundTimer = other.groundTimer;
+
+        foodYield = other.foodYield;
+        seedYield = other.seedYield;
+        hungerRestored = other.hungerRestored;
+        eatHealthPenalty = other.eatHealthPenalty;
+
+        placeholderColor = other.placeholderColor;
+
+        plantedSpr = other.plantedSpr;
+        grownedSpr = other.grownedSpr;
+        readySpr = other.readySpr;
+        witheredSpr = other.witheredSpr;
+
+        neccesaryItems = new List<Item>(other.neccesaryItems);
+    }
 }

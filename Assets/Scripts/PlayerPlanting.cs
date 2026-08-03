@@ -10,14 +10,19 @@ public class PlayerPlanting: MonoBehaviour
 {
     [SerializeField] private InputActionAsset inputActions;
 
-    // Species selected for planting. PlayerTools cycles this with R.
-    public int id = 1;
-
     [Header("Food")]
     [SerializeField] private float hungerRestoredPerFood = 250f;
 
     private PlayerHunger playerHunger;
     private Inventory inv;
+
+    // Selection lives on Inventory so the panel and R-cycling agree. Kept under
+    // the old name because FarmPlot and PlayerTools read it.
+    public int id
+    {
+        get => Inv.CurrentSeed;
+        set => Inv.UpdateSeed(value);
+    }
 
     // Read-only views kept so DayManager's lose condition and the HUD still work.
     public int Seeds => Inv.TotalOf(ItemKind.Seed);
@@ -72,8 +77,8 @@ public class PlayerPlanting: MonoBehaviour
 
     public void Restore(Snapshot snapshot)
     {
-        id = snapshot.id;
         Inv.Restore(snapshot.items);
+        Inv.UpdateSeed(snapshot.id);
     }
 
     // Spends one seed of the given species. False means the player had none.

@@ -16,6 +16,7 @@ MonoBehaviour:
   - namePlant: Sunspot
     id: 1
     category: 1
+    type: 0
     spr: {fileID: 3620058418051504474, guid: 866dd813e11bf42dbbef1d1ac4dae926, type: 3}
     multMorning: 2
     multAfternoon: 1
@@ -24,6 +25,7 @@ MonoBehaviour:
     heatResist: 0.5
     rainResist: 0
     windResist: 0
+    groundTimer: 15
     foodYield: 0
     seedYield: 1
     hungerRestored: 0
@@ -37,6 +39,7 @@ MonoBehaviour:
   - namePlant: Blue river pedals
     id: 2
     category: 1
+    type: 0
     spr: {fileID: 3620058418051504474, guid: 866dd813e11bf42dbbef1d1ac4dae926, type: 3}
     multMorning: 2
     multAfternoon: 2
@@ -45,6 +48,7 @@ MonoBehaviour:
     heatResist: 0
     rainResist: 0.5
     windResist: 0
+    groundTimer: 15
     foodYield: 0
     seedYield: 1
     hungerRestored: 0
@@ -58,6 +62,7 @@ MonoBehaviour:
   - namePlant: Breeze root
     id: 3
     category: 1
+    type: 0
     spr: {fileID: 3620058418051504474, guid: 866dd813e11bf42dbbef1d1ac4dae926, type: 3}
     multMorning: 0.5
     multAfternoon: 2
@@ -66,6 +71,7 @@ MonoBehaviour:
     heatResist: 0
     rainResist: 0
     windResist: 0.5
+    groundTimer: 15
     foodYield: 0
     seedYield: 1
     hungerRestored: 0
@@ -79,6 +85,7 @@ MonoBehaviour:
   - namePlant: Mutated Seed
     id: 4
     category: 1
+    type: 0
     spr: {fileID: 3620058418051504474, guid: 866dd813e11bf42dbbef1d1ac4dae926, type: 3}
     multMorning: 0.5
     multAfternoon: 2
@@ -87,6 +94,7 @@ MonoBehaviour:
     heatResist: 0
     rainResist: 0
     windResist: 0
+    groundTimer: 20
     foodYield: 0
     seedYield: 0
     hungerRestored: 0
@@ -106,6 +114,7 @@ MonoBehaviour:
   - namePlant: Starlight
     id: 5
     category: 2
+    type: 0
     multMorning: 1
     multAfternoon: 0.5
     multNight: 2
@@ -113,6 +122,7 @@ MonoBehaviour:
     heatResist: 0
     rainResist: 0
     windResist: 0
+    groundTimer: 18
     foodYield: 1
     seedYield: 1
     hungerRestored: 400
@@ -130,6 +140,7 @@ MonoBehaviour:
   - namePlant: Pinch Point
     id: 6
     category: 2
+    type: 0
     multMorning: 1.5
     multAfternoon: 1.5
     multNight: 0.5
@@ -137,6 +148,7 @@ MonoBehaviour:
     heatResist: 0
     rainResist: 0
     windResist: 0
+    groundTimer: 18
     foodYield: 1
     seedYield: 1
     hungerRestored: 400
@@ -154,6 +166,7 @@ MonoBehaviour:
   - namePlant: Vertigo
     id: 7
     category: 2
+    type: 0
     multMorning: 0.5
     multAfternoon: 1
     multNight: 2
@@ -161,6 +174,7 @@ MonoBehaviour:
     heatResist: 0
     rainResist: 0
     windResist: 0
+    groundTimer: 18
     foodYield: 1
     seedYield: 1
     hungerRestored: 400
@@ -178,6 +192,7 @@ MonoBehaviour:
   - namePlant: Tomato
     id: 8
     category: 0
+    type: 0
     multMorning: 1
     multAfternoon: 2
     multNight: 0.5
@@ -185,6 +200,7 @@ MonoBehaviour:
     heatResist: 0
     rainResist: 0
     windResist: 0
+    groundTimer: 15
     foodYield: 2
     seedYield: 2
     hungerRestored: 250
@@ -198,6 +214,7 @@ MonoBehaviour:
   - namePlant: Lettuce
     id: 9
     category: 0
+    type: 0
     multMorning: 2
     multAfternoon: 1
     multNight: 0.5
@@ -205,6 +222,7 @@ MonoBehaviour:
     heatResist: 0
     rainResist: 0
     windResist: 0
+    groundTimer: 10
     foodYield: 1
     seedYield: 2
     hungerRestored: 150
@@ -218,6 +236,7 @@ MonoBehaviour:
   - namePlant: Brambles
     id: 10
     category: 0
+    type: 0
     multMorning: 1
     multAfternoon: 1.5
     multNight: 1
@@ -225,6 +244,7 @@ MonoBehaviour:
     heatResist: 0
     rainResist: 0
     windResist: 0
+    groundTimer: 25
     foodYield: 3
     seedYield: 1
     hungerRestored: 200

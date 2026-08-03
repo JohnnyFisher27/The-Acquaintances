@@ -90,7 +90,7 @@ public class PlayerTools : MonoBehaviour
 
         if (planting.farmplot != null)
         {
-            planting.farmplot.UseTool(currentTool, planting);
+            planting.farmplot.UseTool(currentTool, planting, inventory);
         }
     }
 
@@ -138,7 +138,8 @@ public class PlayerTools : MonoBehaviour
         string line;
         if (currentTool == ToolType.Seeds)
         {
-            Plant plant = baseData != null ? baseData.plants.Find(p => p.id == planting.id) : null;
+            // Via the inventory so upgraded runtime stats and names are used.
+            Plant plant = inventory.PlantData(planting.id);
             string name = plant != null ? plant.namePlant : planting.id.ToString();
             int held = inventory.Count(ItemKind.Seed, planting.id);
             line = $"Tool: Seeds - {name} x{held} (LMB, R to cycle)";

@@ -16,8 +16,10 @@ public class FarmPlot : MonoBehaviour
     }
 
     [Header("Crop Settings")]
-    [SerializeField] private DataPlants baseData;
     [SerializeField] private float growTime = 15f;
+
+    // Resolved per planting from Plant.groundTimer, falling back to growTime.
+    private float activeGrowTime = 15f;
 
     [Header("Water")]
     [SerializeField] private float waterPerUse = 0.5f;
@@ -140,7 +142,7 @@ public class FarmPlot : MonoBehaviour
         growthTimer += Time.deltaTime * periodMult;
         //growthText.text = $"{growthTimer / growTime:P0}";
 
-        if (growthTimer >= growTime)
+        if (growthTimer >= activeGrowTime)
         {
             PlaySfx(plantGrownSound);
             state = CropState.Ready;
@@ -148,14 +150,14 @@ public class FarmPlot : MonoBehaviour
         }
     }
 
-    public void UseTool(ToolType tool, PlayerPlanting inventory)
+    public void UseTool(ToolType tool, PlayerPlanting planting, Inventory inventory)
     {
         // A ready crop is always harvested, whatever is in hand. Scything one
         // used to throw the whole yield away.
         if (state == CropState.Ready)
         {
             Interact("Harvest", scythingSound);
-            Harvest(inventory);
+            Harvest(planting);
             return;
         }
 
@@ -168,7 +170,7 @@ public class FarmPlot : MonoBehaviour
 
             case ToolType.Seeds:
                 Interact("Plant", plantingSound);
-                PlantSeed(inventory);
+                PlantSeed(planting, inventory);
                 break;
 
             case ToolType.WateringCan:
@@ -217,7 +219,7 @@ public class FarmPlot : MonoBehaviour
         Debug.Log("Soil tilled. Ready for a seed.");
     }
 
-    private void PlantSeed(PlayerPlanting inventory)
+    private void PlantSeed(PlayerPlanting planting, Inventory inventory)
     {
         if (state != CropState.Empty)
         {
@@ -225,20 +227,27 @@ public class FarmPlot : MonoBehaviour
             return;
         }
 
-        Plant plant = baseData.plants.FirstOrDefault(x => x.id == inventory.id);
+        int id = inventory.CurrentSeed;
+
+        // Through the inventory so the runtime copy is used and alchemy
+        // upgrades to grow time and resistances actually take effect.
+        Plant plant = inventory.PlantData(id);
         if (plant == null)
         {
-            Debug.Log($"No plant data found for id {inventory.id}.");
+            Debug.Log($"No plant data found for id {id}.");
             return;
         }
 
         // Seeds are per species now, so planting spends a seed of exactly the
         // type the player has selected.
-        if (!inventory.UseSeed(plant.id))
+        if (!planting.UseSeed(plant.id))
         {
             Debug.Log($"You have no {plant.namePlant} seeds.");
             return;
         }
+
+        // Species can define their own grow time; 0 keeps the plot default.
+        activeGrowTime = plant.groundTimer > 0f ? plant.groundTimer : growTime;
 
         currentPlant = plant;
         state = CropState.Planted;
@@ -345,6 +354,7 @@ public class FarmPlot : MonoBehaviour
         public float waterLevel;
         public float dryTimer;
         public float soilIntegrity;
+        public float activeGrowTime;
     }
 
     public Snapshot Capture()
@@ -356,7 +366,8 @@ public class FarmPlot : MonoBehaviour
             growthTimer = growthTimer,
             waterLevel = waterLevel,
             dryTimer = dryTimer,
-            soilIntegrity = soilIntegrity
+            soilIntegrity = soilIntegrity,
+            activeGrowTime = activeGrowTime
         };
     }
 
@@ -368,6 +379,7 @@ public class FarmPlot : MonoBehaviour
         waterLevel = snapshot.waterLevel;
         dryTimer = snapshot.dryTimer;
         soilIntegrity = snapshot.soilIntegrity;
+        activeGrowTime = snapshot.activeGrowTime > 0f ? snapshot.activeGrowTime : growTime;
         UpdateSprite();
     }
 
