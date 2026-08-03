@@ -27,13 +27,19 @@ public class WeatherManager : MonoBehaviour
 {
     public static WeatherManager Instance { get; private set; }
 
+    // Clear spells between the storms. Without them harsh weather never let up,
+    // and since soil damage accumulates at 0.15 per 5s tick, every unresisted
+    // plot was guaranteed to be destroyed roughly every 35 seconds forever.
     [Header("Forecast")]
     [SerializeField]
     private ForecastEntry[] forecast =
     {
-        new ForecastEntry { type = WeatherType.Rainstorm, duration = 45f },
-        new ForecastEntry { type = WeatherType.Windstorm, duration = 45f },
-        new ForecastEntry { type = WeatherType.Heatwave, duration = 45f },
+        new ForecastEntry { type = WeatherType.Clear, duration = 30f },
+        new ForecastEntry { type = WeatherType.Rainstorm, duration = 25f },
+        new ForecastEntry { type = WeatherType.Clear, duration = 30f },
+        new ForecastEntry { type = WeatherType.Windstorm, duration = 25f },
+        new ForecastEntry { type = WeatherType.Clear, duration = 30f },
+        new ForecastEntry { type = WeatherType.Heatwave, duration = 25f },
     };
 
     [Header("Soil Damage")]
