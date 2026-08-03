@@ -20,9 +20,6 @@ public class PlayerTools : MonoBehaviour
 {
     public ToolType currentTool = ToolType.Hoe;
 
-    // Optional: only used to look up the selected seed's name for toolText.
-    [SerializeField] private DataPlants baseData;
-
     [SerializeField] private TMPro.TextMeshProUGUI toolText;
 
     private PlayerPlanting planting;
@@ -38,11 +35,6 @@ public class PlayerTools : MonoBehaviour
         // Cached rather than re-resolved: PlayerPlanting.Inv creates a component
         // when none exists, which must not happen during teardown.
         inventory = planting.Inv;
-
-        if (baseData == null)
-        {
-            baseData = inventory.plants;
-        }
 
         inventory.OnChanged += UpdateToolText;
 
@@ -161,13 +153,7 @@ public class PlayerTools : MonoBehaviour
             return;
         }
 
-        Canvas canvas = FindAnyObjectByType<Canvas>();
-        if (canvas == null)
-        {
-            var canvasObject = new GameObject("HUD Canvas", typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
-            canvas = canvasObject.GetComponent<Canvas>();
-            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-        }
+        Canvas canvas = HudCanvas.Get();
 
         var textObject = new GameObject("Tool Text", typeof(TextMeshProUGUI));
         textObject.transform.SetParent(canvas.transform, false);

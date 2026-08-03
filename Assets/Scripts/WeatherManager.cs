@@ -94,13 +94,7 @@ public class WeatherManager : MonoBehaviour
             return;
         }
 
-        Canvas canvas = FindAnyObjectByType<Canvas>();
-        if (canvas == null)
-        {
-            var canvasObject = new GameObject("HUD Canvas", typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
-            canvas = canvasObject.GetComponent<Canvas>();
-            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-        }
+        Canvas canvas = HudCanvas.Get();
 
         var textObject = new GameObject("Weather Text", typeof(TextMeshProUGUI));
         textObject.transform.SetParent(canvas.transform, false);
