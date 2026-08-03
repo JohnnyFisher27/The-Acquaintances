@@ -4,7 +4,13 @@ using UnityEngine;
 public class PlayerHunger : MonoBehaviour
 {
     [SerializeField] private float maxHunger = 1000f;
-    [SerializeField] private float depletionRate = 5f;
+
+    // A full bar lasts maxHunger/depletionRate seconds. At 1.5 that is 667s,
+    // which is almost exactly the night period (660s), so the player eats about
+    // once per day period. At the old rate of 5 a bar lasted 200s, meaning
+    // roughly seven meals per in-game day, which left no room for anything but
+    // growing food.
+    [SerializeField] private float depletionRate = 1.5f;
 
     public event Action OnDepleted;
 

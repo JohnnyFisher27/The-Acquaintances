@@ -2296,7 +2296,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHunger
   maxHunger: 1000
-  depletionRate: 5
+  depletionRate: 1.5
 --- !u!95 &1092648757
 Animator:
   serializedVersion: 7
