@@ -159,20 +159,21 @@ public class FarmPlot : MonoBehaviour
                     animator.SetBool("IsInteracting", true);
                     animator.SetTrigger("Harvest");
                     SoundEffectsManager.instance.PlaySound(scythingSound, transform, 1f);
-                    Harvest(inventory);
+                    Harvest(planting);
                 } else {
                     animator.SetBool("IsInteracting", true);
                     animator.SetTrigger("Plant");
                     SoundEffectsManager.instance.PlaySound(plantingSound, transform, 1f);
-                    PlantSeed(inventory);
+                    PlantSeed(planting.id, inventory);
                 }
                 break;
 
             case ToolType.WateringCan:
                 if (state == CropState.Ready) {
                     animator.SetBool("IsInteracting", true);
+                    animator.SetTrigger("Harvest");
                     SoundEffectsManager.instance.PlaySound(scythingSound, transform, 1f);
-                    Harvest(inventory);
+                    Harvest(planting);
                 } else { 
                     animator.SetBool("IsInteracting", true);
                     animator.SetTrigger("Water");
