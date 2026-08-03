@@ -25,7 +25,9 @@ MonoBehaviour:
     rainResist: 0
     windResist: 0
     foodYield: 0
-    harvestHealthPenalty: 0
+    seedYield: 1
+    hungerRestored: 0
+    eatHealthPenalty: 0
     placeholderColor: {r: 0.95, g: 0.55, b: 0.15, a: 1}
     plantedSpr: {fileID: 8735322932182825036, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
     grownedSpr: {fileID: -8406855179093674905, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
@@ -44,7 +46,9 @@ MonoBehaviour:
     rainResist: 0.5
     windResist: 0
     foodYield: 0
-    harvestHealthPenalty: 0
+    seedYield: 1
+    hungerRestored: 0
+    eatHealthPenalty: 0
     placeholderColor: {r: 0.25, g: 0.55, b: 0.95, a: 1}
     plantedSpr: {fileID: 8735322932182825036, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
     grownedSpr: {fileID: -8406855179093674905, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
@@ -63,7 +67,9 @@ MonoBehaviour:
     rainResist: 0
     windResist: 0.5
     foodYield: 0
-    harvestHealthPenalty: 0
+    seedYield: 1
+    hungerRestored: 0
+    eatHealthPenalty: 0
     placeholderColor: {r: 0.35, g: 0.75, b: 0.4, a: 1}
     plantedSpr: {fileID: 8735322932182825036, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
     grownedSpr: {fileID: -8406855179093674905, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
@@ -82,7 +88,9 @@ MonoBehaviour:
     rainResist: 0
     windResist: 0
     foodYield: 0
-    harvestHealthPenalty: 0
+    seedYield: 0
+    hungerRestored: 0
+    eatHealthPenalty: 0
     placeholderColor: {r: 0.85, g: 0.85, b: 0.95, a: 1}
     plantedSpr: {fileID: 8735322932182825036, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
     grownedSpr: {fileID: -8406855179093674905, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
@@ -105,14 +113,20 @@ MonoBehaviour:
     heatResist: 0
     rainResist: 0
     windResist: 0
-    foodYield: 0
-    harvestHealthPenalty: 0.1
+    foodYield: 1
+    seedYield: 1
+    hungerRestored: 400
+    eatHealthPenalty: 0.1
     placeholderColor: {r: 0.95, g: 0.85, b: 0.25, a: 1}
     plantedSpr: {fileID: -7639202294550026373, guid: 7585ebecfe4ef4127bf1ed3dcd9cc16d, type: 3}
     grownedSpr: {fileID: -7639202294550026373, guid: 7585ebecfe4ef4127bf1ed3dcd9cc16d, type: 3}
     readySpr: {fileID: -7639202294550026373, guid: 7585ebecfe4ef4127bf1ed3dcd9cc16d, type: 3}
     witheredSpr: {fileID: -8978410056028038932, guid: 7585ebecfe4ef4127bf1ed3dcd9cc16d, type: 3}
-    neccesaryItems: []
+    neccesaryItems:
+    - id: 4
+      cant: 1
+    - id: 1
+      cant: 2
   - namePlant: Pinch Point
     id: 6
     category: 2
@@ -123,14 +137,20 @@ MonoBehaviour:
     heatResist: 0
     rainResist: 0
     windResist: 0
-    foodYield: 0
-    harvestHealthPenalty: 0.1
+    foodYield: 1
+    seedYield: 1
+    hungerRestored: 400
+    eatHealthPenalty: 0.1
     placeholderColor: {r: 0.9, g: 0.15, b: 0.35, a: 1}
     plantedSpr: {fileID: 0}
     grownedSpr: {fileID: 0}
     readySpr: {fileID: 0}
     witheredSpr: {fileID: 0}
-    neccesaryItems: []
+    neccesaryItems:
+    - id: 4
+      cant: 1
+    - id: 2
+      cant: 2
   - namePlant: Vertigo
     id: 7
     category: 2
@@ -141,14 +161,20 @@ MonoBehaviour:
     heatResist: 0
     rainResist: 0
     windResist: 0
-    foodYield: 0
-    harvestHealthPenalty: 0.1
+    foodYield: 1
+    seedYield: 1
+    hungerRestored: 400
+    eatHealthPenalty: 0.1
     placeholderColor: {r: 0.55, g: 0.25, b: 0.85, a: 1}
     plantedSpr: {fileID: 0}
     grownedSpr: {fileID: 0}
     readySpr: {fileID: 0}
     witheredSpr: {fileID: 0}
-    neccesaryItems: []
+    neccesaryItems:
+    - id: 4
+      cant: 1
+    - id: 3
+      cant: 2
   - namePlant: Tomato
     id: 8
     category: 0
@@ -160,7 +186,9 @@ MonoBehaviour:
     rainResist: 0
     windResist: 0
     foodYield: 2
-    harvestHealthPenalty: 0
+    seedYield: 2
+    hungerRestored: 250
+    eatHealthPenalty: 0
     placeholderColor: {r: 0.85, g: 0.3, b: 0.15, a: 1}
     plantedSpr: {fileID: 0}
     grownedSpr: {fileID: 0}
@@ -178,7 +206,9 @@ MonoBehaviour:
     rainResist: 0
     windResist: 0
     foodYield: 1
-    harvestHealthPenalty: 0
+    seedYield: 2
+    hungerRestored: 150
+    eatHealthPenalty: 0
     placeholderColor: {r: 0.45, g: 0.7, b: 0.3, a: 1}
     plantedSpr: {fileID: -2599745249533707853, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
     grownedSpr: {fileID: -7638271809763469650, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
@@ -196,10 +226,16 @@ MonoBehaviour:
     rainResist: 0
     windResist: 0
     foodYield: 3
-    harvestHealthPenalty: 0
+    seedYield: 1
+    hungerRestored: 200
+    eatHealthPenalty: 0
     placeholderColor: {r: 0.45, g: 0.15, b: 0.35, a: 1}
     plantedSpr: {fileID: 0}
     grownedSpr: {fileID: 0}
     readySpr: {fileID: 0}
     witheredSpr: {fileID: 0}
-    neccesaryItems: []
+    neccesaryItems:
+    - id: 8
+      cant: 2
+    - id: 9
+      cant: 2
