@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public enum WeatherType
@@ -79,7 +80,43 @@ public class WeatherManager : MonoBehaviour
     private void Start()
     {
         plots = FindObjectsByType<FarmPlot>();
+        EnsureWeatherText();
         Advance();
+    }
+
+    // No scene wires these up, which left the climate system invisible: the
+    // player had no way to see the current weather or what was coming. Build a
+    // readout when one is missing, same trick PlayerTools uses.
+    private void EnsureWeatherText()
+    {
+        if (weatherText != null)
+        {
+            return;
+        }
+
+        Canvas canvas = FindAnyObjectByType<Canvas>();
+        if (canvas == null)
+        {
+            var canvasObject = new GameObject("HUD Canvas", typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
+            canvas = canvasObject.GetComponent<Canvas>();
+            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        }
+
+        var textObject = new GameObject("Weather Text", typeof(TextMeshProUGUI));
+        textObject.transform.SetParent(canvas.transform, false);
+
+        var rect = textObject.GetComponent<RectTransform>();
+        rect.anchorMin = new Vector2(1f, 1f);
+        rect.anchorMax = new Vector2(1f, 1f);
+        rect.pivot = new Vector2(1f, 1f);
+        rect.anchoredPosition = new Vector2(-16f, -16f);
+        rect.sizeDelta = new Vector2(360f, 80f);
+
+        weatherText = textObject.GetComponent<TextMeshProUGUI>();
+        weatherText.fontSize = 22f;
+        weatherText.alignment = TextAlignmentOptions.TopRight;
+        weatherText.color = Color.white;
+        weatherText.raycastTarget = false;
     }
 
     private void Update()
@@ -177,11 +214,6 @@ public class WeatherManager : MonoBehaviour
         damageTimer = 0f;
         current = forecast[forecastIndex].type;
 
-        if (weatherText != null)
-        {
-            weatherText.text = current.ToString();
-        }
-
         UpdateForecastDisplay();
         Debug.Log($"Weather changed: {current} for {forecast[forecastIndex].duration}s");
     }
@@ -196,6 +228,12 @@ public class WeatherManager : MonoBehaviour
         if (timerText != null)
         {
             timerText.text = Mathf.CeilToInt(TimeRemaining).ToString();
+        }
+
+        // Single label carries all three when the separate ones are unwired.
+        if (weatherText != null && forecastText == null && timerText == null)
+        {
+            weatherText.text = $"Weather: {current}\nNext: {Next} in {Mathf.CeilToInt(TimeRemaining)}s";
         }
     }
 }

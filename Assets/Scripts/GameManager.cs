@@ -7,7 +7,8 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private DataPlants baseData;
 
-    public RunTimePlants runtimePlants;
+    // Rebuilt from the asset every run in Awake, so it must not be serialized.
+    [System.NonSerialized] public RunTimePlants runtimePlants;
 
     private void Awake()
     {

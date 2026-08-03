@@ -449,5 +449,8 @@ public class FarmPlot : MonoBehaviour
         }
 
         spriteRenderer.sprite = sprite;
+
+        bool untilledWithoutArt = state == CropState.Untilled && untilledSprite == null;
+        spriteRenderer.color = untilledWithoutArt ? new Color(0.62f, 0.55f, 0.45f) : Color.white;
     }
 }
