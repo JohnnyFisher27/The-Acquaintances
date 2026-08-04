@@ -1050,6 +1050,7 @@ GameObject:
   m_Component:
   - component: {fileID: 659454298}
   - component: {fileID: 659454297}
+  - component: {fileID: 659454299}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1086,6 +1087,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &659454299
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 659454296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04c8677a2264e413687f51fa9fd4ccb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SoundEffectsManager
+  soundFXObject: {fileID: 0}
 --- !u!1 &679797289
 GameObject:
   m_ObjectHideFlags: 0
@@ -1904,6 +1918,7 @@ GameObject:
   - component: {fileID: 1819344635}
   - component: {fileID: 1819344634}
   - component: {fileID: 1819344633}
+  - component: {fileID: 1819344642}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1924,8 +1939,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerTools
   currentTool: 0
-  maxSeedId: 10
-  baseData: {fileID: 11400000, guid: 5506ffa8ea568be47ac5fefe28ba46d2, type: 2}
   toolText: {fileID: 1819116131}
 --- !u!114 &1819344634
 MonoBehaviour:
@@ -1940,9 +1953,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerPlanting
   inputActions: {fileID: -944628639613478452, guid: 8f40f70ae925c48578eb1ad7520b5771, type: 3}
-  id: 1
-  seeds: 5
-  food: 0
   hungerRestoredPerFood: 250
   farmplot: {fileID: 0}
 --- !u!95 &1819344635
@@ -1998,6 +2008,7 @@ MonoBehaviour:
   moveSpeed: 6
   acceleration: 50
   deceleration: 60
+  grassWalking: {fileID: 0}
 --- !u!70 &1819344638
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -2137,6 +2148,43 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1819344642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1819344632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e53f5884ae5f654cbdaa2acc5570861, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Inventory
+  inventory:
+  - kind: 1
+    id: 1
+    cant: 1
+  plants: {fileID: 11400000, guid: 5506ffa8ea568be47ac5fefe28ba46d2, type: 2}
+  container: {fileID: 0}
+  panelInventory: {fileID: 0}
+  prefabItem: {fileID: 0}
+  startingItems:
+  - kind: 1
+    id: 1
+    cant: 2
+  - kind: 1
+    id: 2
+    cant: 2
+  - kind: 1
+    id: 3
+    cant: 2
+  - kind: 1
+    id: 8
+    cant: 2
+  - kind: 1
+    id: 9
+    cant: 2
+  currentSeed: 1
 --- !u!1 &1820429424
 GameObject:
   m_ObjectHideFlags: 0
@@ -4739,15 +4787,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0a830dc80b08c2429b902272ee8acff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FarmPlot
-  baseData: {fileID: 11400000, guid: 5506ffa8ea568be47ac5fefe28ba46d2, type: 2}
   growTime: 15
-  foodYield: 1
   waterPerUse: 0.5
   witherGracePeriod: 10
   untilledSprite: {fileID: 0}
   emptySoilSprite: {fileID: -7385789195546760866, guid: 047d761fa6bfa44e088fc3eaf84ddd2f, type: 3}
+  tillingSound: {fileID: 0}
+  plantingSound: {fileID: 0}
+  wateringSound: {fileID: 0}
+  scythingSound: {fileID: 0}
+  plantGrownSound: {fileID: 0}
   animator: {fileID: 1819344635}
-  growthText: {fileID: 1777877511}
   state: 0
   growthTimer: 0
 --- !u!4 &2046483497

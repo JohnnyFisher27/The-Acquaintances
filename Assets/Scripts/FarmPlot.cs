@@ -144,7 +144,7 @@ public class FarmPlot : MonoBehaviour
 
         if (growthTimer >= activeGrowTime)
         {
-            SoundEffectsManager.instance.PlaySound(plantGrownSound, transform, 1f);
+         // SoundEffectsManager.instance.PlaySound(plantGrownSound, transform, 1f);
             state = CropState.Ready;
             UpdateSprite();
         }
@@ -166,7 +166,7 @@ public class FarmPlot : MonoBehaviour
             case ToolType.Hoe:
                 animator.SetBool("IsInteracting", true);
                 animator.SetTrigger("Till");
-                SoundEffectsManager.instance.PlaySound(tillingSound, transform, 1f);
+              //  SoundEffectsManager.instance.PlaySound(tillingSound, transform, 1f);
                 Till();
                 break;
 
@@ -174,13 +174,13 @@ public class FarmPlot : MonoBehaviour
                 if (state == CropState.Ready) {
                     animator.SetBool("IsInteracting", true);
                     animator.SetTrigger("Harvest");
-                    SoundEffectsManager.instance.PlaySound(scythingSound, transform, 1f);
+                  //  SoundEffectsManager.instance.PlaySound(scythingSound, transform, 1f);
                     Harvest(planting);
                 } else {
                     animator.SetBool("IsInteracting", true);
                     animator.SetTrigger("Plant");
-                    SoundEffectsManager.instance.PlaySound(plantingSound, transform, 1f);
-                    PlantSeed(planting.id, inventory);
+                  //  SoundEffectsManager.instance.PlaySound(plantingSound, transform, 1f);
+                    PlantSeed(planting, inventory);
                 }
                 break;
 
@@ -188,12 +188,12 @@ public class FarmPlot : MonoBehaviour
                 if (state == CropState.Ready) {
                     animator.SetBool("IsInteracting", true);
                     animator.SetTrigger("Harvest");
-                    SoundEffectsManager.instance.PlaySound(scythingSound, transform, 1f);
+                //    SoundEffectsManager.instance.PlaySound(scythingSound, transform, 1f);
                     Harvest(planting);
                 } else { 
                     animator.SetBool("IsInteracting", true);
                     animator.SetTrigger("Water");
-                    SoundEffectsManager.instance.PlaySound(wateringSound, transform, 1f);
+                 //   SoundEffectsManager.instance.PlaySound(wateringSound, transform, 1f);
                     Water();
                 }
                 break;
