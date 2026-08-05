@@ -1,10 +1,13 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Cinemachine;
 public class Teleport : MonoBehaviour
 {
     public Transform pointToTeleport;
     public Teleport teleportToUse;
+    public Collider2D confiner;
+    public CinemachineConfiner2D confiner2D;
 
     private ScreenFader screenFader;
 
@@ -31,6 +34,9 @@ public class Teleport : MonoBehaviour
         screenFader.FadeOut();
         yield return new WaitForSeconds(1);
         player.transform.position = teleportToUse.pointToTeleport.position;
+        confiner2D.BoundingShape2D = null;
+        yield return null;
+        confiner2D.BoundingShape2D = teleportToUse.confiner;
         yield return new WaitForSeconds(0.5f);
         screenFader.FadeIn();
     }
