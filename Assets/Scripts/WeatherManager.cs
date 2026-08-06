@@ -1,68 +1,104 @@
+using System;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 public enum WeatherType
 {
     Clear,
-    Heatwave,
-    Rainstorm,
-    Windstorm
+    Heat,
+    Rain,
+    Wind
 }
 
-[System.Serializable]
-public struct ForecastEntry
-{
-    public WeatherType type;
-    public float duration;
-}
-
-// Cycles through a fixed forecast of weather conditions, each lasting its
-// own time limit (Ex. Heavy Rain -> Strong Winds -> Extreme Heat -> repeat).
-// While a harsh weather is active it chips every farm plot's soil integrity
-// down in fixed steps until the plot is destroyed. A plant's weather
-// resistance (Plant.heatResist/rainResist/windResist) reduces or, at 1,
-// fully negates each step - this stands in for "alchemy enhancement" until
-// the alchemy machine exists.
+// Alternates a long clear spell with a randomly chosen harsh condition, per the
+// prototype spec: 1:30 of clear weather to plant and water in, then 1:00 of
+// heat, rain or wind.
+//
+// While a harsh condition is active it chips every farm plot's soil integrity
+// down in fixed steps until the plot is destroyed. A plant's weather resistance
+// (Plant.heatResist/rainResist/windResist) reduces or, at 1, fully negates each
+// step - that is what the alchemy table's enhancement upgrades buy.
+//
+// WeatherVisuals turns the state changes broadcast here into the on-screen
+// shift; this class deliberately owns no rendering of its own beyond the HUD
+// readout.
 public class WeatherManager : MonoBehaviour
 {
     public static WeatherManager Instance { get; private set; }
 
-    // Clear spells between the storms. Without them harsh weather never let up,
-    // and since soil damage accumulates at 0.15 per 5s tick, every unresisted
-    // plot was guaranteed to be destroyed roughly every 35 seconds forever.
-    [Header("Forecast")]
-    [SerializeField]
-    private ForecastEntry[] forecast =
+    private static readonly WeatherType[] HarshConditions =
     {
-        new ForecastEntry { type = WeatherType.Clear, duration = 30f },
-        new ForecastEntry { type = WeatherType.Rainstorm, duration = 25f },
-        new ForecastEntry { type = WeatherType.Clear, duration = 30f },
-        new ForecastEntry { type = WeatherType.Windstorm, duration = 25f },
-        new ForecastEntry { type = WeatherType.Clear, duration = 30f },
-        new ForecastEntry { type = WeatherType.Heatwave, duration = 25f },
+        WeatherType.Heat,
+        WeatherType.Rain,
+        WeatherType.Wind
     };
+
+    [Header("Cycle")]
+    [SerializeField] private float clearDuration = 90f;
+    [SerializeField] private float harshDuration = 60f;
 
     [Header("Soil Damage")]
     [SerializeField] private float damageTickInterval = 5f;
     [Range(0f, 1f)]
     [SerializeField] private float damageStep = 0.15f;
-    [SerializeField] private float heatwaveDepletionMultiplier = 2.5f;
+    [SerializeField] private float heatDepletionMultiplier = 2.5f;
     [SerializeField] private float rainRefillPerSecond = 0.05f;
+
+    // Soil integrity never recovers on its own, so damage carries across storms
+    // and a plot that survives two of them still dies. Left at 0 - the behaviour
+    // the prototype has had all along - so turning it on is a deliberate call.
+    [Range(0f, 1f)]
+    [SerializeField] private float clearSoilRecoveryPerSecond = 0f;
 
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI weatherText;
     [SerializeField] private TextMeshProUGUI forecastText;
     [SerializeField] private TextMeshProUGUI timerText;
 
-    public WeatherType current { get; private set; } = WeatherType.Clear;
-    public WeatherType Next => forecast.Length == 0 ? WeatherType.Clear : forecast[(forecastIndex + 1) % forecast.Length].type;
-    public float TimeRemaining => forecast.Length == 0 ? 0f : Mathf.Max(0f, forecast[forecastIndex].duration - elapsed);
+    // Fired whenever the condition changes, including the initial clear spell.
+    public event Action<WeatherType> OnWeatherChanged;
 
-    private int forecastIndex = -1;
+    public WeatherType current { get; private set; } = WeatherType.Clear;
+
+    // During clear weather this is the storm that has already been rolled, so
+    // the HUD can warn the player in advance and they can plant accordingly.
+    public WeatherType Next => current == WeatherType.Clear ? pendingHarsh : WeatherType.Clear;
+    public float TimeRemaining => Mathf.Max(0f, currentDuration - elapsed);
+
+    private WeatherType pendingHarsh = WeatherType.Rain;
+    private WeatherType lastHarsh = WeatherType.Clear;
+    private float currentDuration;
     private float elapsed;
     private float damageTimer;
-    private FarmPlot[] plots;
+    private FarmPlot[] plots = Array.Empty<FarmPlot>();
+
+    // No scene but SampleScene has ever contained a WeatherManager, so the whole
+    // climate system was dead in WorldScene. Rather than hand-edit that scene's
+    // YAML, install one on load wherever there are plots to rain on. A manager
+    // placed in a scene by hand still wins, so Inspector tuning keeps working.
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+    private static void InstallBootstrap()
+    {
+        SceneManager.sceneLoaded += (scene, mode) => EnsureExists();
+        EnsureExists();
+    }
+
+    private static void EnsureExists()
+    {
+        if (FindAnyObjectByType<WeatherManager>() != null)
+        {
+            return;
+        }
+
+        // Menu and tutorial scenes have no farm, and no business having weather.
+        if (FindAnyObjectByType<FarmPlot>() == null)
+        {
+            return;
+        }
+
+        new GameObject("Weather Manager", typeof(WeatherManager));
+    }
 
     private void Awake()
     {
@@ -79,9 +115,47 @@ public class WeatherManager : MonoBehaviour
 
     private void Start()
     {
-        plots = FindObjectsByType<FarmPlot>();
+        RefreshPlots();
         EnsureWeatherText();
-        Advance();
+        EnsureVisuals();
+
+        // Open on a clear spell so the player can plant before the first storm.
+        current = WeatherType.Clear;
+        currentDuration = clearDuration;
+        elapsed = 0f;
+        damageTimer = 0f;
+        pendingHarsh = RollHarsh();
+
+        UpdateForecastDisplay();
+        OnWeatherChanged?.Invoke(current);
+    }
+
+    // Plots were captured once and never again, so anything spawned or enabled
+    // after startup was immune to weather for the rest of the run.
+    private void RefreshPlots()
+    {
+        plots = FindObjectsByType<FarmPlot>();
+
+        foreach (FarmPlot plot in plots)
+        {
+            if (plot.GetComponent<PlotStormBar>() == null)
+            {
+                plot.gameObject.AddComponent<PlotStormBar>();
+            }
+
+            if (plot.GetComponent<PlotWeatherEffects>() == null)
+            {
+                plot.gameObject.AddComponent<PlotWeatherEffects>();
+            }
+        }
+    }
+
+    private void EnsureVisuals()
+    {
+        if (FindAnyObjectByType<WeatherVisuals>() == null)
+        {
+            gameObject.AddComponent<WeatherVisuals>();
+        }
     }
 
     // No scene wires these up, which left the climate system invisible: the
@@ -100,28 +174,23 @@ public class WeatherManager : MonoBehaviour
         textObject.transform.SetParent(canvas.transform, false);
 
         var rect = textObject.GetComponent<RectTransform>();
-        rect.anchorMin = new Vector2(1f, 1f);
-        rect.anchorMax = new Vector2(1f, 1f);
-        rect.pivot = new Vector2(1f, 1f);
-        rect.anchoredPosition = new Vector2(-16f, -16f);
+        rect.anchorMin = new Vector2(0f, 0f);
+        rect.anchorMax = new Vector2(0f, 0f);
+        rect.pivot = new Vector2(0f, 0f);
+        rect.anchoredPosition = new Vector2(16f, 16f);
         rect.sizeDelta = new Vector2(360f, 80f);
 
         weatherText = textObject.GetComponent<TextMeshProUGUI>();
         weatherText.fontSize = 22f;
-        weatherText.alignment = TextAlignmentOptions.TopRight;
+        weatherText.alignment = TextAlignmentOptions.BottomLeft;
         weatherText.color = Color.white;
         weatherText.raycastTarget = false;
     }
 
     private void Update()
     {
-        if (forecast.Length == 0)
-        {
-            return;
-        }
-
         elapsed += Time.deltaTime;
-        if (elapsed >= forecast[forecastIndex].duration)
+        if (elapsed >= currentDuration)
         {
             Advance();
         }
@@ -134,27 +203,38 @@ public class WeatherManager : MonoBehaviour
     // Heat drains water faster on top of the soil damage ticks. Heat-resistant plants are less affected.
     public float GetDepletionMultiplier(Plant plant)
     {
-        if (current != WeatherType.Heatwave || plant == null)
+        if (current != WeatherType.Heat || plant == null)
         {
             return 1f;
         }
 
-        return Mathf.Lerp(heatwaveDepletionMultiplier, 1f, plant.heatResist);
+        return Mathf.Lerp(heatDepletionMultiplier, 1f, plant.heatResist);
     }
 
-    // Rain also tops up water levels while it's damaging soil integrity.
+    // Rain tops up water levels while it's damaging soil integrity; clear
+    // weather optionally lets the soil knit back together.
     private void ApplyContinuousEffects()
     {
-        if (current != WeatherType.Rainstorm)
+        if (current == WeatherType.Rain)
         {
+            foreach (FarmPlot plot in plots)
+            {
+                if (plot != null && plot.CurrentPlant != null)
+                {
+                    plot.AddWater(rainRefillPerSecond * Time.deltaTime);
+                }
+            }
             return;
         }
 
-        foreach (FarmPlot plot in plots)
+        if (current == WeatherType.Clear && clearSoilRecoveryPerSecond > 0f)
         {
-            if (plot.CurrentPlant != null)
+            foreach (FarmPlot plot in plots)
             {
-                plot.AddWater(rainRefillPerSecond * Time.deltaTime);
+                if (plot != null)
+                {
+                    plot.RecoverSoil(clearSoilRecoveryPerSecond * Time.deltaTime);
+                }
             }
         }
     }
@@ -177,6 +257,11 @@ public class WeatherManager : MonoBehaviour
 
         foreach (FarmPlot plot in plots)
         {
+            if (plot == null)
+            {
+                continue;
+            }
+
             Plant plant = plot.CurrentPlant;
             if (plant == null)
             {
@@ -185,9 +270,9 @@ public class WeatherManager : MonoBehaviour
 
             float resist = current switch
             {
-                WeatherType.Rainstorm => plant.rainResist,
-                WeatherType.Windstorm => plant.windResist,
-                WeatherType.Heatwave => plant.heatResist,
+                WeatherType.Rain => plant.rainResist,
+                WeatherType.Wind => plant.windResist,
+                WeatherType.Heat => plant.heatResist,
                 _ => 0f
             };
 
@@ -197,19 +282,44 @@ public class WeatherManager : MonoBehaviour
 
     private void Advance()
     {
-        if (forecast.Length == 0)
+        if (current == WeatherType.Clear)
         {
+            current = pendingHarsh;
+            currentDuration = harshDuration;
+        }
+        else
+        {
+            lastHarsh = current;
             current = WeatherType.Clear;
-            return;
+            currentDuration = clearDuration;
+            pendingHarsh = RollHarsh();
         }
 
-        forecastIndex = (forecastIndex + 1) % forecast.Length;
         elapsed = 0f;
         damageTimer = 0f;
-        current = forecast[forecastIndex].type;
+
+        // Picks up plots that were tilled, destroyed or spawned since last time.
+        RefreshPlots();
 
         UpdateForecastDisplay();
-        Debug.Log($"Weather changed: {current} for {forecast[forecastIndex].duration}s");
+        OnWeatherChanged?.Invoke(current);
+        Debug.Log($"[Weather] {current} for {currentDuration}s (next: {Next})");
+    }
+
+    // Random per the spec, but never the same storm twice running - back-to-back
+    // repeats read as a bug to players and waste the resistance variety.
+    private WeatherType RollHarsh()
+    {
+        WeatherType pick = HarshConditions[UnityEngine.Random.Range(0, HarshConditions.Length)];
+        if (pick != lastHarsh)
+        {
+            return pick;
+        }
+
+        // Step to a different one rather than re-rolling in a loop.
+        int index = Array.IndexOf(HarshConditions, pick);
+        int offset = UnityEngine.Random.Range(1, HarshConditions.Length);
+        return HarshConditions[(index + offset) % HarshConditions.Length];
     }
 
     private void UpdateForecastDisplay()

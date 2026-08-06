@@ -105,15 +105,15 @@ public class FarmPlot : MonoBehaviour
 
             if (WeatherManager.Instance != null && currentPlant != null) 
             {
-                switch (WeatherManager.Instance.current) 
+                switch (WeatherManager.Instance.current)
                 {
-                    case WeatherType.Heatwave:
+                    case WeatherType.Heat:
                         effectiveGrace *= Mathf.Lerp(0.3f, 1f, currentPlant.heatResist);
                         break;
-                    case WeatherType.Windstorm:
+                    case WeatherType.Wind:
                         effectiveGrace *= Mathf.Lerp(0.3f, 1f, currentPlant.windResist);
                         break;
-                    case WeatherType.Rainstorm:
+                    case WeatherType.Rain:
                         effectiveGrace *= Mathf.Lerp(1f, 2f, currentPlant.rainResist);
                         break;
                 }
@@ -362,6 +362,19 @@ public class FarmPlot : MonoBehaviour
         {
             DestroySoil();
         }
+    }
+
+    // Optional counterpart to ApplySoilDamage, driven by WeatherManager during
+    // clear spells. Off by default, so soil damage still accumulates unless the
+    // team turns recovery on.
+    public void RecoverSoil(float amount)
+    {
+        if (!HasLivingCrop || amount <= 0f)
+        {
+            return;
+        }
+
+        soilIntegrity = Mathf.Min(1f, soilIntegrity + amount);
     }
 
     // Snapshot of everything needed to rewind this plot to an earlier state
