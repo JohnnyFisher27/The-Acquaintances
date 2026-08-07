@@ -22,6 +22,13 @@ public class PlayerTools : MonoBehaviour
 
     [SerializeField] private TMPro.TextMeshProUGUI toolText;
 
+    [SerializeField] private GameObject item1Image;
+    [SerializeField] private GameObject item2Image;
+    [SerializeField] private GameObject item3Image;
+
+    [SerializeField] private Color transparentColor = new Color(1f, 1f, 1f, 0.5f);
+    [SerializeField] private Color fullColor = new Color(1f, 1f, 1f, 1f);
+
     private PlayerPlanting planting;
     private Inventory inventory;
 
@@ -35,9 +42,11 @@ public class PlayerTools : MonoBehaviour
         // Cached rather than re-resolved: PlayerPlanting.Inv creates a component
         // when none exists, which must not happen during teardown.
         inventory = planting.Inv;
+        SelectTool(ToolType.Hoe, "Hoe");
 
         inventory.OnChanged += UpdateToolText;
 
+        MakeTransparent("Hoe");
         EnsureToolText();
         SelectFirstOwnedSeed();
         UpdateToolText();
@@ -56,10 +65,10 @@ public class PlayerTools : MonoBehaviour
         Keyboard kb = Keyboard.current;
         if (kb != null)
         {
-            if (kb.digit1Key.wasPressedThisFrame) SelectTool(ToolType.Hoe);
-            if (kb.digit2Key.wasPressedThisFrame) SelectTool(ToolType.Seeds);
-            if (kb.digit3Key.wasPressedThisFrame) SelectTool(ToolType.WateringCan);
-            if (kb.digit4Key.wasPressedThisFrame) SelectTool(ToolType.Scythe);
+            if (kb.digit1Key.wasPressedThisFrame) SelectTool(ToolType.Hoe, "Hoe");
+            if (kb.digit2Key.wasPressedThisFrame) SelectTool(ToolType.Seeds, "Seeds");
+            if (kb.digit3Key.wasPressedThisFrame) SelectTool(ToolType.WateringCan, "Watering Can");
+            if (kb.digit4Key.wasPressedThisFrame) SelectTool(ToolType.Scythe, "Scythe");
 
             // R cycles which seed type gets planted.
             if (kb.rKey.wasPressedThisFrame)
@@ -86,9 +95,10 @@ public class PlayerTools : MonoBehaviour
         }
     }
 
-    private void SelectTool(ToolType tool)
-    {
+    private void SelectTool(ToolType tool, string toolName)
+    {   
         currentTool = tool;
+        MakeTransparent(toolName);
         UpdateToolText();
         Debug.Log($"Selected tool: {tool}");
     }
@@ -169,5 +179,26 @@ public class PlayerTools : MonoBehaviour
         toolText.fontSize = 22f;
         toolText.color = Color.white;
         toolText.raycastTarget = false;
+    }
+
+    private void MakeTransparent(string toolName)
+    {
+        item1Image.GetComponent<Image>().color = transparentColor;
+        item2Image.GetComponent<Image>().color = transparentColor;
+        item3Image.GetComponent<Image>().color = transparentColor;
+        
+        switch (toolName)
+        {
+            case "Hoe":
+                item1Image.GetComponent<Image>().color = fullColor;
+                break;
+            case "Seeds":
+                item2Image.GetComponent<Image>().color = fullColor;
+                break;
+            case "Watering Can":
+                item3Image.GetComponent<Image>().color = fullColor;
+                break;
+        }
+        
     }
 }
