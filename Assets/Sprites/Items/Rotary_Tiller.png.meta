@@ -1,16 +1,10 @@
 fileFormatVersion: 2
-guid: 2c7a30589a1b34071b262d06c8e08f9c
+guid: 5bd8f2ab37eab43328925eed9ca3fd3c
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4476248675469081847
-    second: Axe-Sheet_0
-  - first:
-      213: 3124987522673976238
-    second: Axe-Sheet_1
-  - first:
-      213: -5087319354869123527
-    second: Axe-Sheet_2
+      213: -5501282217587165820
+    second: Rotary_Tiller_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -106,56 +100,12 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Axe-Sheet_0
+      name: Rotary_Tiller_0
       rect:
         serializedVersion: 2
-        x: 3
-        y: 34
-        width: 24
-        height: 29
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 9034a5cbb8b21e1c0800000000000000
-      internalID: -4476248675469081847
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Axe-Sheet_1
-      rect:
-        serializedVersion: 2
-        x: 35
-        y: 34
-        width: 24
-        height: 29
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: ea3a280589f2e5b20800000000000000
-      internalID: 3124987522673976238
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Axe-Sheet_2
-      rect:
-        serializedVersion: 2
-        x: 12
-        y: 2
-        width: 9
+        x: 2
+        y: 4
+        width: 28
         height: 27
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -165,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9367e0220063669b0800000000000000
-      internalID: -5087319354869123527
+      spriteID: 4853b8b58f487a3b0800000000000000
+      internalID: -5501282217587165820
       vertices: []
       indices: 
       edges: []
@@ -185,9 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Axe-Sheet_0: -4476248675469081847
-      Axe-Sheet_1: 3124987522673976238
-      Axe-Sheet_2: -5087319354869123527
+      Rotary_Tiller_0: -5501282217587165820
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
