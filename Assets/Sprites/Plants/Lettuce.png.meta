@@ -1,16 +1,19 @@
 fileFormatVersion: 2
-guid: 2c7a30589a1b34071b262d06c8e08f9c
+guid: 5cf26486df2c1473a87c8cdd264dd2b8
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4476248675469081847
-    second: Axe-Sheet_0
+      213: -7523970955242101793
+    second: Lettuce_0
   - first:
-      213: 3124987522673976238
-    second: Axe-Sheet_1
+      213: 4535925395531633388
+    second: Lettuce_1
   - first:
-      213: -5087319354869123527
-    second: Axe-Sheet_2
+      213: -2956972527834942131
+    second: Lettuce_2
+  - first:
+      213: 1574771824586098789
+    second: Lettuce_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -106,13 +109,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Axe-Sheet_0
+      name: Lettuce_0
       rect:
         serializedVersion: 2
-        x: 3
-        y: 34
-        width: 24
-        height: 29
+        x: 9
+        y: 43
+        width: 11
+        height: 9
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -121,20 +124,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9034a5cbb8b21e1c0800000000000000
-      internalID: -4476248675469081847
+      spriteID: fd32078a74c759790800000000000000
+      internalID: -7523970955242101793
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Axe-Sheet_1
+      name: Lettuce_1
       rect:
         serializedVersion: 2
-        x: 35
-        y: 34
-        width: 24
-        height: 29
+        x: 39
+        y: 43
+        width: 14
+        height: 9
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -143,20 +146,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ea3a280589f2e5b20800000000000000
-      internalID: 3124987522673976238
+      spriteID: ce216586d18d2fe30800000000000000
+      internalID: 4535925395531633388
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Axe-Sheet_2
+      name: Lettuce_2
       rect:
         serializedVersion: 2
-        x: 12
-        y: 2
-        width: 9
-        height: 27
+        x: 7
+        y: 11
+        width: 14
+        height: 11
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -165,8 +168,30 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9367e0220063669b0800000000000000
-      internalID: -5087319354869123527
+      spriteID: d453fc31729b6f6d0800000000000000
+      internalID: -2956972527834942131
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lettuce_3
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 11
+        width: 15
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5688fb681a6bad510800000000000000
+      internalID: 1574771824586098789
       vertices: []
       indices: 
       edges: []
@@ -185,9 +210,10 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Axe-Sheet_0: -4476248675469081847
-      Axe-Sheet_1: 3124987522673976238
-      Axe-Sheet_2: -5087319354869123527
+      Lettuce_0: -7523970955242101793
+      Lettuce_1: 4535925395531633388
+      Lettuce_2: -2956972527834942131
+      Lettuce_3: 1574771824586098789
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

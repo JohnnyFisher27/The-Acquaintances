@@ -48,13 +48,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FarmPlot
   growTime: 15
-  foodYield: 1
   waterPerUse: 0.5
   witherGracePeriod: 10
   untilledSprite: {fileID: 0}
-  emptySoilSprite: {fileID: 3620058418051504474, guid: 866dd813e11bf42dbbef1d1ac4dae926, type: 3}
+  emptySoilSprite: {fileID: -2200252834671627533, guid: 306359f4865a7f04089aa738a6a296b1, type: 3}
+  tillingSound: {fileID: 0}
+  plantingSound: {fileID: 0}
+  wateringSound: {fileID: 0}
+  scythingSound: {fileID: 0}
+  plantGrownSound: {fileID: 0}
   animator: {fileID: 0}
-  growthText: {fileID: 0}
   state: 0
   growthTimer: 0
 --- !u!212 &844635055608749322

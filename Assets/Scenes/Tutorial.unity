@@ -1114,8 +1114,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerTools
   currentTool: 0
-  maxSeedId: 10
-  baseData: {fileID: 11400000, guid: 5506ffa8ea568be47ac5fefe28ba46d2, type: 2}
   toolText: {fileID: 0}
 --- !u!114 &2072284347
 MonoBehaviour:
@@ -1130,9 +1128,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerPlanting
   inputActions: {fileID: -944628639613478452, guid: 8f40f70ae925c48578eb1ad7520b5771, type: 3}
-  id: 1
-  seeds: 5
-  food: 0
   hungerRestoredPerFood: 250
   farmplot: {fileID: 0}
 --- !u!95 &2072284348
@@ -1328,6 +1323,67 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &2074586017
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2407803327247111364, guid: 376807cf277d6154a83d38379cc98553, type: 3}
+      propertyPath: animator
+      value: 
+      objectReference: {fileID: 2072284348}
+    - target: {fileID: 4487532105740849016, guid: 376807cf277d6154a83d38379cc98553, type: 3}
+      propertyPath: m_Name
+      value: Slot
+      objectReference: {fileID: 0}
+    - target: {fileID: 8872424770808881270, guid: 376807cf277d6154a83d38379cc98553, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 5.46
+      objectReference: {fileID: 0}
+    - target: {fileID: 8872424770808881270, guid: 376807cf277d6154a83d38379cc98553, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.31
+      objectReference: {fileID: 0}
+    - target: {fileID: 8872424770808881270, guid: 376807cf277d6154a83d38379cc98553, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8872424770808881270, guid: 376807cf277d6154a83d38379cc98553, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8872424770808881270, guid: 376807cf277d6154a83d38379cc98553, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8872424770808881270, guid: 376807cf277d6154a83d38379cc98553, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8872424770808881270, guid: 376807cf277d6154a83d38379cc98553, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8872424770808881270, guid: 376807cf277d6154a83d38379cc98553, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8872424770808881270, guid: 376807cf277d6154a83d38379cc98553, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8872424770808881270, guid: 376807cf277d6154a83d38379cc98553, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 376807cf277d6154a83d38379cc98553, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -1336,3 +1392,4 @@ SceneRoots:
   - {fileID: 1854887519}
   - {fileID: 1372668449}
   - {fileID: 2072284354}
+  - {fileID: 2074586017}
