@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TMPro;
 
 // The player's view onto the shared Inventory. Seeds and food used to be two
 // loose ints here; they are now stacks in Inventory so that what you harvest is
@@ -12,6 +13,8 @@ public class PlayerPlanting: MonoBehaviour
 
     [Header("Food")]
     [SerializeField] private float hungerRestoredPerFood = 250f;
+
+    [SerializeField] private TextMeshProUGUI foodCountText;
 
     private PlayerHunger playerHunger;
     private Inventory inv;
@@ -107,6 +110,7 @@ public class PlayerPlanting: MonoBehaviour
         }
 
         List<Item> edible = EdibleProduce();
+        foodCountText.text = edible.Sum(x => x.cant).ToString();
         if (edible.Count == 0)
         {
             Debug.Log("You have nothing edible to eat.");
