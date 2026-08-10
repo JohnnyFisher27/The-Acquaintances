@@ -28,6 +28,11 @@ public class WeatherVisuals : MonoBehaviour
     // instantly reads as a bug.
     [SerializeField] private float transitionDuration = 1.5f;
 
+    [Header("Heat Glare")]
+    [SerializeField] private Color glareColor = new Color(1f, 0.94f, 0.72f, 0.5f);
+    // Fraction of the view the glare reaches down from the top edge.
+    [SerializeField] private float glareCoverage = 0.7f;
+
     [Header("Overlay Overrides (optional)")]
     [SerializeField] private ParticleSystem heatOverride;
     [SerializeField] private ParticleSystem rainOverride;
@@ -41,8 +46,16 @@ public class WeatherVisuals : MonoBehaviour
     private ParticleSystem rainOverlay;
     private ParticleSystem windOverlay;
 
+    // The doc's "bright light covers the screen from the top" during heat.
+    private SpriteRenderer heatGlare;
+    private float glareAlpha;
+
     private Color targetTint;
     private float targetIntensity;
+
+    // Cached view extents, needed again when wind is re-aimed on each storm.
+    private float viewWidth;
+    private float viewHeight;
 
     private void Awake()
     {
@@ -56,9 +69,19 @@ public class WeatherVisuals : MonoBehaviour
         globalLight = FindGlobalLight();
         view = Camera.main != null ? Camera.main : FindAnyObjectByType<Camera>();
 
+        // Cover whatever the camera can actually see, so no effect reveals its
+        // edges on a wide monitor. Measured here rather than inside Configure
+        // so the glare still sizes correctly when every overlay is overridden.
+        if (view != null)
+        {
+            viewHeight = view.orthographic ? view.orthographicSize * 2f : 10f;
+            viewWidth = viewHeight * view.aspect;
+        }
+
         heatOverlay = BuildOverlay(WeatherType.Heat, heatOverride);
         rainOverlay = BuildOverlay(WeatherType.Rain, rainOverride);
         windOverlay = BuildOverlay(WeatherType.Wind, windOverride);
+        heatGlare = BuildHeatGlare();
 
         weather.OnWeatherChanged += Apply;
         Apply(weather.current);
@@ -109,9 +132,31 @@ public class WeatherVisuals : MonoBehaviour
                 break;
         }
 
+        if (condition == WeatherType.Wind)
+        {
+            AimWind();
+        }
+
         SetEmitting(heatOverlay, condition == WeatherType.Heat);
         SetEmitting(rainOverlay, condition == WeatherType.Rain);
         SetEmitting(windOverlay, condition == WeatherType.Wind);
+    }
+
+    // Move the emitter to the upwind edge and turn it around, so the streaks
+    // agree with the direction the player is being shoved. Stretch render mode
+    // aligns the streak to velocity, so the sprites flip on their own.
+    private void AimWind()
+    {
+        if (windOverlay == null || windOverride != null)
+        {
+            return;
+        }
+
+        float sign = weather.WindDirection.x < 0f ? -1f : 1f;
+
+        ParticleSystem.ShapeModule shape = windOverlay.shape;
+        shape.position = new Vector3(-sign * viewWidth * 0.7f, 0f, 0f);
+        shape.rotation = new Vector3(0f, 90f * sign, 0f);
     }
 
     // Stop emitting rather than clearing, so particles already on screen finish
@@ -146,6 +191,28 @@ public class WeatherVisuals : MonoBehaviour
         globalLight.intensity = Mathf.Lerp(globalLight.intensity, targetIntensity, step);
     }
 
+    private void LateUpdate()
+    {
+        if (heatGlare == null)
+        {
+            return;
+        }
+
+        float target = weather.current == WeatherType.Heat ? 1f : 0f;
+        float step = transitionDuration > 0f ? Time.deltaTime / transitionDuration : 1f;
+        glareAlpha = Mathf.MoveTowards(glareAlpha, target, step);
+
+        bool visible = glareAlpha > 0f;
+        if (heatGlare.gameObject.activeSelf != visible)
+        {
+            heatGlare.gameObject.SetActive(visible);
+        }
+
+        Color color = glareColor;
+        color.a *= glareAlpha;
+        heatGlare.color = color;
+    }
+
     // ------------------------------------------------------------------
     // Runtime-built overlays
     // ------------------------------------------------------------------
@@ -178,12 +245,72 @@ public class WeatherVisuals : MonoBehaviour
         return system;
     }
 
+    // A warm wash hanging off the top edge of the view, brightest at the top
+    // and falling away downward. The global light already warms the whole farm
+    // during heat; this is the directional glare sitting on top of it.
+    private SpriteRenderer BuildHeatGlare()
+    {
+        if (view == null || viewHeight <= 0f)
+        {
+            return null;
+        }
+
+        float coverage = Mathf.Clamp01(glareCoverage);
+        float band = viewHeight * coverage;
+
+        var go = new GameObject("Heat Glare");
+        go.transform.SetParent(view.transform, false);
+
+        // Top edge of the band pinned to the top edge of the view.
+        go.transform.localPosition = new Vector3(0f, viewHeight * 0.5f - band * 0.5f, 1f);
+        go.transform.localScale = new Vector3(viewWidth * 1.05f, band, 1f);
+
+        var renderer = go.AddComponent<SpriteRenderer>();
+        renderer.sprite = BuildDownwardFade(64);
+
+        // Under the particle overlays, over everything in the world.
+        renderer.sortingOrder = 31999;
+        renderer.color = new Color(glareColor.r, glareColor.g, glareColor.b, 0f);
+
+        go.SetActive(false);
+        return renderer;
+    }
+
+    // One world unit square so the caller's localScale sets the size directly.
+    private static Sprite BuildDownwardFade(int res)
+    {
+        var tex = new Texture2D(res, res, TextureFormat.RGBA32, false)
+        {
+            filterMode = FilterMode.Bilinear,
+            wrapMode = TextureWrapMode.Clamp
+        };
+
+        var pixels = new Color[res * res];
+        for (int y = 0; y < res; y++)
+        {
+            // Texture row 0 is the bottom, so the top of the band is y = res-1.
+            float t = (y + 0.5f) / res;
+
+            // Squared so the falloff hangs near the top instead of washing the
+            // whole band evenly.
+            float alpha = t * t;
+
+            for (int x = 0; x < res; x++)
+            {
+                pixels[y * res + x] = new Color(1f, 1f, 1f, alpha);
+            }
+        }
+
+        tex.SetPixels(pixels);
+        tex.Apply();
+
+        return Sprite.Create(tex, new Rect(0f, 0f, res, res), new Vector2(0.5f, 0.5f), res);
+    }
+
     private void Configure(ParticleSystem system, WeatherType condition)
     {
-        // Cover whatever the camera can actually see, so the effect never
-        // reveals its edges on a wide monitor.
-        float height = view.orthographic ? view.orthographicSize * 2f : 10f;
-        float width = height * view.aspect;
+        float height = viewHeight;
+        float width = viewWidth;
 
         ParticleSystem.MainModule main = system.main;
         main.simulationSpace = ParticleSystemSimulationSpace.Local;

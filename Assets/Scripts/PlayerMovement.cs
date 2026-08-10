@@ -84,8 +84,21 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Vector2 targetVelocity = moveInput * moveSpeed;
-        float rate = moveInput.sqrMagnitude > 0f ? acceleration : deceleration;
+        // Wind is folded into the target rather than applied as a separate
+        // force: this line overwrites linearVelocity outright, so anything
+        // pushing the body from another component would be wiped here.
+        // Standing still means drifting with the gust; walking into it costs
+        // ground, and walking with it carries you.
+        Vector2 wind = WeatherManager.Instance != null
+            ? WeatherManager.Instance.WindVelocity
+            : Vector2.zero;
+
+        Vector2 targetVelocity = moveInput * moveSpeed + wind;
+
+        // Deceleration is for letting go of the stick. Drifting in wind is not
+        // coasting to a stop, so it still accelerates toward the gust.
+        bool driving = moveInput.sqrMagnitude > 0f || wind.sqrMagnitude > 0f;
+        float rate = driving ? acceleration : deceleration;
         rb.linearVelocity = Vector2.MoveTowards(rb.linearVelocity, targetVelocity, rate * Time.fixedDeltaTime);
     }
 }
