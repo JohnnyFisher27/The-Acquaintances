@@ -35,7 +35,7 @@ public class WeatherManager : MonoBehaviour
     };
 
     [Header("Cycle")]
-    [SerializeField] private float clearDuration = 90f;
+    [SerializeField] private float clearDuration = 120f;
     [SerializeField] private float harshDuration = 60f;
 
     [Header("Soil Damage")]
@@ -51,6 +51,15 @@ public class WeatherManager : MonoBehaviour
     [Range(0f, 1f)]
     [SerializeField] private float clearSoilRecoveryPerSecond = 0f;
 
+    [Header("Wind")]
+    // Added to the player's target velocity while wind blows. moveSpeed is 6,
+    // so walking into a gust roughly halves your ground speed without ever
+    // making the farm unwalkable.
+    [SerializeField] private float windPushSpeed = 2.2f;
+    [Range(0f, 1f)]
+    [SerializeField] private float gustVariation = 0.4f;
+    [SerializeField] private float gustFrequency = 0.35f;
+
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI weatherText;
     [SerializeField] private TextMeshProUGUI forecastText;
@@ -65,6 +74,20 @@ public class WeatherManager : MonoBehaviour
     // the HUD can warn the player in advance and they can plant accordingly.
     public WeatherType Next => current == WeatherType.Clear ? pendingHarsh : WeatherType.Clear;
     public float TimeRemaining => Mathf.Max(0f, currentDuration - elapsed);
+
+    // Which way this storm's wind blows, rolled once when wind starts. Kept
+    // purely horizontal: the player, the plant lean and the streak overlay all
+    // read off it, and a diagonal gust makes all three harder to parse.
+    public Vector2 WindDirection { get; private set; } = Vector2.right;
+
+    // Pulses so wind arrives in gusts rather than as a constant shove.
+    public float GustStrength => 1f + Mathf.Sin(Time.time * gustFrequency * Mathf.PI * 2f) * gustVariation;
+
+    // Velocity wind adds to anything standing in it. Zero outside a wind storm,
+    // so callers can add it unconditionally.
+    public Vector2 WindVelocity => current == WeatherType.Wind
+        ? WindDirection * (windPushSpeed * GustStrength)
+        : Vector2.zero;
 
     private WeatherType pendingHarsh = WeatherType.Rain;
     private WeatherType lastHarsh = WeatherType.Clear;
@@ -286,6 +309,13 @@ public class WeatherManager : MonoBehaviour
         {
             current = pendingHarsh;
             currentDuration = harshDuration;
+
+            // Fresh gust direction per storm, so wind isn't always a shove in
+            // the same direction and the player has to re-read it each time.
+            if (current == WeatherType.Wind)
+            {
+                WindDirection = UnityEngine.Random.value < 0.5f ? Vector2.left : Vector2.right;
+            }
         }
         else
         {
