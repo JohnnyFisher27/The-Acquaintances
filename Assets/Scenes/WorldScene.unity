@@ -5673,6 +5673,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerPlanting
   inputActions: {fileID: -944628639613478452, guid: 8f40f70ae925c48578eb1ad7520b5771, type: 3}
   hungerRestoredPerFood: 250
+  foodCountText: {fileID: 0}
   farmplot: {fileID: 0}
 --- !u!95 &1819344635
 Animator:
@@ -5880,6 +5881,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Inventory
   inventory:
+  - kind: 1
+    id: 1
+    cant: 1
   - kind: 1
     id: 1
     cant: 1
@@ -17636,6 +17640,7 @@ GameObject:
   - component: {fileID: 2124910884}
   - component: {fileID: 2124910883}
   - component: {fileID: 2124910882}
+  - component: {fileID: 2124910885}
   m_Layer: 0
   m_Name: GrowthChamber
   m_TagString: Untagged
@@ -17740,6 +17745,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2124910885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2124910881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 959f48ff16f2be54084b503c1e69063e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CraftingSystem
+  prefab: {fileID: 0}
+  recipes: 
+  container: {fileID: 0}
+  upgrades: []
+  typeSystem: 0
+  panel: {fileID: 0}
 --- !u!1 &2142514126
 GameObject:
   m_ObjectHideFlags: 0
