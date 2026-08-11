@@ -8,6 +8,8 @@ public class DataPlants : ScriptableObject
     public List<Plant> plants = new List<Plant>();
 }
 
+
+
 // Healthy: ordinary food. Special: alchemy reagents, inedible. NonFatal: edible
 // but it costs you health, which is the point of the name.
 public enum PlantCategory
@@ -17,15 +19,18 @@ public enum PlantCategory
     NonFatal
 }
 
+
 public enum TypeItem { Plant, Objects }
 
 [System.Serializable]
 
 public class Plant
 {
+    
     public string namePlant;
     public int id;
     public PlantCategory category = PlantCategory.Healthy;
+
 
     // Icon shown in the inventory panel and recipe rows.
     public Sprite spr;
@@ -74,6 +79,8 @@ public class Plant
     public Sprite witheredSpr;
 
     public List<Item> neccesaryItems = new List<Item>();
+    public float pretectRadis;
+    public float multiplierProtect;
 
     public Plant()
     {
@@ -115,6 +122,9 @@ public class Plant
         grownedSpr = other.grownedSpr;
         readySpr = other.readySpr;
         witheredSpr = other.witheredSpr;
+
+        pretectRadis = other.pretectRadis;
+        multiplierProtect = other.multiplierProtect;
 
         neccesaryItems = new List<Item>(other.neccesaryItems);
     }

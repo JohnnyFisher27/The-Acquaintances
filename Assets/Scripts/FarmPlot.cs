@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Linq;
-
+using System.Collections.Generic;
 public class FarmPlot : MonoBehaviour
 {
     // Untilled is first so plots saved in the scene before this state
@@ -17,6 +17,7 @@ public class FarmPlot : MonoBehaviour
 
     [Header("Crop Settings")]
     [SerializeField] private float growTime = 15f;
+    [SerializeField] private LayerMask layerFarmPlots;
 
     // Resolved per planting from Plant.groundTimer, falling back to growTime.
     private float activeGrowTime = 15f;
@@ -46,6 +47,11 @@ public class FarmPlot : MonoBehaviour
     private float soilIntegrity = 1f;
     private Plant currentPlant;
     private DaySystem daySystem;
+
+    public float protectionRadius;
+    private bool protective;
+    private List<FarmPlot> protectionSources = new List<FarmPlot>();
+    private float currentMutiplierProtection;
 
     public Plant CurrentPlant => currentPlant;
     public float WaterNormalized => waterLevel;
@@ -79,6 +85,7 @@ public class FarmPlot : MonoBehaviour
     {
         daySystem = FindAnyObjectByType<DaySystem>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        protectionRadius = 0;
         UpdateSprite();
     }
 
@@ -108,13 +115,13 @@ public class FarmPlot : MonoBehaviour
                 switch (WeatherManager.Instance.current)
                 {
                     case WeatherType.Heat:
-                        effectiveGrace *= Mathf.Lerp(0.3f, 1f, currentPlant.heatResist);
+                        effectiveGrace *= Mathf.Lerp(0.3f, 1f, Mathf.Clamp01( currentPlant.heatResist * currentMutiplierProtection));
                         break;
                     case WeatherType.Wind:
-                        effectiveGrace *= Mathf.Lerp(0.3f, 1f, currentPlant.windResist);
+                        effectiveGrace *= Mathf.Lerp(0.3f, 1f, Mathf.Clamp01(currentPlant.windResist * currentMutiplierProtection));
                         break;
                     case WeatherType.Rain:
-                        effectiveGrace *= Mathf.Lerp(1f, 2f, currentPlant.rainResist);
+                        effectiveGrace *= Mathf.Lerp(1f, 2f, Mathf.Clamp01(currentPlant.rainResist * currentMutiplierProtection));
                         break;
                 }
             }
@@ -146,6 +153,12 @@ public class FarmPlot : MonoBehaviour
         {
          // SoundEffectsManager.instance.PlaySound(plantGrownSound, transform, 1f);
             state = CropState.Ready;
+            if (currentPlant.pretectRadis > 0)
+            {
+                protective = true;
+                protectionRadius = currentPlant.pretectRadis;
+                ActiveProtection();
+            }
             UpdateSprite();
         }
     }
@@ -276,6 +289,8 @@ public class FarmPlot : MonoBehaviour
         growthTimer = 0f;
         soilIntegrity = 1f;
 
+        
+
         UpdateSprite();
         Debug.Log("Seed planted. Water it to begin growing.");
     }
@@ -333,6 +348,7 @@ public class FarmPlot : MonoBehaviour
         // Seed recovered off the crop itself, the way you'd save seed from a
         // real harvest. Sterile species (seedYield 0) have to be re-crafted.
         inventory.AddSeeds(plant.id, plant.seedYield);
+        DescativeProtect();
 
         ClearPlot();
         Debug.Log($"Harvested {produce} {plant.namePlant}, recovered {plant.seedYield} seed(s).");
@@ -445,7 +461,10 @@ public class FarmPlot : MonoBehaviour
         dryTimer = 0f;
         soilIntegrity = 1f;
         growthTimer = 0f;
+        protective = false;
+        protectionRadius = 0f;
         UpdateSprite();
+
     }
 
     private void UpdateSprite()
@@ -485,5 +504,41 @@ public class FarmPlot : MonoBehaviour
 
         bool untilledWithoutArt = state == CropState.Untilled && untilledSprite == null;
         spriteRenderer.color = untilledWithoutArt ? new Color(0.62f, 0.55f, 0.45f) : Color.white;
+
     }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, protectionRadius);
+    }
+
+    public void ActiveProtection() 
+    {
+        if (!protective) return;
+        DescativeProtect();
+
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, protectionRadius, layerFarmPlots);
+        foreach (Collider2D collider in colliders) 
+        {
+            FarmPlot plot = collider.GetComponent<FarmPlot>();
+            if (plot == null || plot == this) continue;
+
+            SetMultiplierProtection(currentPlant.multiplierProtect);
+            protectionSources.Add(plot);
+        }
+    }
+
+    private void DescativeProtect() 
+    {   foreach (FarmPlot item in protectionSources)
+        {
+            item.SetMultiplierProtection(1);
+        }
+        protectionSources.Clear();
+    }
+
+    private void SetMultiplierProtection(float newMultiplier) 
+    {
+        currentMutiplierProtection = newMultiplier;
+    }
+
 }

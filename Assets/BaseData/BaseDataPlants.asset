@@ -16,8 +16,8 @@ MonoBehaviour:
   - namePlant: Sunspot
     id: 1
     category: 1
-    type: 0
     spr: {fileID: 3620058418051504474, guid: 866dd813e11bf42dbbef1d1ac4dae926, type: 3}
+    type: 0
     multMorning: 2
     multAfternoon: 1
     multNight: 0.5
@@ -36,11 +36,13 @@ MonoBehaviour:
     readySpr: {fileID: -7639202294550026373, guid: 7585ebecfe4ef4127bf1ed3dcd9cc16d, type: 3}
     witheredSpr: {fileID: 282952652117209374, guid: 866dd813e11bf42dbbef1d1ac4dae926, type: 3}
     neccesaryItems: []
+    pretectRadis: 1.5
+    multiplierProtect: 0.5
   - namePlant: Blue river pedals
     id: 2
     category: 1
-    type: 0
     spr: {fileID: 3620058418051504474, guid: 866dd813e11bf42dbbef1d1ac4dae926, type: 3}
+    type: 0
     multMorning: 2
     multAfternoon: 2
     multNight: 0.2
@@ -59,11 +61,13 @@ MonoBehaviour:
     readySpr: {fileID: 8133688423319878165, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
     witheredSpr: {fileID: 0}
     neccesaryItems: []
+    pretectRadis: 0
+    multiplierProtect: 0
   - namePlant: Breeze root
     id: 3
     category: 1
-    type: 0
     spr: {fileID: 3620058418051504474, guid: 866dd813e11bf42dbbef1d1ac4dae926, type: 3}
+    type: 0
     multMorning: 0.5
     multAfternoon: 2
     multNight: 2.5
@@ -82,11 +86,13 @@ MonoBehaviour:
     readySpr: {fileID: 8133688423319878165, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
     witheredSpr: {fileID: 0}
     neccesaryItems: []
+    pretectRadis: 0
+    multiplierProtect: 0
   - namePlant: Mutated Seed
     id: 4
     category: 1
-    type: 0
     spr: {fileID: 3620058418051504474, guid: 866dd813e11bf42dbbef1d1ac4dae926, type: 3}
+    type: 0
     multMorning: 0.5
     multAfternoon: 2
     multNight: 2.5
@@ -105,15 +111,21 @@ MonoBehaviour:
     readySpr: {fileID: 8133688423319878165, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
     witheredSpr: {fileID: 0}
     neccesaryItems:
-    - id: 1
+    - kind: 0
+      id: 1
       cant: 2
-    - id: 2
+    - kind: 0
+      id: 2
       cant: 2
-    - id: 3
+    - kind: 0
+      id: 3
       cant: 2
+    pretectRadis: 0
+    multiplierProtect: 0
   - namePlant: Starlight
     id: 5
     category: 2
+    spr: {fileID: 0}
     type: 0
     multMorning: 1
     multAfternoon: 0.5
@@ -133,13 +145,18 @@ MonoBehaviour:
     readySpr: {fileID: -7639202294550026373, guid: 7585ebecfe4ef4127bf1ed3dcd9cc16d, type: 3}
     witheredSpr: {fileID: -8978410056028038932, guid: 7585ebecfe4ef4127bf1ed3dcd9cc16d, type: 3}
     neccesaryItems:
-    - id: 4
+    - kind: 0
+      id: 4
       cant: 1
-    - id: 1
+    - kind: 0
+      id: 1
       cant: 2
+    pretectRadis: 0
+    multiplierProtect: 0
   - namePlant: Pinch Point
     id: 6
     category: 2
+    spr: {fileID: 0}
     type: 0
     multMorning: 1.5
     multAfternoon: 1.5
@@ -159,13 +176,18 @@ MonoBehaviour:
     readySpr: {fileID: 0}
     witheredSpr: {fileID: 0}
     neccesaryItems:
-    - id: 4
+    - kind: 0
+      id: 4
       cant: 1
-    - id: 2
+    - kind: 0
+      id: 2
       cant: 2
+    pretectRadis: 0
+    multiplierProtect: 0
   - namePlant: Vertigo
     id: 7
     category: 2
+    spr: {fileID: 0}
     type: 0
     multMorning: 0.5
     multAfternoon: 1
@@ -185,13 +207,18 @@ MonoBehaviour:
     readySpr: {fileID: 0}
     witheredSpr: {fileID: 0}
     neccesaryItems:
-    - id: 4
+    - kind: 0
+      id: 4
       cant: 1
-    - id: 3
+    - kind: 0
+      id: 3
       cant: 2
+    pretectRadis: 0
+    multiplierProtect: 0
   - namePlant: Tomato
     id: 8
     category: 0
+    spr: {fileID: 0}
     type: 0
     multMorning: 1
     multAfternoon: 2
@@ -211,9 +238,12 @@ MonoBehaviour:
     readySpr: {fileID: 0}
     witheredSpr: {fileID: 0}
     neccesaryItems: []
+    pretectRadis: 0
+    multiplierProtect: 0
   - namePlant: Lettuce
     id: 9
     category: 0
+    spr: {fileID: 0}
     type: 0
     multMorning: 2
     multAfternoon: 1
@@ -233,9 +263,12 @@ MonoBehaviour:
     readySpr: {fileID: -6875792930259764646, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
     witheredSpr: {fileID: 0}
     neccesaryItems: []
+    pretectRadis: 0
+    multiplierProtect: 0
   - namePlant: Brambles
     id: 10
     category: 0
+    spr: {fileID: 0}
     type: 0
     multMorning: 1
     multAfternoon: 1.5
@@ -255,7 +288,11 @@ MonoBehaviour:
     readySpr: {fileID: 0}
     witheredSpr: {fileID: 0}
     neccesaryItems:
-    - id: 8
+    - kind: 0
+      id: 8
       cant: 2
-    - id: 9
+    - kind: 0
+      id: 9
       cant: 2
+    pretectRadis: 0
+    multiplierProtect: 0

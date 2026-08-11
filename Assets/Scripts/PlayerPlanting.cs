@@ -157,7 +157,7 @@ public class PlayerPlanting: MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("FarmPlot"))
+        if (other.CompareTag("FarmPlot")&& farmplot == null)
         {
             farmplot = other.GetComponent<FarmPlot>();
         }
