@@ -15,6 +15,7 @@ public class PlayerPlanting: MonoBehaviour
     [SerializeField] private float hungerRestoredPerFood = 250f;
 
     [SerializeField] private TextMeshProUGUI foodCountText;
+    private int currentFood = 0;
 
     private PlayerHunger playerHunger;
     private Inventory inv;
@@ -97,6 +98,8 @@ public class PlayerPlanting: MonoBehaviour
 
     public void AddProduce(int plantId, int amount)
     {
+        currentFood++;
+        foodCountText.text = currentFood.ToString();
         Inv.AddItem(ItemKind.Produce, plantId, amount);
     }
 
@@ -110,7 +113,7 @@ public class PlayerPlanting: MonoBehaviour
         }
 
         List<Item> edible = EdibleProduce();
-        foodCountText.text = edible.Sum(x => x.cant).ToString();
+        
         if (edible.Count == 0)
         {
             Debug.Log("You have nothing edible to eat.");
@@ -145,6 +148,7 @@ public class PlayerPlanting: MonoBehaviour
             Debug.Log($"Ate {name}. Restored {restored:F0} hunger.");
         }
 
+        currentFood--;
         return true;
     }
 
