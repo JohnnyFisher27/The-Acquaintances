@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: f2574893737f54a18af6ec895175b66a
+guid: 588a69e97b97b41259e35c1c6b8fd59b
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5514146882732004303
-    second: Time-Meter-1.png_0
+      213: 8920571943079530722
+    second: Start_button-1.png_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -75,7 +75,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Time-Meter-1.png_0
+      name: Start_button-1.png_0
       rect:
         serializedVersion: 2
-        x: 36
-        y: 3
-        width: 86
-        height: 86
+        x: 20
+        y: 26
+        width: 315
+        height: 92
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: fc39198ef5f268c40800000000000000
-      internalID: 5514146882732004303
+      spriteID: 2e052944bec3ccb70800000000000000
+      internalID: 8920571943079530722
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Time-Meter-1.png_0: 5514146882732004303
+      Start_button-1.png_0: 8920571943079530722
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
