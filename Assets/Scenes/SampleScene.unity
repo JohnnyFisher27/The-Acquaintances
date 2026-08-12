@@ -3465,10 +3465,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1438fc1f760f2a68c111ca1a2acf8cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WeatherManager
-  clearDuration: 120
-  harshDuration: 60
-  damageTickInterval: 5
-  damageStep: 0.15
+  clearDuration: 60
+  harshDuration: 30
+  damageTickInterval: 3
+  damageStep: 0.25
   heatDepletionMultiplier: 2.5
   rainRefillPerSecond: 0.05
   clearSoilRecoveryPerSecond: 0

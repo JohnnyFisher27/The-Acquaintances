@@ -36,7 +36,12 @@ public class Teleport : MonoBehaviour
         screenFader.FadeOut();
         yield return new WaitForSeconds(1);
         player.transform.position = teleportToUse.pointToTeleport.position;
-        player.GetComponent<PlayerMovement>().isInBarn = true;
+        // Both doors run this same script, so the flag has to flip rather than
+        // latch: it was stuck on after the first trip inside, which left the
+        // player walking on floorboards - and now sheltered from the weather -
+        // out in the middle of the farm.
+        PlayerMovement movement = player.GetComponent<PlayerMovement>();
+        movement.isInBarn = !movement.isInBarn;
         confiner2D.BoundingShape2D = null;
         yield return null;
         confiner2D.BoundingShape2D = teleportToUse.confiner;
