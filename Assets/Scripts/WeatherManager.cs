@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using TMPro;
 
 public enum WeatherType
 {
@@ -59,11 +58,6 @@ public class WeatherManager : MonoBehaviour
     [Range(0f, 1f)]
     [SerializeField] private float gustVariation = 0.4f;
     [SerializeField] private float gustFrequency = 0.35f;
-
-    [Header("UI")]
-    [SerializeField] private TextMeshProUGUI weatherText;
-    [SerializeField] private TextMeshProUGUI forecastText;
-    [SerializeField] private TextMeshProUGUI timerText;
 
     // Fired whenever the condition changes, including the initial clear spell.
     public event Action<WeatherType> OnWeatherChanged;
@@ -139,7 +133,7 @@ public class WeatherManager : MonoBehaviour
     private void Start()
     {
         RefreshPlots();
-        EnsureWeatherText();
+        EnsureHud();
         EnsureVisuals();
 
         // Open on a clear spell so the player can plant before the first storm.
@@ -149,7 +143,6 @@ public class WeatherManager : MonoBehaviour
         damageTimer = 0f;
         pendingHarsh = RollHarsh();
 
-        UpdateForecastDisplay();
         OnWeatherChanged?.Invoke(current);
     }
 
@@ -181,33 +174,15 @@ public class WeatherManager : MonoBehaviour
         }
     }
 
-    // No scene wires these up, which left the climate system invisible: the
-    // player had no way to see the current weather or what was coming. Build a
-    // readout when one is missing, same trick PlayerTools uses.
-    private void EnsureWeatherText()
+    // No scene wires up a readout, which left the climate system invisible: the
+    // player had no way to see the current weather or what was coming. Build the
+    // badge HUD when one is missing, same trick PlayerTools uses.
+    private void EnsureHud()
     {
-        if (weatherText != null)
+        if (GetComponent<WeatherHud>() == null && FindAnyObjectByType<WeatherHud>() == null)
         {
-            return;
+            gameObject.AddComponent<WeatherHud>();
         }
-
-        Canvas canvas = HudCanvas.Get();
-
-        var textObject = new GameObject("Weather Text", typeof(TextMeshProUGUI));
-        textObject.transform.SetParent(canvas.transform, false);
-
-        var rect = textObject.GetComponent<RectTransform>();
-        rect.anchorMin = new Vector2(0f, 0f);
-        rect.anchorMax = new Vector2(0f, 0f);
-        rect.pivot = new Vector2(0f, 0f);
-        rect.anchoredPosition = new Vector2(16f, 16f);
-        rect.sizeDelta = new Vector2(360f, 80f);
-
-        weatherText = textObject.GetComponent<TextMeshProUGUI>();
-        weatherText.fontSize = 22f;
-        weatherText.alignment = TextAlignmentOptions.BottomLeft;
-        weatherText.color = Color.white;
-        weatherText.raycastTarget = false;
     }
 
     private void Update()
@@ -220,7 +195,6 @@ public class WeatherManager : MonoBehaviour
 
         ApplyContinuousEffects();
         ApplyDamageTick();
-        UpdateForecastDisplay();
     }
 
     // Heat drains water faster on top of the soil damage ticks. Heat-resistant plants are less affected.
@@ -331,7 +305,6 @@ public class WeatherManager : MonoBehaviour
         // Picks up plots that were tilled, destroyed or spawned since last time.
         RefreshPlots();
 
-        UpdateForecastDisplay();
         OnWeatherChanged?.Invoke(current);
         Debug.Log($"[Weather] {current} for {currentDuration}s (next: {Next})");
     }
@@ -350,24 +323,5 @@ public class WeatherManager : MonoBehaviour
         int index = Array.IndexOf(HarshConditions, pick);
         int offset = UnityEngine.Random.Range(1, HarshConditions.Length);
         return HarshConditions[(index + offset) % HarshConditions.Length];
-    }
-
-    private void UpdateForecastDisplay()
-    {
-        if (forecastText != null)
-        {
-            forecastText.text = $"Next: {Next}";
-        }
-
-        if (timerText != null)
-        {
-            timerText.text = Mathf.CeilToInt(TimeRemaining).ToString();
-        }
-
-        // Single label carries all three when the separate ones are unwired.
-        if (weatherText != null && forecastText == null && timerText == null)
-        {
-            weatherText.text = $"Weather: {current}\nNext: {Next} in {Mathf.CeilToInt(TimeRemaining)}s";
-        }
     }
 }
