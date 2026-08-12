@@ -21,6 +21,8 @@ public class DayManager : MonoBehaviour
     private Vector3 playerCheckpoint;
     private int checkpointDay;
 
+    [SerializeField] private AudioClip dayMusic;
+
     // Hook up death handling and fade in from black at the start of a run.
     private void Start()
     {
@@ -42,6 +44,8 @@ public class DayManager : MonoBehaviour
             fader.SetBlack();
             fader.FadeIn();
         }
+
+        SoundEffectsManager.instance.PlaySound(dayMusic, transform, 1f, true);
     }
 
     private void Update()

@@ -25,6 +25,9 @@ public class CraftingSystem : MonoBehaviour
     private readonly List<GameObject> rows = new List<GameObject>();
     private bool refreshQueued;
 
+    [SerializeField] private AudioClip useMachineSound;
+    [SerializeField] private AudioClip machineRunningSound;
+
     private Inventory Inv
     {
         get
@@ -80,6 +83,7 @@ public class CraftingSystem : MonoBehaviour
     {
         if (collision.collider.CompareTag("Player") && panel != null && !panel.activeInHierarchy)
         {
+            SoundEffectsManager.instance.PlaySound(useMachineSound, transform, 1f);
             panel.SetActive(true);
             ShowRecipies();
         }
@@ -176,6 +180,7 @@ public class CraftingSystem : MonoBehaviour
         Button button = newRecipe.transform.GetChild(2).GetComponent<Button>();
         button.interactable = canCraft;
         button.onClick.AddListener(() => onClick());
+
     }
 
     // Check everything before spending anything, so a partial craft can never
@@ -197,7 +202,7 @@ public class CraftingSystem : MonoBehaviour
             Item need = p.neccesaryItems[i];
             Inv.RestItem(ItemKind.Produce, need.id, need.cant);
         }
-
+        SoundEffectsManager.instance.PlaySound(machineRunningSound, transform, 1f);
         return true;
     }
 

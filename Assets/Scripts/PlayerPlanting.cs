@@ -14,9 +14,6 @@ public class PlayerPlanting: MonoBehaviour
     [Header("Food")]
     [SerializeField] private float hungerRestoredPerFood = 250f;
 
-    [SerializeField] private TextMeshProUGUI foodCountText;
-    private int currentFood = 0;
-
     private PlayerHunger playerHunger;
     private Inventory inv;
 
@@ -98,9 +95,8 @@ public class PlayerPlanting: MonoBehaviour
 
     public void AddProduce(int plantId, int amount)
     {
-        currentFood++;
-        foodCountText.text = currentFood.ToString();
         Inv.AddItem(ItemKind.Produce, plantId, amount);
+
     }
 
     // Eats one produce, preferring the species currently selected so the player
@@ -148,7 +144,6 @@ public class PlayerPlanting: MonoBehaviour
             Debug.Log($"Ate {name}. Restored {restored:F0} hunger.");
         }
 
-        currentFood--;
         return true;
     }
 

@@ -10,6 +10,7 @@ public class Teleport : MonoBehaviour
     public CinemachineConfiner2D confiner2D;
 
     private ScreenFader screenFader;
+    [SerializeField] private AudioClip openDoorSound;
 
     private void Start()
     {
@@ -20,6 +21,7 @@ public class Teleport : MonoBehaviour
     {
         if (collision.CompareTag("Player")) 
         {
+            SoundEffectsManager.instance.PlaySound(openDoorSound, transform, 1f);
             CallTP(collision.gameObject);
         }
     }
@@ -34,6 +36,7 @@ public class Teleport : MonoBehaviour
         screenFader.FadeOut();
         yield return new WaitForSeconds(1);
         player.transform.position = teleportToUse.pointToTeleport.position;
+        player.GetComponent<PlayerMovement>().isInBarn = true;
         confiner2D.BoundingShape2D = null;
         yield return null;
         confiner2D.BoundingShape2D = teleportToUse.confiner;
