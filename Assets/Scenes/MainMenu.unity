@@ -198,6 +198,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 48565821}
   m_CullTransparentMesh: 1
+--- !u!1 &193798968
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 193798970}
+  - component: {fileID: 193798969}
+  m_Layer: 0
+  m_Name: SoundFXManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &193798969
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 193798968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04c8677a2264e413687f51fa9fd4ccb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SoundEffectsManager
+  soundFXObject: {fileID: 6111029685014915783, guid: e5a188f228b7246a1ad21c5a81e7ae80, type: 3}
+--- !u!4 &193798970
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 193798968}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 791.2989, y: 516.56726, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &924382303
 GameObject:
   m_ObjectHideFlags: 0
@@ -250,10 +295,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35baf87d224f0be4eb7bd3d2ea4c941a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayButton
-  gameSceneName: SampleScene
+  gameSceneName: WorldScene
   tutorialSceneName: Tutorial
   menuSceneName: MainMenu
   currentButton: {fileID: 924382303}
+  menuMusic: {fileID: 8300000, guid: 596eafe0254a3456aa1dd13be129472e, type: 3}
 --- !u!114 &924382306
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -392,6 +438,7 @@ MonoBehaviour:
   tutorialSceneName: Tutorial
   menuSceneName: MainMenu
   currentButton: {fileID: 970165583}
+  menuMusic: {fileID: 8300000, guid: 596eafe0254a3456aa1dd13be129472e, type: 3}
 --- !u!114 &970165586
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -960,3 +1007,4 @@ SceneRoots:
   - {fileID: 2024484680}
   - {fileID: 1854887519}
   - {fileID: 1372668449}
+  - {fileID: 193798970}

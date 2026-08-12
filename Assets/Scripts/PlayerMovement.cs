@@ -13,12 +13,14 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float acceleration = 50f;
     [SerializeField] private float deceleration = 60f;
     [SerializeField] private AudioClip grassWalking;
+    [SerializeField] private AudioClip woodWalking;
 
     private Rigidbody2D rb;
     private InputAction moveAction;
     private Vector2 moveInput;
     private float stepTimer;
     private AudioSource moveSource;
+    public bool isInBarn;
 
     private void Awake()
     {
@@ -52,8 +54,15 @@ public class PlayerMovement : MonoBehaviour
             stepTimer -= Time.deltaTime;
             if (stepTimer <= 0f)
             {
-                moveSource.PlayOneShot(grassWalking, 1f);
-                stepTimer = 0.6f; 
+                if (isInBarn)
+                {
+                    moveSource.PlayOneShot(woodWalking, 1f);
+                }
+                else
+                {
+                    moveSource.PlayOneShot(grassWalking, 1f);
+                }
+                stepTimer = 0.6f;
             }
 
             animator.SetBool("IsWalking", true);

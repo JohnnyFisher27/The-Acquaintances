@@ -18,7 +18,7 @@ public class SoundEffectsManager : MonoBehaviour
     public void PlaySound(AudioClip audioClip, Transform spawnTransform, float volume)
     {
         AudioSource audioSource = Instantiate(soundFXObject, spawnTransform.position, Quaternion.identity);
-        audioSource.volume = volume;
+        audioSource.volume = volume/2;
         audioSource.clip = audioClip;
         audioSource.Play();
 
