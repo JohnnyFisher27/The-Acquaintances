@@ -10,9 +10,9 @@ public enum WeatherType
     Wind
 }
 
-// Alternates a long clear spell with a randomly chosen harsh condition, per the
-// prototype spec: 1:30 of clear weather to plant and water in, then 1:00 of
-// heat, rain or wind.
+// Alternates a long clear spell with a randomly chosen harsh condition: 1:00 of
+// clear weather to plant and water in, then 0:30 of heat, rain or wind. Half the
+// original cycle, so a jam-length session sees several storms.
 //
 // While a harsh condition is active it chips every farm plot's soil integrity
 // down in fixed steps until the plot is destroyed. A plant's weather resistance
@@ -34,13 +34,17 @@ public class WeatherManager : MonoBehaviour
     };
 
     [Header("Cycle")]
-    [SerializeField] private float clearDuration = 120f;
-    [SerializeField] private float harshDuration = 60f;
+    [SerializeField] private float clearDuration = 60f;
+    [SerializeField] private float harshDuration = 30f;
 
     [Header("Soil Damage")]
-    [SerializeField] private float damageTickInterval = 5f;
+    // Storms are half as long now, so the damage has to land harder to still be
+    // a threat: an unresisted crop is destroyed four ticks (12s) into a storm,
+    // a half-resistant one lasts about one full storm, and only an enhanced
+    // plant walks away with soil to spare.
+    [SerializeField] private float damageTickInterval = 3f;
     [Range(0f, 1f)]
-    [SerializeField] private float damageStep = 0.15f;
+    [SerializeField] private float damageStep = 0.25f;
     [SerializeField] private float heatDepletionMultiplier = 2.5f;
     [SerializeField] private float rainRefillPerSecond = 0.05f;
 
@@ -77,9 +81,25 @@ public class WeatherManager : MonoBehaviour
     // Pulses so wind arrives in gusts rather than as a constant shove.
     public float GustStrength => 1f + Mathf.Sin(Time.time * gustFrequency * Mathf.PI * 2f) * gustVariation;
 
-    // Velocity wind adds to anything standing in it. Zero outside a wind storm,
-    // so callers can add it unconditionally.
-    public Vector2 WindVelocity => current == WeatherType.Wind
+    // Weather is an outdoor system. Inside the barn the storm keeps running on
+    // the plots outside, but the player neither sees nor feels any of it, so
+    // everything player-facing reads this first.
+    public bool IsSheltered
+    {
+        get
+        {
+            if (player == null)
+            {
+                player = FindAnyObjectByType<PlayerMovement>();
+            }
+
+            return player != null && player.isInBarn;
+        }
+    }
+
+    // Velocity wind adds to anything standing in it. Zero outside a wind storm
+    // and zero under a roof, so callers can add it unconditionally.
+    public Vector2 WindVelocity => current == WeatherType.Wind && !IsSheltered
         ? WindDirection * (windPushSpeed * GustStrength)
         : Vector2.zero;
 
@@ -89,6 +109,7 @@ public class WeatherManager : MonoBehaviour
     private float elapsed;
     private float damageTimer;
     private FarmPlot[] plots = Array.Empty<FarmPlot>();
+    private PlayerMovement player;
 
     // No scene but SampleScene has ever contained a WeatherManager, so the whole
     // climate system was dead in WorldScene. Rather than hand-edit that scene's
@@ -101,6 +122,12 @@ public class WeatherManager : MonoBehaviour
         EnsureExists();
     }
 
+    // The tutorial does have a practice plot, so it would otherwise pick up the
+    // whole climate system off the check below. It is teaching the controls,
+    // and a storm rolling over that is a distraction - no readout, no overlays,
+    // no gusts.
+    private const string TutorialSceneName = "Tutorial";
+
     private static void EnsureExists()
     {
         if (FindAnyObjectByType<WeatherManager>() != null)
@@ -108,7 +135,12 @@ public class WeatherManager : MonoBehaviour
             return;
         }
 
-        // Menu and tutorial scenes have no farm, and no business having weather.
+        if (SceneManager.GetActiveScene().name == TutorialSceneName)
+        {
+            return;
+        }
+
+        // Menu scenes have no farm, and no business having weather.
         if (FindAnyObjectByType<FarmPlot>() == null)
         {
             return;

@@ -52,6 +52,7 @@ public class WeatherVisuals : MonoBehaviour
 
     private Color targetTint;
     private float targetIntensity;
+    private WeatherType applied = WeatherType.Clear;
 
     // Cached view extents, needed again when wind is re-aimed on each storm.
     private float viewWidth;
@@ -83,16 +84,26 @@ public class WeatherVisuals : MonoBehaviour
         windOverlay = BuildOverlay(WeatherType.Wind, windOverride);
         heatGlare = BuildHeatGlare();
 
-        weather.OnWeatherChanged += Apply;
-        Apply(weather.current);
+        applied = Shown;
+        Apply(applied);
     }
 
-    private void OnDestroy()
+    // What the player should currently be seeing. Under the barn roof that is
+    // always clear skies, however hard it is blowing on the farm outside.
+    private WeatherType Shown => weather.IsSheltered ? WeatherType.Clear : weather.current;
+
+    // Polled rather than driven off OnWeatherChanged, because stepping in or
+    // out of the barn turns the overlays over without the weather changing.
+    private void Refresh()
     {
-        if (weather != null)
+        WeatherType shown = Shown;
+        if (shown == applied)
         {
-            weather.OnWeatherChanged -= Apply;
+            return;
         }
+
+        applied = shown;
+        Apply(shown);
     }
 
     // A scene can hold several Light2Ds; only the global one washes the whole
@@ -180,6 +191,8 @@ public class WeatherVisuals : MonoBehaviour
 
     private void Update()
     {
+        Refresh();
+
         if (globalLight == null)
         {
             return;
@@ -198,7 +211,7 @@ public class WeatherVisuals : MonoBehaviour
             return;
         }
 
-        float target = weather.current == WeatherType.Heat ? 1f : 0f;
+        float target = applied == WeatherType.Heat ? 1f : 0f;
         float step = transitionDuration > 0f ? Time.deltaTime / transitionDuration : 1f;
         glareAlpha = Mathf.MoveTowards(glareAlpha, target, step);
 
