@@ -163,7 +163,25 @@ public class PlayerPlanting: MonoBehaviour
     {
         if (other.CompareTag("FarmPlot")&& farmplot == null)
         {
-            farmplot = other.GetComponent<FarmPlot>();
+            FarmPlot currentFarmplot = other.GetComponent<FarmPlot>();
+
+            if (farmplot == null && currentFarmplot != farmplot)
+            {
+                Debug.Log($"current collision is:{other.name}");
+                farmplot = currentFarmplot;
+            }
+        }
+    }
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.CompareTag("FarmPlot"))
+        {
+            FarmPlot currentFarmPlot = collision.GetComponent<FarmPlot>();
+            if (currentFarmPlot != null && currentFarmPlot != farmplot)
+            {
+                Debug.Log($"Current collision is: {collision.name}");
+                farmplot = currentFarmPlot;
+            }
         }
     }
 
