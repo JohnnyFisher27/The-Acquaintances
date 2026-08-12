@@ -16,7 +16,7 @@ public class PlayButton : MonoBehaviour
     {
         GetComponent<Button>().onClick.AddListener(Play);
 
-        SoundEffectsManager.instance.PlaySound(menuMusic, transform, 1f);
+        SoundEffectsManager.instance.PlaySound(menuMusic, transform, 1f, true);
     }
 
     private void Play()

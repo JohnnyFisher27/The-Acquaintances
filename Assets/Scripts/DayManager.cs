@@ -45,7 +45,7 @@ public class DayManager : MonoBehaviour
             fader.FadeIn();
         }
 
-        SoundEffectsManager.instance.PlaySound(dayMusic, transform, 1f);
+        SoundEffectsManager.instance.PlaySound(dayMusic, transform, 1f, true);
     }
 
     private void Update()
