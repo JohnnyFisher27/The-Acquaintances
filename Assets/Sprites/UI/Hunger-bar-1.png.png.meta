@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: f2574893737f54a18af6ec895175b66a
+guid: 85290e7662985468fad89705b6154d02
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5514146882732004303
-    second: Time-Meter-1.png_0
+      213: 1253214128547784144
+    second: Hunger-bar-1.png_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Time-Meter-1.png_0
+      name: Hunger-bar-1.png_0
       rect:
         serializedVersion: 2
-        x: 36
-        y: 3
-        width: 86
-        height: 86
+        x: 2
+        y: 25
+        width: 184
+        height: 36
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: fc39198ef5f268c40800000000000000
-      internalID: 5514146882732004303
+      spriteID: 0d5679f2c9f446110800000000000000
+      internalID: 1253214128547784144
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Time-Meter-1.png_0: 5514146882732004303
+      Hunger-bar-1.png_0: 1253214128547784144
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

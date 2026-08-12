@@ -20,12 +20,13 @@ public class SoundEffectsManager : MonoBehaviour
     public void PlaySound(AudioClip audioClip, Transform spawnTransform, float volume, bool isSong = false)
     {
         AudioSource audioSource = Instantiate(soundFXObject, spawnTransform.position, Quaternion.identity);
-        audioSource.volume = volume/2;
+        audioSource.volume = volume/2f;
         audioSource.clip = audioClip;
         audioSource.loop = true;
 
         if (isSong)
         {
+            audioSource.volume /= 4f;
             if (currentSongSource != null)
             {
                 Destroy(currentSongSource.gameObject);
