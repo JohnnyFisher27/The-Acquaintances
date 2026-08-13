@@ -36,7 +36,14 @@ public class Teleport : MonoBehaviour
         screenFader.FadeOut();
         yield return new WaitForSeconds(1);
         player.transform.position = teleportToUse.pointToTeleport.position;
-        player.GetComponent<PlayerMovement>().isInBarn = true;
+        if (!player.GetComponent<PlayerMovement>().isInBarn)
+        {
+            player.GetComponent<PlayerMovement>().isInBarn = true;
+        }
+        else if (player.GetComponent<PlayerMovement>().isInBarn)
+        {
+            player.GetComponent<PlayerMovement>().isInBarn = false;
+        }   
         confiner2D.BoundingShape2D = null;
         yield return null;
         confiner2D.BoundingShape2D = teleportToUse.confiner;

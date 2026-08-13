@@ -13,13 +13,14 @@ using TMPro;
 // gets a read on "storm soon" from peripheral vision without parsing a timer.
 //
 // Sprites come from Resources/Weather/WeatherMeter, sliced 4x4: a wind badge, a
-// sun badge and a 14 frame rain loop. Heat has no badge of its own on the sheet,
-// so it reuses the sun tinted hot - drop a sprite into heatOverride to replace
-// it without touching this code.
+// sun badge and a 14 frame rain loop. Heat has its own badge alongside it at
+// Resources/Weather/HeatMeter; without one it falls back to the sun tinted hot,
+// which is what it used to do. heatOverride still wins over both.
 [RequireComponent(typeof(WeatherManager))]
 public class WeatherHud : MonoBehaviour
 {
     private const string SheetPath = "Weather/WeatherMeter";
+    private const string HeatBadgePath = "Weather/HeatMeter";
 
     [Header("Icon Overrides (optional)")]
     [SerializeField] private Sprite clearOverride;
@@ -29,8 +30,9 @@ public class WeatherHud : MonoBehaviour
 
     [Header("Tints")]
     [SerializeField] private Color clearTint = Color.white;
-    // The sun badge is already gold, so heat only needs pushing towards red to
-    // read as a different condition rather than a brighter clear spell.
+    // Fallback only, for when there is no heat badge and the sun stands in for
+    // one: the sun is already gold, so it needs pushing towards red to read as
+    // a different condition rather than a brighter clear spell.
     [SerializeField] private Color heatTint = new Color(1f, 0.55f, 0.32f);
     [SerializeField] private Color rainTint = Color.white;
     [SerializeField] private Color windTint = Color.white;
@@ -78,7 +80,12 @@ public class WeatherHud : MonoBehaviour
 
     private Sprite sunSprite;
     private Sprite windSprite;
+    private Sprite heatSprite;
     private Sprite[] rainSprites = System.Array.Empty<Sprite>();
+
+    // The hot tint exists only to make a borrowed sun badge read as heat. Real
+    // heat art is already orange, and tinting it again turns it to mud.
+    private bool HasHeatBadge => heatOverride != null || heatSprite != null;
 
     private bool spritesMissing;
     private float rainTimer;
@@ -133,7 +140,12 @@ public class WeatherHud : MonoBehaviour
         frames.Sort((a, b) => string.CompareOrdinal(a.name, b.name));
         rainSprites = frames.ToArray();
 
-        spritesMissing = sunSprite == null && windSprite == null && rainSprites.Length == 0;
+        // Its own file rather than a slice, so it can be redrawn without
+        // re-slicing the sheet every other condition lives on.
+        heatSprite = Resources.Load<Sprite>(HeatBadgePath);
+
+        spritesMissing = sunSprite == null && windSprite == null
+            && heatSprite == null && rainSprites.Length == 0;
         if (spritesMissing)
         {
             Debug.LogWarning($"[WeatherHud] No sprites at Resources/{SheetPath}; falling back to text.");
@@ -149,7 +161,12 @@ public class WeatherHud : MonoBehaviour
         switch (condition)
         {
             case WeatherType.Heat:
-                return heatOverride != null ? heatOverride : sunSprite;
+                if (heatOverride != null)
+                {
+                    return heatOverride;
+                }
+
+                return heatSprite != null ? heatSprite : sunSprite;
             case WeatherType.Wind:
                 return windOverride != null ? windOverride : windSprite;
             case WeatherType.Rain:
@@ -178,7 +195,7 @@ public class WeatherHud : MonoBehaviour
         switch (condition)
         {
             case WeatherType.Heat:
-                return heatTint;
+                return HasHeatBadge ? Color.white : heatTint;
             case WeatherType.Rain:
                 return rainTint;
             case WeatherType.Wind:

@@ -20,7 +20,8 @@ public class PlayerTools : MonoBehaviour
 {
     public ToolType currentTool = ToolType.Hoe;
 
-    [SerializeField] private TMPro.TextMeshProUGUI toolText;
+    [SerializeField] private TMPro.TextMeshProUGUI foodNumText;
+    [SerializeField] private TMPro.TextMeshProUGUI seedsText;
 
     [SerializeField] private GameObject item1Image;
     [SerializeField] private GameObject item2Image;
@@ -47,7 +48,6 @@ public class PlayerTools : MonoBehaviour
         inventory.OnChanged += UpdateToolText;
 
         MakeTransparent("Hoe");
-        EnsureToolText();
         SelectFirstOwnedSeed();
         UpdateToolText();
     }
@@ -132,53 +132,23 @@ public class PlayerTools : MonoBehaviour
 
     private void UpdateToolText()
     {
-        if (toolText == null)
-        {
-            return;
-        }
 
-        string line;
         if (currentTool == ToolType.Seeds)
         {
             // Via the inventory so upgraded runtime stats and names are used.
             Plant plant = inventory.PlantData(planting.id);
             string name = plant != null ? plant.namePlant : planting.id.ToString();
             int held = inventory.Count(ItemKind.Seed, planting.id);
-            line = $"Tool: Seeds - {name} x{held} (LMB, R to cycle)";
+
+            seedsText.text = $"{name} x{held}";
         }
         else
         {
-            line = $"Tool: {currentTool} (LMB)";
+            seedsText.text = "";
         }
 
-        toolText.text = $"{line}\nSeeds: {planting.Seeds}   Food: {planting.Food} (Q to eat)";
-    }
-
-    // The scene ships with no tool label wired up, which left the player with no
-    // read on their tool or their stock. Build a minimal one when it is missing.
-    private void EnsureToolText()
-    {
-        if (toolText != null)
-        {
-            return;
-        }
-
-        Canvas canvas = HudCanvas.Get();
-
-        var textObject = new GameObject("Tool Text", typeof(TextMeshProUGUI));
-        textObject.transform.SetParent(canvas.transform, false);
-
-        var rect = textObject.GetComponent<RectTransform>();
-        rect.anchorMin = new Vector2(0f, 1f);
-        rect.anchorMax = new Vector2(0f, 1f);
-        rect.pivot = new Vector2(0f, 1f);
-        rect.anchoredPosition = new Vector2(16f, -16f);
-        rect.sizeDelta = new Vector2(560f, 80f);
-
-        toolText = textObject.GetComponent<TextMeshProUGUI>();
-        toolText.fontSize = 22f;
-        toolText.color = Color.white;
-        toolText.raycastTarget = false;
+        foodNumText.text = $"{planting.Food}";
+        
     }
 
     private void MakeTransparent(string toolName)
