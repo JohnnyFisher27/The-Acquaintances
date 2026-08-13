@@ -243,7 +243,7 @@ MonoBehaviour:
   - namePlant: Lettuce
     id: 9
     category: 0
-    spr: {fileID: 0}
+    spr: {fileID: -7523970955242101793, guid: 5cf26486df2c1473a87c8cdd264dd2b8, type: 3}
     type: 0
     multMorning: 2
     multAfternoon: 1
@@ -258,9 +258,9 @@ MonoBehaviour:
     hungerRestored: 150
     eatHealthPenalty: 0
     placeholderColor: {r: 0.45, g: 0.7, b: 0.3, a: 1}
-    plantedSpr: {fileID: -2599745249533707853, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
-    grownedSpr: {fileID: -7638271809763469650, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
-    readySpr: {fileID: -6875792930259764646, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
+    plantedSpr: {fileID: 4535925395531633388, guid: 5cf26486df2c1473a87c8cdd264dd2b8, type: 3}
+    grownedSpr: {fileID: -2956972527834942131, guid: 5cf26486df2c1473a87c8cdd264dd2b8, type: 3}
+    readySpr: {fileID: 1574771824586098789, guid: 5cf26486df2c1473a87c8cdd264dd2b8, type: 3}
     witheredSpr: {fileID: 0}
     neccesaryItems: []
     pretectRadis: 0
