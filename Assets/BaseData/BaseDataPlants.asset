@@ -41,7 +41,7 @@ MonoBehaviour:
   - namePlant: Blue river pedals
     id: 2
     category: 1
-    spr: {fileID: 3620058418051504474, guid: 866dd813e11bf42dbbef1d1ac4dae926, type: 3}
+    spr: {fileID: 5946922788555777878, guid: b0bf4bdeaf72250458c3a3ef95b2db88, type: 3}
     type: 0
     multMorning: 2
     multAfternoon: 2
@@ -56,9 +56,9 @@ MonoBehaviour:
     hungerRestored: 0
     eatHealthPenalty: 0
     placeholderColor: {r: 0.25, g: 0.55, b: 0.95, a: 1}
-    plantedSpr: {fileID: 8735322932182825036, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
-    grownedSpr: {fileID: -8406855179093674905, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
-    readySpr: {fileID: 8133688423319878165, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
+    plantedSpr: {fileID: 5946922788555777878, guid: b0bf4bdeaf72250458c3a3ef95b2db88, type: 3}
+    grownedSpr: {fileID: -4789697073366893846, guid: b0bf4bdeaf72250458c3a3ef95b2db88, type: 3}
+    readySpr: {fileID: 7257096154960029637, guid: b0bf4bdeaf72250458c3a3ef95b2db88, type: 3}
     witheredSpr: {fileID: 0}
     neccesaryItems: []
     pretectRadis: 0
