@@ -66,7 +66,7 @@ MonoBehaviour:
   - namePlant: Breeze root
     id: 3
     category: 1
-    spr: {fileID: 3620058418051504474, guid: 866dd813e11bf42dbbef1d1ac4dae926, type: 3}
+    spr: {fileID: -5063817933289594629, guid: 5a08039ea42f43f49aad5a5c190ece34, type: 3}
     type: 0
     multMorning: 0.5
     multAfternoon: 2
@@ -81,9 +81,9 @@ MonoBehaviour:
     hungerRestored: 0
     eatHealthPenalty: 0
     placeholderColor: {r: 0.35, g: 0.75, b: 0.4, a: 1}
-    plantedSpr: {fileID: 8735322932182825036, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
-    grownedSpr: {fileID: -8406855179093674905, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
-    readySpr: {fileID: 8133688423319878165, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
+    plantedSpr: {fileID: -2219031876846165892, guid: 5a08039ea42f43f49aad5a5c190ece34, type: 3}
+    grownedSpr: {fileID: -37284641282506620, guid: 5a08039ea42f43f49aad5a5c190ece34, type: 3}
+    readySpr: {fileID: 4081322692752618275, guid: 5a08039ea42f43f49aad5a5c190ece34, type: 3}
     witheredSpr: {fileID: 0}
     neccesaryItems: []
     pretectRadis: 0
