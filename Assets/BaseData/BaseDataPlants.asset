@@ -218,7 +218,7 @@ MonoBehaviour:
   - namePlant: Tomato
     id: 8
     category: 0
-    spr: {fileID: 0}
+    spr: {fileID: 4607718632099404398, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
     type: 0
     multMorning: 1
     multAfternoon: 2
@@ -233,9 +233,9 @@ MonoBehaviour:
     hungerRestored: 250
     eatHealthPenalty: 0
     placeholderColor: {r: 0.85, g: 0.3, b: 0.15, a: 1}
-    plantedSpr: {fileID: 0}
-    grownedSpr: {fileID: 0}
-    readySpr: {fileID: 0}
+    plantedSpr: {fileID: 8845379044076118123, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
+    grownedSpr: {fileID: 3743032168196474439, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
+    readySpr: {fileID: -7638271809763469650, guid: 937e4ab3444dd46a28f199d9ad1f5c8c, type: 3}
     witheredSpr: {fileID: 0}
     neccesaryItems: []
     pretectRadis: 0
